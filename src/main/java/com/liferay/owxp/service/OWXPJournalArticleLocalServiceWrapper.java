@@ -38,6 +38,8 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.SubscriptionSender;
 import com.liferay.portal.kernel.util.Validator;
 
+import java.io.Serializable;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -52,6 +54,27 @@ public class OWXPJournalArticleLocalServiceWrapper
 
 	public OWXPJournalArticleLocalServiceWrapper() {
 		super(null);
+	}
+
+	@Override
+	public JournalArticle moveArticle(
+			long groupId, String articleId, long newFolderId,
+			ServiceContext serviceContext)
+		throws PortalException {
+
+		super.moveArticle(groupId, articleId, newFolderId, serviceContext);
+	}
+
+	@Override
+	public JournalArticle updateStatus(
+			long userId, JournalArticle article, int status, String articleURL,
+			ServiceContext serviceContext,
+			Map<String, Serializable> workflowContext)
+		throws PortalException {
+
+		super.updateStatus(
+			userId, article, status, articleURL, serviceContext,
+			workflowContext);
 	}
 
 	protected void notifySubscribers(
