@@ -15,7 +15,9 @@
 package com.liferay.owxp.service;
 
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
+import com.liferay.dynamic.data.mapping.service.DDMStructureLocalService;
 import com.liferay.journal.configuration.JournalGroupServiceConfiguration;
+import com.liferay.journal.constants.JournalConstants;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.model.JournalArticleDisplay;
 import com.liferay.journal.model.JournalFolder;
@@ -24,26 +26,33 @@ import com.liferay.journal.service.permission.JournalPermission;
 import com.liferay.journal.util.impl.JournalUtil;
 import com.liferay.portal.kernel.diff.DiffHtmlUtil;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.configuration.ConfigurationException;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.notifications.UserNotificationDefinition;
 import com.liferay.portal.kernel.portlet.PortletProvider;
 import com.liferay.portal.kernel.portlet.PortletProviderUtil;
 import com.liferay.portal.kernel.portlet.PortletRequestModel;
+import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceWrapper;
+import com.liferay.portal.kernel.settings.GroupServiceSettingsLocator;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.GroupSubscriptionCheckSubscriptionSender;
+import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.SubscriptionSender;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.io.Serializable;
-import java.util.List;
+
 import java.util.Locale;
 import java.util.Map;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Tamas Molnar
@@ -62,7 +71,8 @@ public class OWXPJournalArticleLocalServiceWrapper
 			ServiceContext serviceContext)
 		throws PortalException {
 
-		super.moveArticle(groupId, articleId, newFolderId, serviceContext);
+		return super.moveArticle(
+			groupId, articleId, newFolderId, serviceContext);
 	}
 
 	@Override
@@ -72,9 +82,37 @@ public class OWXPJournalArticleLocalServiceWrapper
 			Map<String, Serializable> workflowContext)
 		throws PortalException {
 
-		super.updateStatus(
+		return super.updateStatus(
 			userId, article, status, articleURL, serviceContext,
 			workflowContext);
+	}
+
+	protected String buildArticleURL(
+		String articleURL, long groupId, long folderId, String articleId) {
+
+		String portletId = PortletProviderUtil.getPortletId(
+			JournalArticle.class.getName(), PortletProvider.Action.EDIT);
+
+		String namespace = PortalUtil.getPortletNamespace(portletId);
+
+		articleURL = HttpUtil.addParameter(
+			articleURL, namespace + "groupId", groupId);
+		articleURL = HttpUtil.addParameter(
+			articleURL, namespace + "folderId", folderId);
+		articleURL = HttpUtil.addParameter(
+			articleURL, namespace + "articleId", articleId);
+
+		return articleURL;
+	}
+
+	protected JournalGroupServiceConfiguration
+			getJournalGroupServiceConfiguration(long groupId)
+		throws ConfigurationException {
+
+		return _configurationProvider.getConfiguration(
+			JournalGroupServiceConfiguration.class,
+			new GroupServiceSettingsLocator(
+				groupId, JournalConstants.SERVICE_NAME));
 	}
 
 	protected void notifySubscribers(
@@ -240,9 +278,9 @@ public class OWXPJournalArticleLocalServiceWrapper
 			}
 		}
 
-		DDMStructure ddmStructure = ddmStructureLocalService.getStructure(
+		DDMStructure ddmStructure = _ddmStructureLocalService.getStructure(
 			article.getGroupId(),
-			classNameLocalService.getClassNameId(JournalArticle.class),
+			_classNameLocalService.getClassNameId(JournalArticle.class),
 			article.getDDMStructureKey(), true);
 
 		subscriptionSender.addPersistedSubscribers(
@@ -253,5 +291,30 @@ public class OWXPJournalArticleLocalServiceWrapper
 
 		subscriptionSender.flushNotificationsAsync();
 	}
+
+	@Reference(unbind = "-")
+	protected void setClassNameLocalService(
+		ClassNameLocalService classNameLocalService) {
+
+		_classNameLocalService = _classNameLocalService;
+	}
+
+	@Reference(unbind = "-")
+	protected void setConfigurationProvider(
+		ConfigurationProvider configurationProvider) {
+
+		_configurationProvider = configurationProvider;
+	}
+
+	@Reference(unbind = "-")
+	protected void setDDMStructureLocalService(
+		DDMStructureLocalService ddmStructureLocalService) {
+
+		_ddmStructureLocalService = ddmStructureLocalService;
+	}
+
+	private ClassNameLocalService _classNameLocalService;
+	private ConfigurationProvider _configurationProvider;
+	private DDMStructureLocalService _ddmStructureLocalService;
 
 }
