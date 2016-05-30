@@ -14,6 +14,7 @@
 
 package com.liferay.owxp.subscribe.portlet;
 
+import com.liferay.owxp.subscribe.constants.OWXPSubscribePortletKeys;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 
 import javax.portlet.Portlet;
@@ -27,6 +28,7 @@ import org.osgi.service.component.annotations.Component;
 		"javax.portlet.display-name=owxp-subscribe Portlet",
 		"javax.portlet.init-param.template-path=/",
 		"javax.portlet.init-param.view-template=/view.jsp",
+		"javax.portlet.name=" + OWXPSubscribePortletKeys.OWXP_SUBSCRIBE,
 		"javax.portlet.resource-bundle=content.Language",
 		"javax.portlet.security-role-ref=power-user,user"
 	},
