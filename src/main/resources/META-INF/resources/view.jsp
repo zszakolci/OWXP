@@ -7,9 +7,9 @@
 <div class="subscribe">
 	<c:choose>
 		<c:when test="<%= SubscriptionLocalServiceUtil.isSubscribed(company.getCompanyId(), user.getUserId(), User.class.getName(), themeDisplay.getLayout().getUserId()) %>">
-			<portlet:actionURL name="subscribe" var="unsubscribeURL">
-				<portlet:param name="subscriber" value="<%= themeDisplay.getLayout().getUserId() %>" />
-				<portlet:param name="subscribeTo" value="<%= user.getUserId() %>" />
+			<portlet:actionURL name="unsubscribe" var="unsubscribeURL">
+				<portlet:param name="subscriber" value="<%= String.valueOf(user.getUserId()) %>" />
+				<portlet:param name="subscribeTo" value="<%= String.valueOf(themeDisplay.getLayout().getUserId()) %>" />
 			</portlet:actionURL>
 
 			<liferay-ui:icon
@@ -20,9 +20,9 @@
 			/>
 		</c:when>
 		<c:otherwise>
-			<portlet:actionURL name="unsubscribe" var="subscribeURL">
-				<portlet:param name="subscriber" value="<%= themeDisplay.getLayout().getUserId() %>" />
-				<portlet:param name="subscriberTo" value="<%= user.getUserId() %>" />
+			<portlet:actionURL name="subscribe" var="subscribeURL">
+				<portlet:param name="subscriber" value="<%= String.valueOf(user.getUserId()) %>" />
+				<portlet:param name="subscribeTo" value="<%= String.valueOf(themeDisplay.getLayout().getUserId()) %>" />
 			</portlet:actionURL>
 
 			<liferay-ui:icon
