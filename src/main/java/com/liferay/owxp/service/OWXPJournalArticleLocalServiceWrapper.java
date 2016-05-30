@@ -531,6 +531,9 @@ public class OWXPJournalArticleLocalServiceWrapper
 		subscriptionSender.addPersistedSubscribers(
 			JournalArticle.class.getName(), article.getResourcePrimKey());
 
+		subscriptionSender.addPersistedSubscribers(
+			User.class.getName(), userId);
+
 		subscriptionSender.flushNotificationsAsync();
 	}
 
