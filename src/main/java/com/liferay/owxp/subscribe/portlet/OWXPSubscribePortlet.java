@@ -15,8 +15,14 @@
 package com.liferay.owxp.subscribe.portlet;
 
 import com.liferay.owxp.subscribe.constants.OWXPSubscribePortletKeys;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
+import com.liferay.portal.kernel.service.SubscriptionLocalServiceUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 
+import javax.portlet.ActionRequest;
+import javax.portlet.ActionResponse;
 import javax.portlet.Portlet;
 
 import org.osgi.service.component.annotations.Component;
@@ -38,4 +44,31 @@ import org.osgi.service.component.annotations.Component;
  * @author Tamas Molnar
  */
 public class OWXPSubscribePortlet extends MVCPortlet {
+
+	public void subscribe(
+			ActionRequest actionRequest, ActionResponse actionResponse)
+		throws PortalException {
+
+		long subscriber = GetterUtil.getLong(
+			actionRequest.getParameter("subscriber"));
+		long subscribeTo = GetterUtil.getLong(
+			actionRequest.getParameter("subscribeTo"));
+
+		SubscriptionLocalServiceUtil.addSubscription(
+			subscriber, 0, User.class.getName(), subscribeTo, "instant");
+	}
+
+	public void unsubscribe(
+			ActionRequest actionRequest, ActionResponse actionResponse)
+		throws PortalException {
+
+		long subscriber = GetterUtil.getLong(
+			actionRequest.getParameter("subscriber"));
+		long subscribeTo = GetterUtil.getLong(
+			actionRequest.getParameter("subscribeTo"));
+
+		SubscriptionLocalServiceUtil.deleteSubscription(
+			subscriber, User.class.getName(), subscribeTo);
+	}
+
 }

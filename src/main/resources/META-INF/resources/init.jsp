@@ -7,6 +7,9 @@ taglib uri="http://liferay.com/tld/portlet" prefix="liferay-portlet" %><%@
 taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %><%@
 taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
 
+<%@ page import="com.liferay.portal.kernel.model.User" %><%@
+page import="com.liferay.portal.kernel.service.SubscriptionLocalServiceUtil" %>
+
 <liferay-theme:defineObjects />
 
 <portlet:defineObjects />
