@@ -1,4 +1,4 @@
-package com.liferay.owxp.subscribe;
+package com.liferay.owxp.subscribe.portlet;
 
 import javax.portlet.Portlet;
 
