@@ -1,0 +1,5 @@
+Bundle-SymbolicName: owxp.service
+
+Bundle-Version: 1.0.0.${tstamp}
+
+Private-Package: com.liferay.owxp.service
