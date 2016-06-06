@@ -49,26 +49,24 @@ public class OWXPSubscribePortlet extends MVCPortlet {
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws PortalException {
 
-		long subscriber = GetterUtil.getLong(
-			actionRequest.getParameter("subscriber"));
-		long subscribeTo = GetterUtil.getLong(
-			actionRequest.getParameter("subscribeTo"));
+		long companyId = GetterUtil.getLong(
+			actionRequest.getParameter("companyId"));
+		long subscriberId = GetterUtil.getLong(
+			actionRequest.getParameter("subscriberId"));
+		long subscribeToId = GetterUtil.getLong(
+			actionRequest.getParameter("subscribeToId"));
 
-		SubscriptionLocalServiceUtil.addSubscription(
-			subscriber, 0, User.class.getName(), subscribeTo, "instant");
-	}
+		if (SubscriptionLocalServiceUtil.isSubscribed(
+				companyId, subscriberId, User.class.getName(), subscribeToId)) {
 
-	public void unsubscribe(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws PortalException {
-
-		long subscriber = GetterUtil.getLong(
-			actionRequest.getParameter("subscriber"));
-		long subscribeTo = GetterUtil.getLong(
-			actionRequest.getParameter("subscribeTo"));
-
-		SubscriptionLocalServiceUtil.deleteSubscription(
-			subscriber, User.class.getName(), subscribeTo);
+			SubscriptionLocalServiceUtil.deleteSubscription(
+				subscriberId, User.class.getName(), subscribeToId);
+		}
+		else {
+			SubscriptionLocalServiceUtil.addSubscription(
+				subscriberId, 0, User.class.getName(), subscribeToId,
+				"instant");
+		}
 	}
 
 }

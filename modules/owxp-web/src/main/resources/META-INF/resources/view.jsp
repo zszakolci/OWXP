@@ -1,34 +1,30 @@
 <%@ include file="/init.jsp" %>
 
-<p>
-	<b><liferay-ui:message key="owxp_subscribe_OWXPSubscribePortlet.caption"/></b>
-</p>
+<%
+User subscribeToUser = UserLocalServiceUtil.getUser(layout.getUserId());
+%>
 
 <div class="subscribe">
-	<c:choose>
-		<c:when test="<%= SubscriptionLocalServiceUtil.isSubscribed(company.getCompanyId(), user.getUserId(), User.class.getName(), themeDisplay.getLayout().getUserId()) %>">
-			<portlet:actionURL name="unsubscribe" var="unsubscribeURL">
-				<portlet:param name="subscriber" value="<%= String.valueOf(user.getUserId()) %>" />
-				<portlet:param name="subscribeTo" value="<%= String.valueOf(themeDisplay.getLayout().getUserId()) %>" />
-			</portlet:actionURL>
+	<portlet:actionURL name="subscribe" var="subscribeURL">
+		<portlet:param name="companyId" value="<%= String.valueOf(user.getCompanyId()) %>" />
+		<portlet:param name="subscriberId" value="<%= String.valueOf(user.getUserId()) %>" />
+		<portlet:param name="subscribeToId" value="<%= String.valueOf(subscribeToUser.getUserId()) %>" />
+	</portlet:actionURL>
 
+	<c:choose>
+		<c:when test="<%= SubscriptionLocalServiceUtil.isSubscribed(company.getCompanyId(), user.getUserId(), User.class.getName(), subscribeToUser.getUserId()) %>">
 			<liferay-ui:icon
 				iconCssClass="icon-remove-sign"
 				label="<%= true %>"
-				message="unsubscribe"
-				url="<%= unsubscribeURL %>"
+				message='<%= "Unsubscribe from " + subscribeToUser.getFullName() %>'
+				url="<%= subscribeURL %>"
 			/>
 		</c:when>
 		<c:otherwise>
-			<portlet:actionURL name="subscribe" var="subscribeURL">
-				<portlet:param name="subscriber" value="<%= String.valueOf(user.getUserId()) %>" />
-				<portlet:param name="subscribeTo" value="<%= String.valueOf(themeDisplay.getLayout().getUserId()) %>" />
-			</portlet:actionURL>
-
 			<liferay-ui:icon
 				iconCssClass="icon-ok-sign"
 				label="<%= true %>"
-				message="subscribe"
+				message='<%= "Subscribe to " + subscribeToUser.getFullName() %>'
 				url="<%= subscribeURL %>"
 			/>
 		</c:otherwise>
