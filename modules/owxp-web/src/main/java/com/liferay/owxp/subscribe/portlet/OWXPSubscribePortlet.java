@@ -31,7 +31,7 @@ import org.osgi.service.component.annotations.Component;
 	property = {
 		"com.liferay.portlet.display-category=category.social",
 		"com.liferay.portlet.instanceable=true",
-		"javax.portlet.display-name=owxp-subscribe Portlet",
+		"javax.portlet.display-name=OWXP subscriber",
 		"javax.portlet.init-param.template-path=/",
 		"javax.portlet.init-param.view-template=/view.jsp",
 		"javax.portlet.name=" + OWXPSubscribePortletKeys.OWXP_SUBSCRIBE,
