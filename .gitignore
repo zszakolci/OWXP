@@ -1,3 +1,14 @@
+.gradle/
+build.gradle
+bundles/
+configs/
+gradle.properties
+gradle/
+gradlew
+gradlew.bat
+settings.gradle
+themes/
+
 .metadata
 bin/
 tmp/
