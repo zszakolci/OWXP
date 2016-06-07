@@ -12,21 +12,28 @@ User subscribeToUser = UserLocalServiceUtil.getUser(layout.getUserId());
 	</portlet:actionURL>
 
 	<c:choose>
-		<c:when test="<%= SubscriptionLocalServiceUtil.isSubscribed(company.getCompanyId(), user.getUserId(), User.class.getName(), subscribeToUser.getUserId()) %>">
-			<liferay-ui:icon
-				iconCssClass="icon-remove-sign"
-				label="<%= true %>"
-				message="unsubscribe"
-				url="<%= subscribeURL %>"
-			/>
+		<c:when test="<%= themeDisplay.isSignedIn() %>">
+			<c:choose>
+				<c:when test="<%= SubscriptionLocalServiceUtil.isSubscribed(company.getCompanyId(), user.getUserId(), User.class.getName(), subscribeToUser.getUserId()) %>">
+					<liferay-ui:icon
+						iconCssClass="icon-remove-sign"
+						label="<%= true %>"
+						message="unsubscribe"
+						url="<%= subscribeURL %>"
+					/>
+				</c:when>
+				<c:otherwise>
+					<liferay-ui:icon
+						iconCssClass="icon-ok-sign"
+						label="<%= true %>"
+						message="subscribe"
+						url="<%= subscribeURL %>"
+					/>
+				</c:otherwise>
+			</c:choose>
 		</c:when>
 		<c:otherwise>
-			<liferay-ui:icon
-				iconCssClass="icon-ok-sign"
-				label="<%= true %>"
-				message="subscribe"
-				url="<%= subscribeURL %>"
-			/>
+			<liferay-ui:message key="please-sign-in-to-access-this-application" />
 		</c:otherwise>
 	</c:choose>
 </div>
