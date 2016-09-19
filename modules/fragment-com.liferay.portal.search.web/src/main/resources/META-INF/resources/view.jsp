@@ -35,7 +35,7 @@ pageContext.setAttribute("portletURL", portletURL);
 	<liferay-portlet:renderURLParams varImpl="portletURL" />
 
 	<aui:fieldset>
-		<aui:input cssClass="search-input" inlineField="<%= true %>" label="" name="keywords" placeholder="search" size="30" title="search" type="text" value="<%= HtmlUtil.escapeAttribute(searchDisplayContext.getKeywords()) %>" />
+		<aui:input cssClass="search-input" inlineField="<%= true %>" label="" name="keywords" placeholder="search" size="30" title='<%= HtmlUtil.escapeAttribute(LanguageUtil.get(request, "search-help")) %>' type="text" value="<%= HtmlUtil.escapeAttribute(searchDisplayContext.getKeywords()) %>" />
 
 		<%
 		String taglibOnClick = "Liferay.Util.focusFormField('#" + renderResponse.getNamespace() + "keywords');";
@@ -73,5 +73,17 @@ pageContext.setAttribute("portletURL", portletURL);
 				submitForm(document.<portlet:namespace />fm);
 			}
 		}
+	</aui:script>
+
+	<aui:script use="aui-tooltip">
+		new A.Tooltip(
+			{
+				trigger: '#<portlet:namespace />keywords',
+				cssClass: 'tooltip-help',
+				html: true,
+				opacity: 1,
+				visible: false
+			}
+		).render();
 	</aui:script>
 </aui:form>
