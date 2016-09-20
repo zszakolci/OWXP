@@ -1,6 +1,5 @@
 build/
 .gradle/
-build.gradle
 bundles/
 configs/
 gradle.properties
