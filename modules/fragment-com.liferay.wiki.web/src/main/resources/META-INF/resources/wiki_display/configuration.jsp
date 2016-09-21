@@ -109,6 +109,18 @@ boolean nodeInGroup = false;
 						</c:otherwise>
 					</c:choose>
 				</aui:fieldset>
+
+				<aui:fieldset collapsible="<%= true %>" label="templates">
+					<div class="display-template">
+						<liferay-ddm:template-selector
+							className="<%= WikiPage.class.getName() %>"
+							displayStyle="<%= wikiPortletInstanceSettingsHelper2.getDisplayStyle() %>"
+							displayStyleGroupId="<%= wikiPortletInstanceSettingsHelper2.getDisplayStyleGroupId() %>"
+							refreshURL="<%= configurationRenderURL %>"
+							showEmptyOption="<%= true %>"
+						/>
+					</div>
+				</aui:fieldset>
 			</aui:fieldset-group>
 		</div>
 	</div>
