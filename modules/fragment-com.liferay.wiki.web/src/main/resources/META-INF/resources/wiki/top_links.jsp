@@ -126,17 +126,6 @@ if (portletTitleBasedNavigation) {
 		PortletURL searchURL = wikiURLHelper.getSearchURL();
 		%>
 
-		<aui:nav-bar-search>
-			<div class="form-search">
-				<aui:form action="<%= searchURL %>" method="get" name="searchFm">
-					<liferay-portlet:renderURLParams portletURL="<%= searchURL %>" />
-					<aui:input name="redirect" type="hidden" value="<%= currentURL %>" />
-					<aui:input name="nodeId" type="hidden" value="<%= node.getNodeId() %>" />
-
-					<liferay-ui:input-search id="keywords1" markupView="lexicon" />
-				</aui:form>
-			</div>
-		</aui:nav-bar-search>
 	</aui:nav-bar>
 
 	<c:if test="<%= windowState.equals(WindowState.MAXIMIZED) %>">
