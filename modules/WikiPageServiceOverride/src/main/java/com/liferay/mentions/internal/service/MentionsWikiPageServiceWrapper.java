@@ -355,16 +355,8 @@ public class MentionsWikiPageServiceWrapper
 		_wikiEngineRenderer = wikiEngineRenderer;
 	}
 
-	@Reference(unbind = "-")
-	protected void setWikiPageLocalService(
-		WikiPageLocalService wikiPageLocalService) {
-
-		_wikiPageLocalService = wikiPageLocalService;
-	}
-
 	private ConfigurationProvider _configurationProvider;
 	private MentionsNotifier _mentionsNotifier;
 	private WikiEngineRenderer _wikiEngineRenderer;
-	private WikiPageLocalService _wikiPageLocalService;
 
 }
