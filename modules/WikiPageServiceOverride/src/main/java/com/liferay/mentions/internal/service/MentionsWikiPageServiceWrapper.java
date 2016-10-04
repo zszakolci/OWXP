@@ -20,6 +20,7 @@ import com.liferay.mentions.util.MentionsUtil;
 import com.liferay.portal.kernel.diff.DiffHtmlUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.LayoutConstants;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.notifications.UserNotificationDefinition;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
@@ -330,10 +331,7 @@ public class MentionsWikiPageServiceWrapper
 		subscriptionSender.setServiceContext(serviceContext);
 
 		subscriptionSender.addPersistedSubscribers(
-			WikiNode.class.getName(), page.getNodeId());
-
-		subscriptionSender.addPersistedSubscribers(
-			WikiPage.class.getName(), page.getResourcePrimKey());
+			User.class.getName(), userId);
 
 		subscriptionSender.flushNotificationsAsync();
 	}
