@@ -368,7 +368,8 @@ public class MBMessageLocalServiceOverride
 		subscriptionSender.setClassName(MBDiscussion.class.getName());
 		subscriptionSender.setClassPK(mbDiscussion.getDiscussionId());
 		subscriptionSender.setContextAttribute(
-			"[$COMMENTS_BODY$]", message.getBody(true), false);
+			"[$COMMENTS_BODY$]", message.getBody(message.isFormatBBCode()),
+			false);
 		subscriptionSender.setContextAttributes(
 			"[$COMMENTS_USER_ADDRESS$]", userAddress, "[$COMMENTS_USER_NAME$]",
 			userName, "[$CONTENT_URL$]", contentURL);
