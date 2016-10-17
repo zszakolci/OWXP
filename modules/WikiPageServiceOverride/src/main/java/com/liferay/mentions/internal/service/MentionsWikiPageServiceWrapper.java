@@ -130,13 +130,24 @@ public class MentionsWikiPageServiceWrapper
 				"contentURL", workflowContext.get("url"));
 		}
 
+		String portalURL = serviceContext.getPortalURL();
+
+		String attachmentURLPrefix = WikiUtil.getAttachmentURLPrefix(
+			serviceContext.getPathMain(), serviceContext.getPlid(),
+			page.getNodeId(), page.getTitle());
+
+		attachmentURLPrefix = portalURL + attachmentURLPrefix;
+
+		String pageContent = _wikiEngineRenderer.convert(
+			page, null, null, attachmentURLPrefix);
+
 		MentionsGroupServiceConfiguration mentionsGroupServiceConfiguration =
 			_configurationProvider.getCompanyConfiguration(
 				MentionsGroupServiceConfiguration.class, page.getCompanyId());
 
 		_mentionsNotifier.notify(
-			page.getUserId(), page.getGroupId(), page.getTitle(),
-			page.getContent(), WikiPage.class.getName(), page.getPageId(),
+			page.getUserId(), page.getGroupId(), page.getTitle(), pageContent,
+			WikiPage.class.getName(), page.getPageId(),
 			mentionsGroupServiceConfiguration.assetEntryMentionEmailSubject(),
 			mentionsGroupServiceConfiguration.assetEntryMentionEmailBody(),
 			serviceContext);
