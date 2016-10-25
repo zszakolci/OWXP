@@ -44,7 +44,7 @@ public class ResourceBundleLoaderComponent implements ResourceBundleLoader {
 		return _resourceBundleLoader.loadResourceBundle(languageId);
 	}
 
-	@Reference(target = "(bundle.symbolic.name=com.liferay.blogs.web)")
+	@Reference(target = "(bundle.symbolic.name=com.liferay.portal.search.web)")
 	public void setResourceBundleLoader(
 		ResourceBundleLoader resourceBundleLoader) {
 
