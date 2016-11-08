@@ -1,11 +1,2 @@
 Bundle-SymbolicName: linked.pages.portlet.project
-
-Bundle-Version: 1.0.0.${tstamp}
-
-Import-Package: \
-	javax.portlet;version='[2.0,3)',\
-	javax.servlet;version='[2.5,4)',\
-	*
-
-Private-Package: \
-	com.liferay.grow.linkedpages
+Bundle-Version: 1.0.0
