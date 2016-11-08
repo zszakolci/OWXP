@@ -28,7 +28,9 @@ import javax.portlet.PortletURL;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 import org.parboiled.Parboiled;
@@ -40,20 +42,13 @@ import org.pegdown.LinkRenderer;
 @Component(service = WikiEngine.class)
 public class MarkdownEngine extends BaseInputEditorWikiEngine {
 
-	public MarkdownEngine() {
-		LiferayParser liferayParser = Parboiled.createParser(
-				LiferayParser.class, Extensions.ALL & ~Extensions.HARDWRAPS);
-
-		_liferayPegDownProcessor = new LiferayPegDownProcessor(liferayParser);
-	}
-
 	@Override
 	public String convert(
 			WikiPage page, PortletURL viewPageURL, PortletURL editPageURL,
 			String attachmentURLPrefix)
 		throws PageContentException {
 
-		return _liferayPegDownProcessor.markdownToHtml(
+		return _liferayPegDownProcessor.get().markdownToHtml(
 				page.getContent(), new LinkRenderer());
 	}
 
@@ -129,9 +124,30 @@ public class MarkdownEngine extends BaseInputEditorWikiEngine {
 		_wikiNodeLocalService = wikiNodeLocalService;
 	}
 
+	@Activate
+	protected void activate() {
+		_liferayPegDownProcessor =
+			new ThreadLocal<LiferayPegDownProcessor>() {
+				@Override
+				protected LiferayPegDownProcessor initialValue() {
+					LiferayParser liferayParser = Parboiled.createParser(
+							LiferayParser.class, Extensions.ALL & ~Extensions.HARDWRAPS);
+	
+					return new LiferayPegDownProcessor(liferayParser);
+				}
+			
+			};
+	}
+
+	@Deactivate
+	protected void deactivate() {
+		_liferayPegDownProcessor = null;
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(MarkdownEngine.class);
 
-	private final LiferayPegDownProcessor _liferayPegDownProcessor;
+	private static ThreadLocal<LiferayPegDownProcessor> _liferayPegDownProcessor;
+
 	private String _friendlyURLMapping;
 	private Router _router;
 	private WikiGroupServiceConfiguration _wikiGroupServiceConfiguration;
