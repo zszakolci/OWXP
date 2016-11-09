@@ -133,6 +133,18 @@ if (portletTitleBasedNavigation) {
 
 	renderResponse.setTitle(wikiPage.getTitle());
 }
+
+String titleIcon = null;
+
+if (layoutAssetEntry != null) {
+	String[] tagNames = layoutAssetEntry.getTagNames();
+
+	for (String tagName : tagNames) {
+		if (StringUtil.equalsIgnoreCase(tagName, "official")) {
+			titleIcon = "icon-check";
+		}
+	}
+}
 %>
 
 <c:if test="<%= portletTitleBasedNavigation %>">
@@ -220,12 +232,21 @@ if (portletTitleBasedNavigation) {
 								<liferay-ui:header
 									backLabel="<%= parentTitle %>"
 									backURL="<%= (viewParentPageURL != null) ? viewParentPageURL.toString() : null %>"
+									iconCssClass="<%= titleIcon %>"
 									localizeTitle="<%= false %>"
 									title="<%= title %>"
 								/>
 							</c:when>
 							<c:otherwise>
-								<h2><%= title %></h2>
+								<h2>
+									<c:if test="<%= Validator.isNotNull(titleIcon) %>">
+										<liferay-ui:icon
+											iconCssClass="<%= titleIcon %>"
+										/>
+									</c:if>
+
+									<%= title %>
+								</h2>
 							</c:otherwise>
 						</c:choose>
 
