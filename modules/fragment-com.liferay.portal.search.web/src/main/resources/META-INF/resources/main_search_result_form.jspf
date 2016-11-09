@@ -21,6 +21,16 @@ summary.setHighlight(searchDisplayContext.isHighlightEnabled());
 summary.setQueryTerms(searchDisplayContext.getQueryTerms());
 
 AssetEntry assetEntry = AssetEntryLocalServiceUtil.fetchEntry(className, classPK);
+
+boolean official = false;
+
+String[] tagNames = assetEntry.getTagNames();
+
+for (String tagName : tagNames) {
+	if (StringUtil.equalsIgnoreCase(tagName, "official")) {
+		official = true;
+	}
+}
 %>
 
 <c:if test="<%= assetEntry != null %>">
@@ -36,6 +46,13 @@ AssetEntry assetEntry = AssetEntryLocalServiceUtil.fetchEntry(className, classPK
 	colspan="<%= 2 %>"
 >
 	<h5>
+		<c:if test="<%= official %>">
+			<liferay-ui:icon
+				iconCssClass="icon-check"
+				message="Official"
+			/>
+		</c:if>
+
 		<a href="<%= viewURL %>">
 			<strong><%= summary.getHighlightedTitle() %></strong>
 		</a>
