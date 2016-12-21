@@ -181,7 +181,7 @@ public class MentionsWikiPageServiceWrapper
 		}
 		else {
 			portletURL = PortletURLFactoryUtil.create(
-				request, WikiConstants.SERVICE_NAME, plid,
+				request, WikiPortletKeys.WIKI, plid,
 				PortletRequest.RENDER_PHASE);
 		}
 
