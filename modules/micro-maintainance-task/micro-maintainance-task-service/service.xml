@@ -29,7 +29,7 @@
 			<finder-column name="taskId" />
 		</finder>
 		<finder name="TasksByName" return-type="TaskEntry">
-			<finder-column name="companyId" />
+			<finder-column name="taskName" />
 		</finder>
 
 	</entity>
