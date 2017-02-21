@@ -21,7 +21,12 @@ import com.liferay.wiki.exception.PageContentException;
 import com.liferay.wiki.model.WikiPage;
 import com.liferay.wiki.service.WikiNodeLocalService;
 
+import net.htmlparser.jericho.Source;
+import net.htmlparser.jericho.StartTag;
+
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.portlet.PortletURL;
@@ -76,12 +81,70 @@ public class MarkdownEngine extends BaseInputEditorWikiEngine {
 	public Map<String, Boolean> getOutgoingLinks(WikiPage page)
 		throws PageContentException {
 
-		//try {
-			return Collections.EMPTY_MAP;
-		//}
-		/*catch (PortalException pe) {
-			throw new PageContentException(pe);
-		}*/
+		String content = convert(page, null, null, null);
+
+		if (Validator.isNull(content)) {
+			return Collections.emptyMap();
+		}
+
+		Map<String, Boolean> links = new HashMap<>();
+
+		Source source = new Source(content);
+
+		List<StartTag> startTags = source.getAllStartTags("a");
+
+		for (StartTag startTag : startTags) {
+			String href = startTag.getAttributeValue("href");
+
+			if (Validator.isNull(href)) {
+				continue;
+			}
+
+			int pos = href.lastIndexOf(_friendlyURLMapping);
+
+			if (pos == -1) {
+				continue;
+			}
+
+			String friendlyURL = href.substring(
+				pos + _friendlyURLMapping.length());
+
+			if (friendlyURL.endsWith(StringPool.SLASH)) {
+				friendlyURL = friendlyURL.substring(
+					0, friendlyURL.length() - 1);
+			}
+
+			Map<String, String> routeParameters = new HashMap<>();
+
+			if (!_router.urlToParameters(friendlyURL, routeParameters)) {
+				if (_log.isWarnEnabled()) {
+					_log.warn(
+						"No route could be found to match URL " + friendlyURL);
+				}
+
+				continue;
+			}
+
+			String title = routeParameters.get("title");
+			String nodeName = routeParameters.get("nodeName");
+
+			if (Validator.isNull(title) || Validator.isNull(nodeName)) {
+				continue;
+			}
+
+			try {
+				_wikiNodeLocalService.getNode(page.getGroupId(), nodeName);
+
+				links.put(StringUtil.toLowerCase(title), Boolean.TRUE);
+			}
+			catch (PortalException pe) {
+				if (_log.isWarnEnabled()) {
+					_log.warn(pe.getMessage());
+				}
+			}
+		}
+
+		return links;
 	}
 
 	@Override
