@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" default-destroy-method="destroy" default-init-method="afterPropertiesSet" xsi:schemaLocation=" http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	<bean class="com.liferay.micro.maintainance.candidate.service.impl.CandidateEntryLocalServiceImpl" id="com.liferay.micro.maintainance.candidate.service.CandidateEntryLocalService" />
+	<bean class="com.liferay.micro.maintainance.candidate.service.impl.CandidateEntryServiceImpl" id="com.liferay.micro.maintainance.candidate.service.CandidateEntryService" />
+	<bean class="com.liferay.micro.maintainance.candidate.service.persistence.impl.CandidateEntryPersistenceImpl" id="com.liferay.micro.maintainance.candidate.service.persistence.CandidateEntryPersistence" parent="basePersistence" />
+</beans>
