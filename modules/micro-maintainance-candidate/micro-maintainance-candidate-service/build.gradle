@@ -5,9 +5,11 @@ buildscript {
 	}
 }
 
-apply plugin: "com.liferay.portal.tools.service.builder"
+
 
 dependencies {
+	compile group: "com.liferay", name: "com.liferay.wiki.api", version: "2.2.0"
+	compile group: "com.liferay", name: "com.liferay.wiki.service", version: "1.2.0"
 	compile 'biz.aQute.bnd:biz.aQute.bndlib:3.1.0'
 	compile 'com.liferay:com.liferay.portal.spring.extender:1.0.2'
 	compile 'com.liferay:com.liferay.osgi.util:2.0.4'
