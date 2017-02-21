@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 6.2.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_6_2_0.dtd">
+
+<service-builder package-path="com.liferay.micro.maintainance.candidate">
+	<namespace>Candidate</namespace>
+	<entity name="CandidateEntry" uuid="true" local-service="true" remote-service="true" trash-enabled="false">
+
+		<!-- PK fields -->
+
+		<column name="entryId" type="long" primary="true" />
+
+		<!-- Group instance -->
+
+		<column name="groupId" type="long" />
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="wikiPageId" type="long" />
+
+		<!-- Order -->
+
+		<order by="asc">
+			<order-column name="createDate" />
+		</order>
+
+		<!-- Finder methods -->
+
+		<finder name="GroupId" return-type="Collection">
+			<finder-column name="groupId" />
+		</finder>
+		<finder name="CompanyId" return-type="Collection">
+			<finder-column name="companyId" />
+		</finder>
+		<finder name="C_U" return-type="Collection">
+			<finder-column name="companyId" />
+			<finder-column name="userId" />
+		</finder>
+		<finder name="C_LtD" return-type="Collection">
+			<finder-column name="companyId" />
+			<finder-column name="displayDate" comparator="&lt;" />
+		</finder>
+		<finder name="C_NotS" return-type="Collection">
+			<finder-column name="companyId" />
+			<finder-column name="status" comparator="!=" />
+		</finder>
+		<finder name="C_S" return-type="Collection">
+			<finder-column name="companyId" />
+			<finder-column name="status" />
+		</finder>
+		<finder name="G_P" return-type="CandidateEntry" unique="true">
+			<finder-column name="groupId" />
+			<finder-column name="wikiPageId" />
+		</finder>
+		<finder name="WikiPageId" return-type="CandidateEntry" unique="true">
+			<finder-column name="wikiPageId" />
+		</finder>
+		<finder name="U_P" return-type="Collection">
+			<finder-column name="userId" />
+			<finder-column name="wikiPageId" />
+		</finder>
+		<finder name="G_U_P" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="userId" />
+			<finder-column name="wikiPageId" />
+		</finder>
+		<finder name="U_cD" return-type="Collection">
+			<finder-column name="userId" />
+			<finder-column name="createDate" />
+		</finder>
+
+		<!-- References -->
+
+		<reference package-path="com.liferay.portal" entity="Company" />
+		<reference package-path="com.liferay.portal" entity="Group" />
+		<reference package-path="com.liferay.portal" entity="User" />
+
+		<reference package-path="com.liferay.portlet.wiki" entity="WikiPage" />
+		<reference package-path="com.liferay.portlet.asset" entity="AssetLink" />
+		<reference package-path="com.liferay.portlet.asset" entity="AssetTag" />
+		<reference package-path="com.liferay.portlet.asset" entity="AssetCategory" />
+	</entity>
+	
+	<exceptions>
+	</exceptions>
+</service-builder>
