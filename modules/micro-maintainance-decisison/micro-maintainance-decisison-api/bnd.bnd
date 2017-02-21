@@ -1,0 +1,7 @@
+Bundle-Version: 1.0.0
+Export-Package: \
+	com.liferay.micro.maintainance.decision.exception,\
+	com.liferay.micro.maintainance.decision.model,\
+	com.liferay.micro.maintainance.decision.service,\
+	com.liferay.micro.maintainance.decision.service.persistence
+-sources: true
