@@ -21,7 +21,7 @@
 
 		<column name="analysisId" type="long" />
 		<column name="outcome" type="String" />
-		<column name="handled" type="Boolean" />
+		<column name="handled" type="boolean" />
 
 		<!-- Order -->
 
@@ -82,7 +82,7 @@
 		</finder>
 		<finder name="C_NotH" return-type="Collection">
 			<finder-column name="companyId" />
-			<finder-column name="handled" />
+			<finder-column comparator="!=" name="handled" />
 		</finder>
 
 	</entity>
