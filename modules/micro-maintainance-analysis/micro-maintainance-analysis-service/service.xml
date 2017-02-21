@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 6.2.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_6_2_0.dtd">
+
+<service-builder package-path="com.liferay.micro.maintainance.analysis">
+	<namespace>Analysis</namespace>
+	<entity name="AnalysisEntry" uuid="true" local-service="true" remote-service="true" trash-enabled="false">
+
+		<!-- PK fields -->
+
+		<column name="analysisId" type="long" primary="true" />
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="canMainId" type="long" />
+		<column name="analysisData" type="String" />
+
+		<!-- Order -->
+
+		<order by="asc">
+			<order-column name="createDate" />
+		</order>
+
+		<!-- Finder methods -->
+
+		<finder name="AnalysisId" return-type="Collection">
+			<finder-column name="analysisId" />
+		</finder>
+		<finder name="CompanyId" return-type="Collection">
+			<finder-column name="companyId" />
+		</finder>
+		<finder name="A_C" return-type="Collection">
+			<finder-column name="analysisId" />
+			<finder-column name="companyId" />
+		</finder>
+		
+		<finder name="A_CM" return-type="Collection">
+			<finder-column name="analysisId" />
+			<finder-column name="canMainId" />
+		</finder>
+		<finder name="A_U_CM" return-type="Collection">
+			<finder-column name="analysisId" />
+			<finder-column name="userId" />
+			<finder-column name="canMainId" />
+		</finder>
+		<finder name="CM_U" return-type="Collection">
+			<finder-column name="canMainId" />
+			<finder-column name="userId" />
+		</finder>
+		<finder name="C_U" return-type="Collection">
+			<finder-column name="companyId" />
+			<finder-column name="userId" />
+		</finder>
+		<finder name="U_cD" return-type="Collection">
+			<finder-column name="userId" />
+			<finder-column name="createDate" />
+		</finder>
+
+	</entity>
+	
+	<exceptions>
+	</exceptions>
+</service-builder>
