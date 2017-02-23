@@ -16,9 +16,12 @@ package com.liferay.micro.maintainance.task.service.impl;
 
 import java.util.List;
 
+import com.liferay.micro.maintainance.candidate.service.CandidateEntryLocalServiceUtil;
 import com.liferay.micro.maintainance.task.model.CandidateMaintenance;
 import com.liferay.micro.maintainance.task.service.base.CandidateMaintenanceLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.search.Indexable;
+import com.liferay.portal.kernel.search.IndexableType;
 
 import aQute.bnd.annotation.ProviderType;
 
@@ -40,6 +43,31 @@ import aQute.bnd.annotation.ProviderType;
 public class CandidateMaintenanceLocalServiceImpl
 	extends CandidateMaintenanceLocalServiceBaseImpl {
 
+	/**
+	 * Deletes the candidate maintenance with the primary key from the database. Also notifies the appropriate model listeners.
+	 *
+	 * @param candidateMaintenanceId the primary key of the candidate maintenance
+	 * @return the candidate maintenance that was removed
+	 * @throws PortalException if a candidate maintenance with the primary key could not be found
+	 */
+	@Indexable(type = IndexableType.DELETE)
+	@Override
+	public CandidateMaintenance deleteCandidateMaintenance(
+			long candidateMaintenanceId) 
+		throws PortalException {
+
+		CandidateMaintenance currentCanMain = 
+			candidateMaintenancePersistence.remove(candidateMaintenanceId);
+
+		long candidateId = currentCanMain.getCandidateId();
+
+		if(getCandidateMaintenaceTasksCount(candidateId) == 0) {
+			CandidateEntryLocalServiceUtil.deleteCandidateEntry(candidateId);
+		}
+
+		return currentCanMain;
+	}
+
 	@Override
 	public List<CandidateMaintenance> getCandidateMaintenaceTasks(
 			long candidateId)
@@ -54,4 +82,20 @@ public class CandidateMaintenanceLocalServiceImpl
 
 		return getCandidateMaintenaceTasks(candidateId).size();
 	}
+
+	@Override
+	public List<CandidateMaintenance> getMaintenaceTasks(
+			long taskId)
+		throws PortalException {
+
+		return candidateMaintenancePersistence.findByTaskIds(taskId);
+	}
+
+	@Override
+	public long getMaintenaceTasksCount(long taskId)
+		throws PortalException {
+
+		return getMaintenaceTasks(taskId).size();
+	}
+
 }
