@@ -234,6 +234,11 @@ public class CandidateMaintenanceLocalServiceUtil {
 		return getService().getCandidateMaintenances(start, end);
 	}
 
+	public static java.util.List<com.liferay.micro.maintainance.task.model.CandidateMaintenance> getMaintenaceTasks(
+		long taskId) throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getMaintenaceTasks(taskId);
+	}
+
 	/**
 	* Returns the number of rows matching the dynamic query.
 	*
@@ -261,6 +266,11 @@ public class CandidateMaintenanceLocalServiceUtil {
 	public static long getCandidateMaintenaceTasksCount(long candidateId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getCandidateMaintenaceTasksCount(candidateId);
+	}
+
+	public static long getMaintenaceTasksCount(long taskId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getMaintenaceTasksCount(taskId);
 	}
 
 	public static CandidateMaintenanceLocalService getService() {

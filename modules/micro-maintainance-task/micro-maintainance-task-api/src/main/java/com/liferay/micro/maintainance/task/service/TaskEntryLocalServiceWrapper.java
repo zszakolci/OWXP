@@ -45,6 +45,13 @@ public class TaskEntryLocalServiceWrapper implements TaskEntryLocalService,
 		return _taskEntryLocalService.addTaskEntry(taskEntry);
 	}
 
+	@Override
+	public com.liferay.micro.maintainance.task.model.TaskEntry addTaskEntry(
+		java.lang.String taskName)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _taskEntryLocalService.addTaskEntry(taskName);
+	}
+
 	/**
 	* Creates a new task entry with the primary key. Does not add the task entry to the database.
 	*

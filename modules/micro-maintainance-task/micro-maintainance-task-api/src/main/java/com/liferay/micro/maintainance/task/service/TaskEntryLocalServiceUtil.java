@@ -53,6 +53,12 @@ public class TaskEntryLocalServiceUtil {
 		return getService().addTaskEntry(taskEntry);
 	}
 
+	public static com.liferay.micro.maintainance.task.model.TaskEntry addTaskEntry(
+		java.lang.String taskName)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().addTaskEntry(taskName);
+	}
+
 	/**
 	* Creates a new task entry with the primary key. Does not add the task entry to the database.
 	*

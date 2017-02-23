@@ -70,6 +70,9 @@ public interface TaskEntryLocalService extends BaseLocalService,
 	@Indexable(type = IndexableType.REINDEX)
 	public TaskEntry addTaskEntry(TaskEntry taskEntry);
 
+	public TaskEntry addTaskEntry(java.lang.String taskName)
+		throws PortalException;
+
 	/**
 	* Creates a new task entry with the primary key. Does not add the task entry to the database.
 	*
