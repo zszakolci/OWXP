@@ -14,9 +14,18 @@
 
 package com.liferay.micro.maintainance.task.service.impl;
 
-import aQute.bnd.annotation.ProviderType;
+import java.util.Date;
+import java.util.List;
 
+import com.liferay.micro.maintainance.task.model.CandidateMaintenance;
+import com.liferay.micro.maintainance.task.model.TaskEntry;
+import com.liferay.micro.maintainance.task.service.CandidateMaintenanceLocalServiceUtil;
 import com.liferay.micro.maintainance.task.service.base.TaskEntryLocalServiceBaseImpl;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.search.Indexable;
+import com.liferay.portal.kernel.search.IndexableType;
+
+import aQute.bnd.annotation.ProviderType;
 
 /**
  * The implementation of the task entry local service.
@@ -34,9 +43,42 @@ import com.liferay.micro.maintainance.task.service.base.TaskEntryLocalServiceBas
  */
 @ProviderType
 public class TaskEntryLocalServiceImpl extends TaskEntryLocalServiceBaseImpl {
-	/*
-	 * NOTE FOR DEVELOPERS:
+
+	@Override
+	public TaskEntry addTaskEntry(String taskName) 
+		throws PortalException {
+
+		long taskId = counterLocalService.increment();
+		Date now = new Date();
+
+		TaskEntry taskEntry = taskEntryPersistence.create(taskId);
+
+		taskEntry.setTaskName(taskName);
+		taskEntry.setCreateDate(now);
+
+		taskEntryPersistence.update(taskEntry);
+	}
+
+	/**
+	 * Deletes the task entry with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
-	 * Never reference this class directly. Always use {@link com.liferay.micro.maintainance.task.service.TaskEntryLocalServiceUtil} to access the task entry local service.
+	 * @param taskId the primary key of the task entry
+	 * @return the task entry that was removed
+	 * @throws PortalException if a task entry with the primary key could not be found
 	 */
+	@Indexable(type = IndexableType.DELETE)
+	@Override
+	public TaskEntry deleteTaskEntry(long taskId) throws PortalException {
+		
+		List<CandidateMaintenance> canMainTasks = 
+			CandidateMaintenanceLocalServiceUtil.getMaintenaceTasks(taskId);
+
+		for (CandidateMaintenance canMaintask : canMainTasks) {
+			CandidateMaintenanceLocalServiceUtil
+				.deleteCandidateMaintenance(
+					canMaintask.getCandidateMaintenanceId());
+		}
+
+		return taskEntryPersistence.remove(taskId);
+	}
 }
