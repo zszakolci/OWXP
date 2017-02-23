@@ -159,7 +159,18 @@ public class MarkdownEngine extends BaseInputEditorWikiEngine {
 
 	@Override
 	protected ResourceBundleLoader getResourceBundleLoader() {
-		return ResourceBundleLoaderUtil.getPortalResourceBundleLoader();
+		return _resourceBundleLoader;
+	}
+
+	@Reference(
+		target = "(bundle.symbolic.name=owxp.lang)",
+		unbind = "-"
+	)
+	protected void setResourceBundleLoader(
+		ResourceBundleLoader resourceBundleLoader) {
+
+		_resourceBundleLoader = new AggregateResourceBundleLoader(
+			resourceBundleLoader, LanguageResources.RESOURCE_BUNDLE_LOADER);
 	}
 
 	@Reference(
@@ -212,6 +223,7 @@ public class MarkdownEngine extends BaseInputEditorWikiEngine {
 	private static ThreadLocal<LiferayPegDownProcessor> _liferayPegDownProcessor;
 
 	private String _friendlyURLMapping;
+	private ResourceBundleLoader _resourceBundleLoader;
 	private Router _router;
 	private WikiGroupServiceConfiguration _wikiGroupServiceConfiguration;
 	private WikiNodeLocalService _wikiNodeLocalService;
