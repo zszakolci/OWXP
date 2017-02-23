@@ -14,9 +14,17 @@
 
 package com.liferay.micro.maintainance.candidate.service.impl;
 
-import aQute.bnd.annotation.ProviderType;
+import java.util.Date;
 
+import com.liferay.micro.maintainance.candidate.model.CandidateEntry;
 import com.liferay.micro.maintainance.candidate.service.base.CandidateEntryLocalServiceBaseImpl;
+import com.liferay.micro.maintainance.task.service.CandidateMaintenanceLocalServiceUtil;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.search.Indexable;
+import com.liferay.portal.kernel.search.IndexableType;
+
+import aQute.bnd.annotation.ProviderType;
 
 /**
  * The implementation of the candidate entry local service.
@@ -35,9 +43,55 @@ import com.liferay.micro.maintainance.candidate.service.base.CandidateEntryLocal
 @ProviderType
 public class CandidateEntryLocalServiceImpl
 	extends CandidateEntryLocalServiceBaseImpl {
-	/*
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never reference this class directly. Always use {@link com.liferay.micro.maintainance.candidate.service.CandidateEntryLocalServiceUtil} to access the candidate entry local service.
+
+	/**
+	 * Adds a candidate entry to the database
 	 */
+	@Override
+	public CandidateEntry addCandidateEntry(
+			long userId, long groupId, long wikiPageId) 
+		throws PortalException {
+		
+		User user = userPersistence.findByPrimaryKey(userId);
+		long candidateId = counterLocalService.increment();
+		Date now = new Date();
+
+		CandidateEntry candidate = candidateEntryPersistence.create(candidateId);
+
+		candidate.setGroupId(groupId);
+
+		candidate.setCompanyId(user.getCompanyId());
+		candidate.setUserId(userId);
+		candidate.setUserName(user.getFullName());
+		candidate.setCreateDate(now);
+		candidate.setModifiedDate(now);
+
+		candidate.setWikiPageId(wikiPageId);
+
+		candidateEntryPersistence.update(candidate);
+
+		return candidate;
+	}
+
+	/**
+	 * Deletes the candidate entry with the primary key from the database. Also notifies the appropriate model listeners.
+	 *
+	 * @param entryId the primary key of the candidate entry
+	 * @return the candidate entry that was removed
+	 * @throws PortalException if a candidate entry with the primary key could not be found
+	 */
+	@Indexable(type = IndexableType.DELETE)
+	@Override
+	public CandidateEntry deleteCandidateEntry(long entryId)
+		throws PortalException {
+
+		long canMainCount = CandidateMaintenanceLocalServiceUtil
+			.getCandidateMaintenaceTasksCount(entryId);
+
+		if (canMainCount > 0) {
+			throw new PortalException();
+		}
+
+		return candidateEntryPersistence.remove(entryId);
+	}
 }

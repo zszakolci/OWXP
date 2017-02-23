@@ -200,6 +200,10 @@ public interface CandidateMaintenanceLocalService extends BaseLocalService,
 	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
 		int end, OrderByComparator<T> orderByComparator);
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<CandidateMaintenance> getCandidateMaintenaceTasks(
+		long candidateId) throws PortalException;
+
 	/**
 	* Returns a range of all the candidate maintenances.
 	*
@@ -232,4 +236,8 @@ public interface CandidateMaintenanceLocalService extends BaseLocalService,
 	*/
 	public long dynamicQueryCount(DynamicQuery dynamicQuery,
 		Projection projection);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public long getCandidateMaintenaceTasksCount(long candidateId)
+		throws PortalException;
 }

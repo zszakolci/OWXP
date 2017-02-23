@@ -14,9 +14,13 @@
 
 package com.liferay.micro.maintainance.task.service.impl;
 
-import aQute.bnd.annotation.ProviderType;
+import java.util.List;
 
+import com.liferay.micro.maintainance.task.model.CandidateMaintenance;
 import com.liferay.micro.maintainance.task.service.base.CandidateMaintenanceLocalServiceBaseImpl;
+import com.liferay.portal.kernel.exception.PortalException;
+
+import aQute.bnd.annotation.ProviderType;
 
 /**
  * The implementation of the candidate maintenance local service.
@@ -35,9 +39,19 @@ import com.liferay.micro.maintainance.task.service.base.CandidateMaintenanceLoca
 @ProviderType
 public class CandidateMaintenanceLocalServiceImpl
 	extends CandidateMaintenanceLocalServiceBaseImpl {
-	/*
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never reference this class directly. Always use {@link com.liferay.micro.maintainance.task.service.CandidateMaintenanceLocalServiceUtil} to access the candidate maintenance local service.
-	 */
+
+	@Override
+	public List<CandidateMaintenance> getCandidateMaintenaceTasks(
+			long candidateId)
+		throws PortalException {
+
+		return candidateMaintenancePersistence.findByCandidateIds(candidateId);
+	}
+
+	@Override
+	public long getCandidateMaintenaceTasksCount(long candidateId)
+		throws PortalException {
+
+		return getCandidateMaintenaceTasks(candidateId).size();
+	}
 }

@@ -212,6 +212,12 @@ public class CandidateMaintenanceLocalServiceUtil {
 				   .dynamicQuery(dynamicQuery, start, end, orderByComparator);
 	}
 
+	public static java.util.List<com.liferay.micro.maintainance.task.model.CandidateMaintenance> getCandidateMaintenaceTasks(
+		long candidateId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getCandidateMaintenaceTasks(candidateId);
+	}
+
 	/**
 	* Returns a range of all the candidate maintenances.
 	*
@@ -250,6 +256,11 @@ public class CandidateMaintenanceLocalServiceUtil {
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
+	}
+
+	public static long getCandidateMaintenaceTasksCount(long candidateId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getCandidateMaintenaceTasksCount(candidateId);
 	}
 
 	public static CandidateMaintenanceLocalService getService() {
