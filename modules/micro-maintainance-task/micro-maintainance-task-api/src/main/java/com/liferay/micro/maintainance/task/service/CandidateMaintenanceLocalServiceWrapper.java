@@ -222,6 +222,13 @@ public class CandidateMaintenanceLocalServiceWrapper
 			start, end, orderByComparator);
 	}
 
+	@Override
+	public java.util.List<com.liferay.micro.maintainance.task.model.CandidateMaintenance> getCandidateMaintenaceTasks(
+		long candidateId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _candidateMaintenanceLocalService.getCandidateMaintenaceTasks(candidateId);
+	}
+
 	/**
 	* Returns a range of all the candidate maintenances.
 	*
@@ -265,6 +272,12 @@ public class CandidateMaintenanceLocalServiceWrapper
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 		return _candidateMaintenanceLocalService.dynamicQueryCount(dynamicQuery,
 			projection);
+	}
+
+	@Override
+	public long getCandidateMaintenaceTasksCount(long candidateId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _candidateMaintenanceLocalService.getCandidateMaintenaceTasksCount(candidateId);
 	}
 
 	@Override

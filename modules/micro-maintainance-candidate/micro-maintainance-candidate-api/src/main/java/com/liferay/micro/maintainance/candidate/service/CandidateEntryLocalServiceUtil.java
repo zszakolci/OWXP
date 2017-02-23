@@ -53,6 +53,12 @@ public class CandidateEntryLocalServiceUtil {
 		return getService().addCandidateEntry(candidateEntry);
 	}
 
+	public static com.liferay.micro.maintainance.candidate.model.CandidateEntry addCandidateEntry(
+		long userId, long groupId, long wikiPageId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().addCandidateEntry(userId, groupId, wikiPageId);
+	}
+
 	/**
 	* Creates a new candidate entry with the primary key. Does not add the candidate entry to the database.
 	*
