@@ -71,6 +71,9 @@ public interface CandidateMaintenanceLocalService extends BaseLocalService,
 	public CandidateMaintenance addCandidateMaintenance(
 		CandidateMaintenance candidateMaintenance);
 
+	public CandidateMaintenance addCandidateMaintenance(long candidateId,
+		long taskId) throws PortalException;
+
 	/**
 	* Creates a new candidate maintenance with the primary key. Does not add the candidate maintenance to the database.
 	*

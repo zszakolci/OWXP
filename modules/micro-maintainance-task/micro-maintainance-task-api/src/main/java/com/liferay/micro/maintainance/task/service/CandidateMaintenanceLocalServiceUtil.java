@@ -53,6 +53,12 @@ public class CandidateMaintenanceLocalServiceUtil {
 		return getService().addCandidateMaintenance(candidateMaintenance);
 	}
 
+	public static com.liferay.micro.maintainance.task.model.CandidateMaintenance addCandidateMaintenance(
+		long candidateId, long taskId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().addCandidateMaintenance(candidateId, taskId);
+	}
+
 	/**
 	* Creates a new candidate maintenance with the primary key. Does not add the candidate maintenance to the database.
 	*

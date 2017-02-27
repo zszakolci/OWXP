@@ -14,12 +14,15 @@
 
 package com.liferay.micro.maintainance.task.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
+import com.liferay.micro.maintainance.candidate.model.CandidateEntry;
 import com.liferay.micro.maintainance.candidate.service.CandidateEntryLocalServiceUtil;
 import com.liferay.micro.maintainance.task.model.CandidateMaintenance;
 import com.liferay.micro.maintainance.task.service.base.CandidateMaintenanceLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 
@@ -42,6 +45,23 @@ import aQute.bnd.annotation.ProviderType;
 @ProviderType
 public class CandidateMaintenanceLocalServiceImpl
 	extends CandidateMaintenanceLocalServiceBaseImpl {
+
+
+	@Override
+	public CandidateMaintenance addCandidateMaintenance(
+			long candidateId, long taskId)
+		throws PortalException {
+		
+		long canMainId = counterLocalService.increment();
+
+		CandidateMaintenance candidateMaintenance = 
+			candidateMaintenancePersistence.create(candidateId);
+
+		candidateMaintenance.setCandidateId(candidateId);
+		candidateMaintenance.setTaskId(taskId);
+
+		return candidateMaintenance;
+	}
 
 	/**
 	 * Deletes the candidate maintenance with the primary key from the database. Also notifies the appropriate model listeners.

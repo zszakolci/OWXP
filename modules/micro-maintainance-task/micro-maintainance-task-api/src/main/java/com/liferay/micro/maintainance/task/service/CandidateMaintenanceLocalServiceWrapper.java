@@ -46,6 +46,14 @@ public class CandidateMaintenanceLocalServiceWrapper
 		return _candidateMaintenanceLocalService.addCandidateMaintenance(candidateMaintenance);
 	}
 
+	@Override
+	public com.liferay.micro.maintainance.task.model.CandidateMaintenance addCandidateMaintenance(
+		long candidateId, long taskId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _candidateMaintenanceLocalService.addCandidateMaintenance(candidateId,
+			taskId);
+	}
+
 	/**
 	* Creates a new candidate maintenance with the primary key. Does not add the candidate maintenance to the database.
 	*

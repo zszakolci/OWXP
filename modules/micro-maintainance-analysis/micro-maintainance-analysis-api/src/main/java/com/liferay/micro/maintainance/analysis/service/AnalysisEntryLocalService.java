@@ -74,6 +74,12 @@ public interface AnalysisEntryLocalService extends BaseLocalService,
 	public AnalysisEntry addAnalysisEntry(AnalysisEntry analysisEntry);
 
 	/**
+	* Adds an analysis entry
+	*/
+	public AnalysisEntry addAnalysisEntry(long userId, long canMainId)
+		throws PortalException;
+
+	/**
 	* Creates a new analysis entry with the primary key. Does not add the analysis entry to the database.
 	*
 	* @param analysisId the primary key for the new analysis entry

@@ -14,9 +14,12 @@
 
 package com.liferay.micro.maintainance.analysis.service.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
+import com.liferay.micro.maintainance.analysis.model.AnalysisUser;
 import com.liferay.micro.maintainance.analysis.service.base.AnalysisUserLocalServiceBaseImpl;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.User;
+
+import aQute.bnd.annotation.ProviderType;
 
 /**
  * The implementation of the analysis user local service.
@@ -36,4 +39,27 @@ import com.liferay.micro.maintainance.analysis.service.base.AnalysisUserLocalSer
 public class AnalysisUserLocalServiceImpl
 	extends AnalysisUserLocalServiceBaseImpl {
 
+	/**
+	 * Adds a user's vote to an analysis
+	 */
+	@Override
+	public AnalysisUser addAnalysisUser(long analysisId, long userId, int vote)
+		throws PortalException {
+
+		User user = userPersistence.findByPrimaryKey(userId);
+
+		long analysisUserId = counterLocalService.increment();
+
+		AnalysisUser analysisUser = analysisUserPersistence.create(
+			analysisUserId);
+
+		analysisUser.setAnalysisId(analysisId);
+		analysisUser.setUserId(userId);
+		analysisUser.setUserName(user.getFullName());
+		analysisUser.setVoted(vote);
+
+		analysisUserPersistence.update(analysisUser);
+
+		return analysisUser;
+	}
 }
