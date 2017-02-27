@@ -9,3 +9,12 @@ create table Analysis_AnalysisEntry (
 	canMainId LONG,
 	analysisData VARCHAR(75) null
 );
+
+create table Analysis_AnalysisUser (
+	uuid_ VARCHAR(75) null,
+	analysisUserId LONG not null primary key,
+	analysisId LONG,
+	userId LONG,
+	userName VARCHAR(75) null,
+	voted INTEGER
+);
