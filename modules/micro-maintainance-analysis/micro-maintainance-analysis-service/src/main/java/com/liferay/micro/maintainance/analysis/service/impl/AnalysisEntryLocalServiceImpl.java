@@ -14,9 +14,15 @@
 
 package com.liferay.micro.maintainance.analysis.service.impl;
 
-import aQute.bnd.annotation.ProviderType;
+import java.util.Date;
 
+import com.liferay.micro.maintainance.analysis.model.AnalysisEntry;
 import com.liferay.micro.maintainance.analysis.service.base.AnalysisEntryLocalServiceBaseImpl;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.util.StringPool;
+
+import aQute.bnd.annotation.ProviderType;
 
 /**
  * The implementation of the analysis entry local service.
@@ -36,5 +42,33 @@ import com.liferay.micro.maintainance.analysis.service.base.AnalysisEntryLocalSe
 public class AnalysisEntryLocalServiceImpl
 	extends AnalysisEntryLocalServiceBaseImpl {
 
-	
+	/**
+	 * Adds an analysis entry
+	 */
+	@Override
+	public AnalysisEntry addAnalysisEntry(long userId, long canMainId) 
+		throws PortalException {
+
+		
+		User user = userPersistence.findByPrimaryKey(userId);
+		Date now = new Date();
+
+		long analysisId = counterLocalService.increment();
+
+		AnalysisEntry analysisEntry = analysisEntryPersistence.create(
+			analysisId);
+
+		analysisEntry.setCompanyId(user.getCompanyId());
+		analysisEntry.setUserId(userId);
+		analysisEntry.setUserName(user.getFullName());
+		analysisEntry.setCreateDate(now);
+		analysisEntry.setModifiedDate(now);
+
+		analysisEntry.setAnalysisData(StringPool.BLANK);
+		analysisEntry.setCanMainId(canMainId);
+
+		analysisEntryPersistence.update(analysisEntry);
+
+		return analysisEntry;
+	}
 }

@@ -73,8 +73,11 @@ public interface CandidateEntryLocalService extends BaseLocalService,
 	@Indexable(type = IndexableType.REINDEX)
 	public CandidateEntry addCandidateEntry(CandidateEntry candidateEntry);
 
+	/**
+	* Adds a candidate entry to the database
+	*/
 	public CandidateEntry addCandidateEntry(long userId, long groupId,
-		long wikiPageId) throws PortalException;
+		long wikiPageId, long taskId) throws PortalException;
 
 	/**
 	* Creates a new candidate entry with the primary key. Does not add the candidate entry to the database.

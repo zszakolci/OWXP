@@ -16,8 +16,11 @@ package com.liferay.micro.maintainance.candidate.service.impl;
 
 import java.util.Date;
 
+import com.liferay.micro.maintainance.analysis.model.AnalysisEntry;
+import com.liferay.micro.maintainance.analysis.service.AnalysisEntryLocalServiceUtil;
 import com.liferay.micro.maintainance.candidate.model.CandidateEntry;
 import com.liferay.micro.maintainance.candidate.service.base.CandidateEntryLocalServiceBaseImpl;
+import com.liferay.micro.maintainance.task.model.CandidateMaintenance;
 import com.liferay.micro.maintainance.task.service.CandidateMaintenanceLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
@@ -49,7 +52,7 @@ public class CandidateEntryLocalServiceImpl
 	 */
 	@Override
 	public CandidateEntry addCandidateEntry(
-			long userId, long groupId, long wikiPageId) 
+			long userId, long groupId, long wikiPageId, long taskId) 
 		throws PortalException {
 		
 		User user = userPersistence.findByPrimaryKey(userId);
@@ -69,6 +72,12 @@ public class CandidateEntryLocalServiceImpl
 		candidate.setWikiPageId(wikiPageId);
 
 		candidateEntryPersistence.update(candidate);
+
+		CandidateMaintenance canMain = CandidateMaintenanceLocalServiceUtil
+			.addCandidateMaintenance(candidateId, taskId);
+
+		AnalysisEntry analysisEntry = AnalysisEntryLocalServiceUtil
+			.addAnalysisEntry(userId, canMain.getCandidateMaintenanceId());
 
 		return candidate;
 	}
