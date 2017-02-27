@@ -16,25 +16,24 @@ package com.liferay.micro.maintainance.analysis.service.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.micro.maintainance.analysis.service.base.AnalysisEntryLocalServiceBaseImpl;
+import com.liferay.micro.maintainance.analysis.service.base.AnalysisUserLocalServiceBaseImpl;
 
 /**
- * The implementation of the analysis entry local service.
+ * The implementation of the analysis user local service.
  *
  * <p>
- * All custom service methods should be put in this class. Whenever methods are added, rerun ServiceBuilder to copy their definitions into the {@link com.liferay.micro.maintainance.analysis.service.AnalysisEntryLocalService} interface.
+ * All custom service methods should be put in this class. Whenever methods are added, rerun ServiceBuilder to copy their definitions into the {@link com.liferay.micro.maintainance.analysis.service.AnalysisUserLocalService} interface.
  *
  * <p>
  * This is a local service. Methods of this service will not have security checks based on the propagated JAAS credentials because this service can only be accessed from within the same VM.
  * </p>
  *
  * @author Brian Wing Shun Chan
- * @see AnalysisEntryLocalServiceBaseImpl
- * @see com.liferay.micro.maintainance.analysis.service.AnalysisEntryLocalServiceUtil
+ * @see AnalysisUserLocalServiceBaseImpl
+ * @see com.liferay.micro.maintainance.analysis.service.AnalysisUserLocalServiceUtil
  */
 @ProviderType
-public class AnalysisEntryLocalServiceImpl
-	extends AnalysisEntryLocalServiceBaseImpl {
+public class AnalysisUserLocalServiceImpl
+	extends AnalysisUserLocalServiceBaseImpl {
 
-	
 }

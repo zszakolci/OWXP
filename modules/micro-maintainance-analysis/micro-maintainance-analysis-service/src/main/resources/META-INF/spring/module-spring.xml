@@ -4,4 +4,7 @@
 	<bean class="com.liferay.micro.maintainance.analysis.service.impl.AnalysisEntryLocalServiceImpl" id="com.liferay.micro.maintainance.analysis.service.AnalysisEntryLocalService" />
 	<bean class="com.liferay.micro.maintainance.analysis.service.impl.AnalysisEntryServiceImpl" id="com.liferay.micro.maintainance.analysis.service.AnalysisEntryService" />
 	<bean class="com.liferay.micro.maintainance.analysis.service.persistence.impl.AnalysisEntryPersistenceImpl" id="com.liferay.micro.maintainance.analysis.service.persistence.AnalysisEntryPersistence" parent="basePersistence" />
+	<bean class="com.liferay.micro.maintainance.analysis.service.impl.AnalysisUserLocalServiceImpl" id="com.liferay.micro.maintainance.analysis.service.AnalysisUserLocalService" />
+	<bean class="com.liferay.micro.maintainance.analysis.service.impl.AnalysisUserServiceImpl" id="com.liferay.micro.maintainance.analysis.service.AnalysisUserService" />
+	<bean class="com.liferay.micro.maintainance.analysis.service.persistence.impl.AnalysisUserPersistenceImpl" id="com.liferay.micro.maintainance.analysis.service.persistence.AnalysisUserPersistence" parent="basePersistence" />
 </beans>

@@ -67,7 +67,13 @@
 
 	<entity name="AnalysisUser" uuid="true" local-service="true" remote-service="true" trash-enabled="false">
 
-		<column name="analysisId" type="long" primary="true" />
+		<!-- PK fields -->
+
+		<column name="analysisUserId" type="long" primary="true" />
+
+		<!-- Other fields -->
+
+		<column name="analysisId" type="long" />
 		<column name="userId" type="long" />
 		<column name="userName" type="String" />
 		<column name="voted" type="int" />
@@ -89,10 +95,12 @@
 		<finder name="UserName" return-type="Collection">
 			<finder-column name="userName" />
 		</finder>
-		
 		<finder name="A_U" return-type="AnalysisUser">
 			<finder-column name="analysisId" />
 			<finder-column name="userId" />
+		</finder>
+		<finder name="AU" return-type="AnalysisUser">
+			<finder-column name="analysisUserId" />
 		</finder>
 		<finder name="Voted" return-type="Collection">
 			<finder-column name="analysisId" />

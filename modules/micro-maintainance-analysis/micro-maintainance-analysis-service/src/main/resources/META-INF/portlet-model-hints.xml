@@ -12,4 +12,12 @@
 		<field name="canMainId" type="long" />
 		<field name="analysisData" type="String" />
 	</model>
+	<model name="com.liferay.micro.maintainance.analysis.model.AnalysisUser">
+		<field name="uuid" type="String" />
+		<field name="analysisUserId" type="long" />
+		<field name="analysisId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="voted" type="int" />
+	</model>
 </model-hints>
