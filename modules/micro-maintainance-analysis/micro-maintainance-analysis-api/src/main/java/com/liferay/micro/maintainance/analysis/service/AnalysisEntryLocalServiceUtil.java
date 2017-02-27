@@ -54,6 +54,15 @@ public class AnalysisEntryLocalServiceUtil {
 	}
 
 	/**
+	* Adds an analysis entry
+	*/
+	public static com.liferay.micro.maintainance.analysis.model.AnalysisEntry addAnalysisEntry(
+		long userId, long canMainId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().addAnalysisEntry(userId, canMainId);
+	}
+
+	/**
 	* Creates a new analysis entry with the primary key. Does not add the analysis entry to the database.
 	*
 	* @param analysisId the primary key for the new analysis entry

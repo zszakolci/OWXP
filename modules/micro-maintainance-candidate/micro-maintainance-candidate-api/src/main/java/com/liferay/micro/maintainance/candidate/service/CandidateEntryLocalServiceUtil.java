@@ -53,10 +53,14 @@ public class CandidateEntryLocalServiceUtil {
 		return getService().addCandidateEntry(candidateEntry);
 	}
 
+	/**
+	* Adds a candidate entry to the database
+	*/
 	public static com.liferay.micro.maintainance.candidate.model.CandidateEntry addCandidateEntry(
-		long userId, long groupId, long wikiPageId)
+		long userId, long groupId, long wikiPageId, long taskId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().addCandidateEntry(userId, groupId, wikiPageId);
+		return getService()
+				   .addCandidateEntry(userId, groupId, wikiPageId, taskId);
 	}
 
 	/**
