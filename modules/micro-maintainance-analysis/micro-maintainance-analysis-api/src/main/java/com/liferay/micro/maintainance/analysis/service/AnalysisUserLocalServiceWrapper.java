@@ -46,6 +46,17 @@ public class AnalysisUserLocalServiceWrapper implements AnalysisUserLocalService
 	}
 
 	/**
+	* Adds a user's vote to an analysis
+	*/
+	@Override
+	public com.liferay.micro.maintainance.analysis.model.AnalysisUser addAnalysisUser(
+		long analysisId, long userId, int vote)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _analysisUserLocalService.addAnalysisUser(analysisId, userId,
+			vote);
+	}
+
+	/**
 	* Creates a new analysis user with the primary key. Does not add the analysis user to the database.
 	*
 	* @param analysisUserId the primary key for the new analysis user

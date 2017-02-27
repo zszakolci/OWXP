@@ -71,6 +71,12 @@ public interface AnalysisUserLocalService extends BaseLocalService,
 	public AnalysisUser addAnalysisUser(AnalysisUser analysisUser);
 
 	/**
+	* Adds a user's vote to an analysis
+	*/
+	public AnalysisUser addAnalysisUser(long analysisId, long userId, int vote)
+		throws PortalException;
+
+	/**
 	* Creates a new analysis user with the primary key. Does not add the analysis user to the database.
 	*
 	* @param analysisUserId the primary key for the new analysis user

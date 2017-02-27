@@ -47,6 +47,16 @@ public class AnalysisEntryLocalServiceWrapper
 	}
 
 	/**
+	* Adds an analysis entry
+	*/
+	@Override
+	public com.liferay.micro.maintainance.analysis.model.AnalysisEntry addAnalysisEntry(
+		long userId, long canMainId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _analysisEntryLocalService.addAnalysisEntry(userId, canMainId);
+	}
+
+	/**
 	* Creates a new analysis entry with the primary key. Does not add the analysis entry to the database.
 	*
 	* @param analysisId the primary key for the new analysis entry
