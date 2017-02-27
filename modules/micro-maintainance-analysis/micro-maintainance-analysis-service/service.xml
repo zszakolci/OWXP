@@ -64,7 +64,42 @@
 		</finder>
 
 	</entity>
-	
+
+	<entity name="AnalysisUser" uuid="true" local-service="true" remote-service="true" trash-enabled="false">
+
+		<column name="analysisId" type="long" primary="true" />
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="voted" type="int" />
+
+		<!-- Order -->
+
+		<order by="asc">
+			<order-column name="userName" />
+		</order>
+
+		<!-- Finder methods -->
+
+		<finder name="AnalysisId" return-type="Collection">
+			<finder-column name="analysisId" />
+		</finder>
+		<finder name="UserId" return-type="Collection">
+			<finder-column name="userId" />
+		</finder>
+		<finder name="UserName" return-type="Collection">
+			<finder-column name="userName" />
+		</finder>
+		
+		<finder name="A_U" return-type="AnalysisUser">
+			<finder-column name="analysisId" />
+			<finder-column name="userId" />
+		</finder>
+		<finder name="Voted" return-type="Collection">
+			<finder-column name="analysisId" />
+			<finder-column name="voted" />
+		</finder>
+	</entity>
+
 	<exceptions>
 	</exceptions>
 </service-builder>
