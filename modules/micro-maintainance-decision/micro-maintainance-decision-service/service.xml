@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 6.2.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_6_2_0.dtd">
+
+<service-builder package-path="com.liferay.micro.maintainance.decision">
+	<namespace>Decision</namespace>
+	<entity name="DecisionEntry" uuid="true" local-service="true" remote-service="true" trash-enabled="false">
+
+		<!-- PK fields -->
+
+		<column name="decisionId" type="long" primary="true" />
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="analysisData" type="String" />
+		<column name="wikiPageId" type="long" />
+		<column name="wikiPageName" type="String" />
+		<column name="outcome" type="String" />
+		<column name="handled" type="boolean" />
+
+		<!-- Order -->
+
+		<order by="asc">
+			<order-column name="createDate" />
+		</order>
+
+		<!-- Finder methods -->
+
+		<finder name="DecisionId" return-type="Collection">
+			<finder-column name="decisionId" />
+		</finder>
+		<finder name="CompanyId" return-type="Collection">
+			<finder-column name="companyId" />
+		</finder>
+		<finder name="WikiPageId" return-type="Collection">
+			<finder-column name="wikiPageId" />
+		</finder>
+		<finder name="WikiPageName" return-type="Collection">
+			<finder-column name="wikiPageName" />
+		</finder>
+		<finder name="Outcome" return-type="Collection">
+			<finder-column name="outcome" />
+		</finder>
+		<finder name="D_C" return-type="Collection">
+			<finder-column name="decisionId" />
+			<finder-column name="companyId" />
+		</finder>
+		<finder name="D_H" return-type="Collection">
+			<finder-column name="decisionId" />
+			<finder-column name="handled" />
+		</finder>
+		<finder name="D_U" return-type="Collection">
+			<finder-column name="decisionId" />
+			<finder-column name="userId" />
+		</finder>
+		<finder name="D_U_C" return-type="Collection">
+			<finder-column name="decisionId" />
+			<finder-column name="userId" />
+			<finder-column name="companyId" />
+		</finder>
+		<finder name="U_H" return-type="Collection">
+			<finder-column name="userId" />
+			<finder-column name="handled" />
+		</finder>
+		<finder name="U_H_D" return-type="Collection">
+			<finder-column name="userId" />
+			<finder-column name="handled" />
+			<finder-column name="decisionId" />
+		</finder>
+		<finder name="C_H" return-type="Collection">
+			<finder-column name="companyId" />
+			<finder-column name="handled" />
+		</finder>
+
+	</entity>
+	
+	<exceptions>
+	</exceptions>
+</service-builder>
