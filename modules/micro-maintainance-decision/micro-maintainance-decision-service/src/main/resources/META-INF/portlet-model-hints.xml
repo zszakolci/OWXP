@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+
+<model-hints>
+	<model name="com.liferay.micro.maintainance.decision.model.DecisionEntry">
+		<field name="uuid" type="String" />
+		<field name="decisionId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="analysisData" type="String" />
+		<field name="wikiPageId" type="long" />
+		<field name="wikiPageName" type="String" />
+		<field name="outcome" type="String" />
+		<field name="handled" type="boolean" />
+	</model>
+</model-hints>
