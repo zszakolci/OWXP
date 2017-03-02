@@ -57,6 +57,8 @@ public class TaskEntryLocalServiceImpl extends TaskEntryLocalServiceBaseImpl {
 		taskEntry.setCreateDate(now);
 
 		taskEntryPersistence.update(taskEntry);
+
+		return taskEntry;
 	}
 
 	/**
