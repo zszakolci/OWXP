@@ -14,9 +14,14 @@
 
 package com.liferay.micro.maintainance.decision.service.impl;
 
-import aQute.bnd.annotation.ProviderType;
+import java.util.Date;
 
+import com.liferay.micro.maintainance.decision.model.DecisionEntry;
 import com.liferay.micro.maintainance.decision.service.base.DecisionEntryLocalServiceBaseImpl;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.User;
+
+import aQute.bnd.annotation.ProviderType;
 
 /**
  * The implementation of the decision entry local service.
@@ -35,9 +40,34 @@ import com.liferay.micro.maintainance.decision.service.base.DecisionEntryLocalSe
 @ProviderType
 public class DecisionEntryLocalServiceImpl
 	extends DecisionEntryLocalServiceBaseImpl {
-	/*
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never reference this class directly. Always use {@link com.liferay.micro.maintainance.decision.service.DecisionEntryLocalServiceUtil} to access the decision entry local service.
+
+	/**
+	 * Adds the results of an analysis to the database
 	 */
+	@Override
+	public DecisionEntry addDecisionEntry(
+			long userId, String analysisData, long wikiPageId,
+			String wikiPageName, String outcome, boolean handled) 
+		throws PortalException {
+		
+		User user = userPersistence.findByPrimaryKey(userId);
+		long decisionId = counterLocalService.increment();
+		Date now = new Date();
+
+		DecisionEntry decision = decisionEntryPersistence.create(decisionId);
+
+		decision.setCompanyId(user.getCompanyId());
+		decision.setUserId(userId);
+		decision.setUserName(user.getFullName());
+		decision.setCreateDate(now);
+		decision.setModifiedDate(now);
+
+		decision.setAnalysisData(analysisData);
+		decision.setWikiPageId(wikiPageId);
+		decision.setWikiPageName(wikiPageName);
+		decision.setOutcome(outcome);
+		decision.setHandled(handled);
+
+		return decision;
+	}
 }
