@@ -5,6 +5,7 @@ dependencies {
 	compile 'javax.servlet:servlet-api:2.5'
 	compile 'org.osgi:org.osgi.compendium:5.0.0'
 	compile 'jstl:jstl:1.2'
+	compile  project(':modules:micro-maintainance-task:micro-maintainance-task-api')
 }
 
 version = '1.0.0'
