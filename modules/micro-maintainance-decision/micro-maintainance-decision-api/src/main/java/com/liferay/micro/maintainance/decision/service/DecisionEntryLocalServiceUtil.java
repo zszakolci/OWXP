@@ -54,6 +54,18 @@ public class DecisionEntryLocalServiceUtil {
 	}
 
 	/**
+	* Adds the results of an analysis to the database
+	*/
+	public static com.liferay.micro.maintainance.decision.model.DecisionEntry addDecisionEntry(
+		long userId, java.lang.String analysisData, long wikiPageId,
+		java.lang.String wikiPageName, java.lang.String outcome, boolean handled)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .addDecisionEntry(userId, analysisData, wikiPageId,
+			wikiPageName, outcome, handled);
+	}
+
+	/**
 	* Creates a new decision entry with the primary key. Does not add the decision entry to the database.
 	*
 	* @param decisionId the primary key for the new decision entry
