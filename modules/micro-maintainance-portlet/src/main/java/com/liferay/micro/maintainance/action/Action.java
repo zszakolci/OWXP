@@ -1,7 +1,7 @@
 package com.liferay.micro.maintainance.action;
 
-import java.util.Map;
+import com.liferay.micro.maintainance.analysis.model.AnalysisEntry;
 
 public interface Action {
-	public boolean performAction(Map<Object, Object> parameterMap);
+	public boolean performAction(AnalysisEntry analysisEntry);
 }
