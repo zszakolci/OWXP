@@ -14,14 +14,22 @@
 
 package com.liferay.micro.maintainance.candidate.service.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.liferay.micro.maintainance.analysis.model.AnalysisEntry;
 import com.liferay.micro.maintainance.analysis.service.AnalysisEntryLocalServiceUtil;
+import com.liferay.micro.maintainance.candidate.exception.NoSuchEntryException;
 import com.liferay.micro.maintainance.candidate.model.CandidateEntry;
 import com.liferay.micro.maintainance.candidate.service.base.CandidateEntryLocalServiceBaseImpl;
+import com.liferay.micro.maintainance.candidate.service.persistence.CandidateEntryUtil;
+import com.liferay.micro.maintainance.task.Task;
+import com.liferay.micro.maintainance.task.TaskHandler;
+import com.liferay.micro.maintainance.task.exception.NoSuchCandidateMaintenanceException;
 import com.liferay.micro.maintainance.task.model.CandidateMaintenance;
 import com.liferay.micro.maintainance.task.service.CandidateMaintenanceLocalServiceUtil;
+import com.liferay.micro.maintainance.task.service.persistence.CandidateMaintenanceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.search.Indexable;
@@ -102,5 +110,29 @@ public class CandidateEntryLocalServiceImpl
 		}
 
 		return candidateEntryPersistence.remove(entryId);
+	}
+	
+	
+	public List<Task> getAvailableFlags(long wikiPageId) 
+		throws PortalException {
+
+		List<Task> availableFlags = new ArrayList<Task>();
+		CandidateEntry candidate =
+			CandidateEntryUtil.findByWikiPageId(wikiPageId);
+
+		List<Task> registeredTasks = 
+			TaskHandler.getTaskHandlerInstance().getTaskEntries();
+
+		for(Task task : registeredTasks) {
+			try {
+				CandidateMaintenanceUtil.findByC_T(
+					candidate.getEntryId(), task.getTaskId());
+			}
+			catch (NoSuchCandidateMaintenanceException e) {
+				availableFlags.add(task);
+			}
+		}
+
+		return availableFlags;
 	}
 }
