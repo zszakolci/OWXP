@@ -6,6 +6,7 @@ dependencies {
 	compile 'org.osgi:org.osgi.compendium:5.0.0'
 	compile 'jstl:jstl:1.2'
 	compile  project(':modules:micro-maintainance-task:micro-maintainance-task-api')
+	compile  project(':modules:micro-maintainance-analysis:micro-maintainance-analysis-api')
 }
 
 version = '1.0.0'
