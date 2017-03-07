@@ -14,6 +14,7 @@
 
 package com.liferay.mentions.internal.service;
 
+import com.liferay.exportimport.kernel.lar.ExportImportThreadLocal;
 import com.liferay.mentions.configuration.MentionsGroupServiceConfiguration;
 import com.liferay.mentions.util.MentionsNotifier;
 import com.liferay.mentions.util.MentionsUtil;
@@ -75,6 +76,43 @@ public class MentionsWikiPageServiceWrapper
 		WikiPageLocalService wikiPageLocalService) {
 
 		super(wikiPageLocalService);
+	}
+
+	@Override
+	public WikiPage addPage(
+			long userId, long nodeId, java.lang.String title, double version,
+			java.lang.String content, java.lang.String summary,
+			boolean minorEdit, java.lang.String format, boolean head,
+			java.lang.String parentTitle, java.lang.String redirectTitle,
+			ServiceContext serviceContext)
+		throws PortalException {
+
+		WikiPage page = super.addPage(
+			userId, nodeId, title, version, content, summary, minorEdit, format,
+			head, parentTitle, redirectTitle, serviceContext);
+
+		if (!ExportImportThreadLocal.isImportInProcess()) {
+			super.subscribePage(userId, nodeId, title);
+		}
+
+		return page;
+	}
+
+	@Override
+	public WikiPage addPage(
+			long userId, long nodeId, java.lang.String title,
+			java.lang.String content, java.lang.String summary,
+			boolean minorEdit, ServiceContext serviceContext)
+		throws PortalException {
+
+		WikiPage page = super.addPage(
+			userId, nodeId, title, content, summary, minorEdit, serviceContext);
+
+		if (!ExportImportThreadLocal.isImportInProcess()) {
+			super.subscribePage(userId, nodeId, title);
+		}
+
+		return page;
 	}
 
 	@Override
