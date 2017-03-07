@@ -53,12 +53,14 @@ public class CandidateMaintenanceLocalServiceImpl
 		throws PortalException {
 		
 		long canMainId = counterLocalService.increment();
+		Date now = new Date();
 
 		CandidateMaintenance candidateMaintenance = 
 			candidateMaintenancePersistence.create(candidateId);
 
 		candidateMaintenance.setCandidateId(candidateId);
 		candidateMaintenance.setTaskId(taskId);
+		candidateMaintenance.setCreateDate(now);
 
 		return candidateMaintenance;
 	}

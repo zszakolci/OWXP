@@ -2268,6 +2268,7 @@ public class CandidateMaintenancePersistenceImpl extends BasePersistenceImpl<Can
 		candidateMaintenanceImpl.setCandidateMaintenanceId(candidateMaintenance.getCandidateMaintenanceId());
 		candidateMaintenanceImpl.setCandidateId(candidateMaintenance.getCandidateId());
 		candidateMaintenanceImpl.setTaskId(candidateMaintenance.getTaskId());
+		candidateMaintenanceImpl.setCreateDate(candidateMaintenance.getCreateDate());
 
 		return candidateMaintenanceImpl;
 	}

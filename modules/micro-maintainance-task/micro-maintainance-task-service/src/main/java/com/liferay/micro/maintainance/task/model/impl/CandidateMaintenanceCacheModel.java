@@ -28,6 +28,8 @@ import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
 
+import java.util.Date;
+
 /**
  * The cache model class for representing CandidateMaintenance in entity cache.
  *
@@ -64,7 +66,7 @@ public class CandidateMaintenanceCacheModel implements CacheModel<CandidateMaint
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(9);
+		StringBundler sb = new StringBundler(11);
 
 		sb.append("{uuid=");
 		sb.append(uuid);
@@ -74,6 +76,8 @@ public class CandidateMaintenanceCacheModel implements CacheModel<CandidateMaint
 		sb.append(candidateId);
 		sb.append(", taskId=");
 		sb.append(taskId);
+		sb.append(", createDate=");
+		sb.append(createDate);
 		sb.append("}");
 
 		return sb.toString();
@@ -94,6 +98,13 @@ public class CandidateMaintenanceCacheModel implements CacheModel<CandidateMaint
 		candidateMaintenanceImpl.setCandidateId(candidateId);
 		candidateMaintenanceImpl.setTaskId(taskId);
 
+		if (createDate == Long.MIN_VALUE) {
+			candidateMaintenanceImpl.setCreateDate(null);
+		}
+		else {
+			candidateMaintenanceImpl.setCreateDate(new Date(createDate));
+		}
+
 		candidateMaintenanceImpl.resetOriginalValues();
 
 		return candidateMaintenanceImpl;
@@ -108,6 +119,7 @@ public class CandidateMaintenanceCacheModel implements CacheModel<CandidateMaint
 		candidateId = objectInput.readLong();
 
 		taskId = objectInput.readLong();
+		createDate = objectInput.readLong();
 	}
 
 	@Override
@@ -125,10 +137,12 @@ public class CandidateMaintenanceCacheModel implements CacheModel<CandidateMaint
 		objectOutput.writeLong(candidateId);
 
 		objectOutput.writeLong(taskId);
+		objectOutput.writeLong(createDate);
 	}
 
 	public String uuid;
 	public long candidateMaintenanceId;
 	public long candidateId;
 	public long taskId;
+	public long createDate;
 }

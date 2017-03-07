@@ -37,6 +37,7 @@ import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
 
@@ -128,6 +129,8 @@ public class CandidateMaintenancePersistenceTest {
 
 		newCandidateMaintenance.setTaskId(RandomTestUtil.nextLong());
 
+		newCandidateMaintenance.setCreateDate(RandomTestUtil.nextDate());
+
 		_candidateMaintenances.add(_persistence.update(newCandidateMaintenance));
 
 		CandidateMaintenance existingCandidateMaintenance = _persistence.findByPrimaryKey(newCandidateMaintenance.getPrimaryKey());
@@ -140,6 +143,9 @@ public class CandidateMaintenancePersistenceTest {
 			newCandidateMaintenance.getCandidateId());
 		Assert.assertEquals(existingCandidateMaintenance.getTaskId(),
 			newCandidateMaintenance.getTaskId());
+		Assert.assertEquals(Time.getShortTimestamp(
+				existingCandidateMaintenance.getCreateDate()),
+			Time.getShortTimestamp(newCandidateMaintenance.getCreateDate()));
 	}
 
 	@Test
@@ -199,7 +205,7 @@ public class CandidateMaintenancePersistenceTest {
 	protected OrderByComparator<CandidateMaintenance> getOrderByComparator() {
 		return OrderByComparatorFactoryUtil.create("Task_CandidateMaintenance",
 			"uuid", true, "candidateMaintenanceId", true, "candidateId", true,
-			"taskId", true);
+			"taskId", true, "createDate", true);
 	}
 
 	@Test
@@ -429,6 +435,8 @@ public class CandidateMaintenancePersistenceTest {
 		candidateMaintenance.setCandidateId(RandomTestUtil.nextLong());
 
 		candidateMaintenance.setTaskId(RandomTestUtil.nextLong());
+
+		candidateMaintenance.setCreateDate(RandomTestUtil.nextDate());
 
 		_candidateMaintenances.add(_persistence.update(candidateMaintenance));
 

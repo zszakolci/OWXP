@@ -25,6 +25,8 @@ import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
 
+import java.util.Date;
+
 /**
  * The base model interface for the CandidateMaintenance service. Represents a row in the &quot;Task_CandidateMaintenance&quot; database table, with each column mapped to a property of this class.
  *
@@ -116,6 +118,20 @@ public interface CandidateMaintenanceModel extends BaseModel<CandidateMaintenanc
 	 * @param taskId the task ID of this candidate maintenance
 	 */
 	public void setTaskId(long taskId);
+
+	/**
+	 * Returns the create date of this candidate maintenance.
+	 *
+	 * @return the create date of this candidate maintenance
+	 */
+	public Date getCreateDate();
+
+	/**
+	 * Sets the create date of this candidate maintenance.
+	 *
+	 * @param createDate the create date of this candidate maintenance
+	 */
+	public void setCreateDate(Date createDate);
 
 	@Override
 	public boolean isNew();
