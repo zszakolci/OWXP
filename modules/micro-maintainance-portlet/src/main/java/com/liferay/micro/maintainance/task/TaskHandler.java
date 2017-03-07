@@ -1,17 +1,25 @@
 package com.liferay.micro.maintainance.task;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.liferay.bnd.util.ConfigurableUtil;
 import com.liferay.micro.maintainance.action.Action;
+import com.liferay.micro.maintainance.configuration.MicroMaintenanceConfiguration;
 import com.liferay.micro.maintainance.task.model.TaskEntry;
 import com.liferay.micro.maintainance.task.service.TaskEntryLocalServiceUtil;
-import com.liferay.micro.maintainance.task.service.TaskEntryServiceUtil;
 import com.liferay.micro.maintainance.task.service.persistence.TaskEntryUtil;
-import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.util.Validator;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import org.osgi.service.component.annotations.Activate;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Modified;
+
+@Component(
+	configurationPid = "com.liferay.micro.maintainance.configuration.MicroMaintenanceConfiguration"
+)
 public class TaskHandler {
 
 	protected TaskHandler() {
@@ -71,6 +79,15 @@ public class TaskHandler {
 	public void setTaskEntries(List<Task> taskEntries) {
 		this.registeredTasks = taskEntries;
 	}
+
+	@Activate
+	@Modified
+	protected void activate(Map<String, Object> properties) {
+		_configuration = ConfigurableUtil.createConfigurable(
+			MicroMaintenanceConfiguration.class, properties);
+	}
+
+	private volatile MicroMaintenanceConfiguration _configuration;
 
 	private List<Task> registeredTasks;
 	private static TaskHandler taskHandlerInstance = null;
