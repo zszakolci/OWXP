@@ -6,6 +6,7 @@
 		<field name="candidateMaintenanceId" type="long" />
 		<field name="candidateId" type="long" />
 		<field name="taskId" type="long" />
+		<field name="createDate" type="Date" />
 	</model>
 	<model name="com.liferay.micro.maintainance.task.model.TaskEntry">
 		<field name="uuid" type="String" />

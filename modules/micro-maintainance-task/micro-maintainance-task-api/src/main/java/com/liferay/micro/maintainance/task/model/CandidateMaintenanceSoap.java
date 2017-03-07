@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import java.io.Serializable;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -38,6 +39,7 @@ public class CandidateMaintenanceSoap implements Serializable {
 		soapModel.setCandidateMaintenanceId(model.getCandidateMaintenanceId());
 		soapModel.setCandidateId(model.getCandidateId());
 		soapModel.setTaskId(model.getTaskId());
+		soapModel.setCreateDate(model.getCreateDate());
 
 		return soapModel;
 	}
@@ -125,8 +127,17 @@ public class CandidateMaintenanceSoap implements Serializable {
 		_taskId = taskId;
 	}
 
+	public Date getCreateDate() {
+		return _createDate;
+	}
+
+	public void setCreateDate(Date createDate) {
+		_createDate = createDate;
+	}
+
 	private String _uuid;
 	private long _candidateMaintenanceId;
 	private long _candidateId;
 	private long _taskId;
+	private Date _createDate;
 }

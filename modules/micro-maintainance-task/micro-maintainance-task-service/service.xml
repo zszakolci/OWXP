@@ -44,6 +44,7 @@
 
 		<column name="candidateId" type="long" />
 		<column name="taskId" type="long" />
+		<column name="createDate" type="Date" />
 
 		<!-- Finder methods -->
 
