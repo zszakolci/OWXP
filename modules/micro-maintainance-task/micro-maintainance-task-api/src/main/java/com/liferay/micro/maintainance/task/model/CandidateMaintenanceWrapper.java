@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -62,6 +63,7 @@ public class CandidateMaintenanceWrapper implements CandidateMaintenance,
 		attributes.put("candidateMaintenanceId", getCandidateMaintenanceId());
 		attributes.put("candidateId", getCandidateId());
 		attributes.put("taskId", getTaskId());
+		attributes.put("createDate", getCreateDate());
 
 		return attributes;
 	}
@@ -91,6 +93,12 @@ public class CandidateMaintenanceWrapper implements CandidateMaintenance,
 
 		if (taskId != null) {
 			setTaskId(taskId);
+		}
+
+		Date createDate = (Date)attributes.get("createDate");
+
+		if (createDate != null) {
+			setCreateDate(createDate);
 		}
 	}
 
@@ -170,6 +178,16 @@ public class CandidateMaintenanceWrapper implements CandidateMaintenance,
 	}
 
 	/**
+	* Returns the create date of this candidate maintenance.
+	*
+	* @return the create date of this candidate maintenance
+	*/
+	@Override
+	public Date getCreateDate() {
+		return _candidateMaintenance.getCreateDate();
+	}
+
+	/**
 	* Returns the candidate ID of this candidate maintenance.
 	*
 	* @return the candidate ID of this candidate maintenance
@@ -237,6 +255,16 @@ public class CandidateMaintenanceWrapper implements CandidateMaintenance,
 	@Override
 	public void setCandidateMaintenanceId(long candidateMaintenanceId) {
 		_candidateMaintenance.setCandidateMaintenanceId(candidateMaintenanceId);
+	}
+
+	/**
+	* Sets the create date of this candidate maintenance.
+	*
+	* @param createDate the create date of this candidate maintenance
+	*/
+	@Override
+	public void setCreateDate(Date createDate) {
+		_candidateMaintenance.setCreateDate(createDate);
 	}
 
 	@Override
