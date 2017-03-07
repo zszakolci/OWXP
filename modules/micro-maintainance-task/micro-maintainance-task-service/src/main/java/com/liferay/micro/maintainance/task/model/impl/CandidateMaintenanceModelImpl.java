@@ -38,6 +38,7 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -69,7 +70,8 @@ public class CandidateMaintenanceModelImpl extends BaseModelImpl<CandidateMainte
 			{ "uuid_", Types.VARCHAR },
 			{ "candidateMaintenanceId", Types.BIGINT },
 			{ "candidateId", Types.BIGINT },
-			{ "taskId", Types.BIGINT }
+			{ "taskId", Types.BIGINT },
+			{ "createDate", Types.TIMESTAMP }
 		};
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP = new HashMap<String, Integer>();
 
@@ -78,9 +80,10 @@ public class CandidateMaintenanceModelImpl extends BaseModelImpl<CandidateMainte
 		TABLE_COLUMNS_MAP.put("candidateMaintenanceId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("candidateId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("taskId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("createDate", Types.TIMESTAMP);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table Task_CandidateMaintenance (uuid_ VARCHAR(75) null,candidateMaintenanceId LONG not null primary key,candidateId LONG,taskId LONG)";
+	public static final String TABLE_SQL_CREATE = "create table Task_CandidateMaintenance (uuid_ VARCHAR(75) null,candidateMaintenanceId LONG not null primary key,candidateId LONG,taskId LONG,createDate DATE null)";
 	public static final String TABLE_SQL_DROP = "drop table Task_CandidateMaintenance";
 	public static final String ORDER_BY_JPQL = " ORDER BY candidateMaintenance.candidateMaintenanceId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY Task_CandidateMaintenance.candidateMaintenanceId ASC";
@@ -119,6 +122,7 @@ public class CandidateMaintenanceModelImpl extends BaseModelImpl<CandidateMainte
 		model.setCandidateMaintenanceId(soapModel.getCandidateMaintenanceId());
 		model.setCandidateId(soapModel.getCandidateId());
 		model.setTaskId(soapModel.getTaskId());
+		model.setCreateDate(soapModel.getCreateDate());
 
 		return model;
 	}
@@ -188,6 +192,7 @@ public class CandidateMaintenanceModelImpl extends BaseModelImpl<CandidateMainte
 		attributes.put("candidateMaintenanceId", getCandidateMaintenanceId());
 		attributes.put("candidateId", getCandidateId());
 		attributes.put("taskId", getTaskId());
+		attributes.put("createDate", getCreateDate());
 
 		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
 		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
@@ -220,6 +225,12 @@ public class CandidateMaintenanceModelImpl extends BaseModelImpl<CandidateMainte
 
 		if (taskId != null) {
 			setTaskId(taskId);
+		}
+
+		Date createDate = (Date)attributes.get("createDate");
+
+		if (createDate != null) {
+			setCreateDate(createDate);
 		}
 	}
 
@@ -304,6 +315,17 @@ public class CandidateMaintenanceModelImpl extends BaseModelImpl<CandidateMainte
 		return _originalTaskId;
 	}
 
+	@JSON
+	@Override
+	public Date getCreateDate() {
+		return _createDate;
+	}
+
+	@Override
+	public void setCreateDate(Date createDate) {
+		_createDate = createDate;
+	}
+
 	public long getColumnBitmask() {
 		return _columnBitmask;
 	}
@@ -339,6 +361,7 @@ public class CandidateMaintenanceModelImpl extends BaseModelImpl<CandidateMainte
 		candidateMaintenanceImpl.setCandidateMaintenanceId(getCandidateMaintenanceId());
 		candidateMaintenanceImpl.setCandidateId(getCandidateId());
 		candidateMaintenanceImpl.setTaskId(getTaskId());
+		candidateMaintenanceImpl.setCreateDate(getCreateDate());
 
 		candidateMaintenanceImpl.resetOriginalValues();
 
@@ -432,12 +455,21 @@ public class CandidateMaintenanceModelImpl extends BaseModelImpl<CandidateMainte
 
 		candidateMaintenanceCacheModel.taskId = getTaskId();
 
+		Date createDate = getCreateDate();
+
+		if (createDate != null) {
+			candidateMaintenanceCacheModel.createDate = createDate.getTime();
+		}
+		else {
+			candidateMaintenanceCacheModel.createDate = Long.MIN_VALUE;
+		}
+
 		return candidateMaintenanceCacheModel;
 	}
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(9);
+		StringBundler sb = new StringBundler(11);
 
 		sb.append("{uuid=");
 		sb.append(getUuid());
@@ -447,6 +479,8 @@ public class CandidateMaintenanceModelImpl extends BaseModelImpl<CandidateMainte
 		sb.append(getCandidateId());
 		sb.append(", taskId=");
 		sb.append(getTaskId());
+		sb.append(", createDate=");
+		sb.append(getCreateDate());
 		sb.append("}");
 
 		return sb.toString();
@@ -454,7 +488,7 @@ public class CandidateMaintenanceModelImpl extends BaseModelImpl<CandidateMainte
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(16);
+		StringBundler sb = new StringBundler(19);
 
 		sb.append("<model><model-name>");
 		sb.append(
@@ -477,6 +511,10 @@ public class CandidateMaintenanceModelImpl extends BaseModelImpl<CandidateMainte
 			"<column><column-name>taskId</column-name><column-value><![CDATA[");
 		sb.append(getTaskId());
 		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>createDate</column-name><column-value><![CDATA[");
+		sb.append(getCreateDate());
+		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");
 
@@ -496,6 +534,7 @@ public class CandidateMaintenanceModelImpl extends BaseModelImpl<CandidateMainte
 	private long _taskId;
 	private long _originalTaskId;
 	private boolean _setOriginalTaskId;
+	private Date _createDate;
 	private long _columnBitmask;
 	private CandidateMaintenance _escapedModel;
 }
