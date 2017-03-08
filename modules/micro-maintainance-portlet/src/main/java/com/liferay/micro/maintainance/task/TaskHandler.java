@@ -149,11 +149,14 @@ public class TaskHandler {
 		AnalysisUser analysisUser = 
 			AnalysisUserUtil.findByA_U(analysisId, userId);
 
+		int previousVote = analysisUser.getVoted();
+
 		analysisUser.setVoted(vote);
 		analysisUser.persist();
 
 		String analysisData = analysisEntry.getAnalysisData();
-		analysisData = VotesJSONSerializer.updateVotes(analysisData, vote);
+		analysisData = VotesJSONSerializer.updateVotes(
+			analysisData, previousVote, vote);
 
 		analysisEntry.setAnalysisData(analysisData);
 		analysisEntry.persist();
