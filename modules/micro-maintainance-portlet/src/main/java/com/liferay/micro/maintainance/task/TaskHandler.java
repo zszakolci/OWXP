@@ -17,9 +17,6 @@ import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Modified;
 
-@Component(
-	configurationPid = "com.liferay.micro.maintainance.configuration.MicroMaintenanceConfiguration"
-)
 public class TaskHandler {
 
 	protected TaskHandler() {
@@ -79,15 +76,6 @@ public class TaskHandler {
 	public void setTaskEntries(List<Task> taskEntries) {
 		this.registeredTasks = taskEntries;
 	}
-
-	@Activate
-	@Modified
-	protected void activate(Map<String, Object> properties) {
-		_configuration = ConfigurableUtil.createConfigurable(
-			MicroMaintenanceConfiguration.class, properties);
-	}
-
-	private volatile MicroMaintenanceConfiguration _configuration;
 
 	private List<Task> registeredTasks;
 	private static TaskHandler taskHandlerInstance = null;
