@@ -9,6 +9,8 @@ import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Reference;
 
+import com.liferay.bnd.util.ConfigurableUtil;
+import com.liferay.micro.maintainance.configuration.MicroMaintenanceConfiguration;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.BaseSchedulerEntryMessageListener;
@@ -22,10 +24,12 @@ import com.liferay.portal.kernel.scheduler.StorageTypeAware;
 import com.liferay.portal.kernel.scheduler.Trigger;
 import com.liferay.portal.kernel.scheduler.TriggerFactory;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 
 @Component(
 	immediate = true, property = {"cron.expression=0 0 0 * * ?"},
-	service = TaskMessageListener.class
+	service = TaskMessageListener.class,
+	configurationPid = "com.liferay.micro.maintainance.configuration.MicroMaintenanceConfiguration"
 )
 public class TaskMessageListener extends BaseSchedulerEntryMessageListener {
 
@@ -52,8 +56,12 @@ public class TaskMessageListener extends BaseSchedulerEntryMessageListener {
 	@Modified
 	protected void activate(Map<String,Object> properties) throws SchedulerException {
 
+		_configuration = ConfigurableUtil.createConfigurable(
+			MicroMaintenanceConfiguration.class, properties);
+		
 		// extract the cron expression from the properties
-		String cronExpression = _DEFAULT_CRON_EXPRESSION;
+		String cronExpression = String.format(
+			"0 0 0/%s 1/1 * ? *", _configuration.checkingPeriodHours());
 
 		// create a new trigger definition for the job.
 		String listenerClass = getEventListenerClass();
@@ -152,6 +160,7 @@ public class TaskMessageListener extends BaseSchedulerEntryMessageListener {
 		_schedulerEngineHelper = schedulerEngineHelper;
 	}
 
+	private volatile MicroMaintenanceConfiguration _configuration;
 	// the default cron expression is to run daily at midnight
 	private static final String _DEFAULT_CRON_EXPRESSION = "0 0 0 * * ?";
 
