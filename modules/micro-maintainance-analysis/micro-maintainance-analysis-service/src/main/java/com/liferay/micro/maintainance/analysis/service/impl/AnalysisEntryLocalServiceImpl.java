@@ -18,9 +18,9 @@ import java.util.Date;
 
 import com.liferay.micro.maintainance.analysis.model.AnalysisEntry;
 import com.liferay.micro.maintainance.analysis.service.base.AnalysisEntryLocalServiceBaseImpl;
+import com.liferay.micro.maintainance.util.VotesJSONSerializer;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.util.StringPool;
 
 import aQute.bnd.annotation.ProviderType;
 
@@ -49,7 +49,6 @@ public class AnalysisEntryLocalServiceImpl
 	public AnalysisEntry addAnalysisEntry(long userId, long canMainId) 
 		throws PortalException {
 
-		
 		User user = userPersistence.findByPrimaryKey(userId);
 		Date now = new Date();
 
@@ -64,7 +63,7 @@ public class AnalysisEntryLocalServiceImpl
 		analysisEntry.setCreateDate(now);
 		analysisEntry.setModifiedDate(now);
 
-		analysisEntry.setAnalysisData(StringPool.BLANK);
+		analysisEntry.setAnalysisData(VotesJSONSerializer.createVotes());
 		analysisEntry.setCanMainId(canMainId);
 
 		analysisEntryPersistence.update(analysisEntry);
