@@ -7,9 +7,8 @@ import com.liferay.micro.maintainance.analysis.service.AnalysisEntryLocalService
 
 public class ActionHandler {
 
-	public static void performActions(List<Action> actions, long analysisId) {
-		AnalysisEntry analysisEntry = 
-			AnalysisEntryLocalServiceUtil.fetchAnalysisEntry(analysisId);
+	public static void performActions(
+		List<Action> actions, AnalysisEntry analysisEntry) {
 
 		for (Action action: actions) {
 			action.performAction(analysisEntry);
