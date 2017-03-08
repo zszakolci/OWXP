@@ -1,26 +1,22 @@
 package com.liferay.micro.maintainance.task;
 
-import com.liferay.bnd.util.ConfigurableUtil;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import com.liferay.micro.maintainance.action.Action;
-import com.liferay.micro.maintainance.configuration.MicroMaintenanceConfiguration;
+import com.liferay.micro.maintainance.analysis.model.AnalysisEntry;
 import com.liferay.micro.maintainance.task.model.TaskEntry;
 import com.liferay.micro.maintainance.task.service.TaskEntryLocalServiceUtil;
 import com.liferay.micro.maintainance.task.service.persistence.TaskEntryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.Validator;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import org.osgi.service.component.annotations.Activate;
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Modified;
 
 public class TaskHandler {
 
 	protected TaskHandler() {
-		registeredTasks = new ArrayList<Task>();
+		registeredTasks = new HashMap<Long, Task>();
 	}
 
 	public static TaskHandler getTaskHandlerInstance() {
@@ -29,13 +25,6 @@ public class TaskHandler {
 		}
 
 		return taskHandlerInstance;
-	}
-
-	/*
-	 * Calls the analysis
-	 */
-	public List<Action> callAnalysis(Task task, long analysisId) {
-		return task.analyze(analysisId);
 	}
 
 	/*
@@ -55,7 +44,7 @@ public class TaskHandler {
 
 		task.setTaskId(taskEntry.getTaskId());
 
-		registeredTasks.add(task);
+		registeredTasks.put(task.getTaskId(), task);
 	}
 
 	/*
@@ -69,14 +58,18 @@ public class TaskHandler {
 		registeredTasks.remove(task);
 	}
 
-	public List<Task> getTaskEntries() {
+	public Map<Long, Task> getTaskEntries() {
 		return registeredTasks;
 	}
 
-	public void setTaskEntries(List<Task> taskEntries) {
+	public List<Task> getTaskEntryList() {
+		return ListUtil.fromCollection(registeredTasks.values());
+	}
+
+	public void setTaskEntries(Map<Long,Task> taskEntries) {
 		this.registeredTasks = taskEntries;
 	}
 
-	private List<Task> registeredTasks;
+	private Map<Long, Task> registeredTasks;
 	private static TaskHandler taskHandlerInstance = null;
 }

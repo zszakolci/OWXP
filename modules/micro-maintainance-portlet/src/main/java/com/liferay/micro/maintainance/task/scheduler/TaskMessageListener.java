@@ -1,6 +1,7 @@
 package com.liferay.micro.maintainance.task.scheduler;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import org.osgi.service.component.annotations.Activate;
@@ -10,7 +11,16 @@ import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Reference;
 
 import com.liferay.bnd.util.ConfigurableUtil;
+import com.liferay.micro.maintainance.action.Action;
+import com.liferay.micro.maintainance.action.ActionHandler;
+import com.liferay.micro.maintainance.analysis.model.AnalysisEntry;
+import com.liferay.micro.maintainance.analysis.service.persistence.AnalysisEntryUtil;
 import com.liferay.micro.maintainance.configuration.MicroMaintenanceConfiguration;
+import com.liferay.micro.maintainance.task.Task;
+import com.liferay.micro.maintainance.task.TaskHandler;
+import com.liferay.micro.maintainance.task.model.CandidateMaintenance;
+import com.liferay.micro.maintainance.task.service.CandidateMaintenanceLocalServiceUtil;
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.BaseSchedulerEntryMessageListener;
@@ -23,8 +33,6 @@ import com.liferay.portal.kernel.scheduler.StorageType;
 import com.liferay.portal.kernel.scheduler.StorageTypeAware;
 import com.liferay.portal.kernel.scheduler.Trigger;
 import com.liferay.portal.kernel.scheduler.TriggerFactory;
-import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.StringUtil;
 
 @Component(
 	immediate = true, property = {"cron.expression=0 0 0 * * ?"},
@@ -42,7 +50,27 @@ public class TaskMessageListener extends BaseSchedulerEntryMessageListener {
 	 */
 	@Override
 	protected void doReceive(Message message) throws Exception {
-		//TODO add logic
+		List<CandidateMaintenance> runningVotes = 
+			CandidateMaintenanceLocalServiceUtil
+				.getCandidateMaintenances(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+
+		Map<Long, Task> registeredTasks = 
+			TaskHandler.getTaskHandlerInstance().getTaskEntries();
+
+		for(CandidateMaintenance canMain: runningVotes) {
+			Task task = registeredTasks.get(canMain.getTaskId());
+			
+			if(task.isAnalyseReady(canMain)) {
+				AnalysisEntry analysisEntry =
+					AnalysisEntryUtil.findByCanMainId(
+						canMain.getCandidateMaintenanceId());
+
+				List<Action> actions = task.analyze(analysisEntry);
+
+				ActionHandler.performActions(actions, analysisEntry);
+			}
+		}
+
 		_log.info("Scheduled task executed...");
 	}
 

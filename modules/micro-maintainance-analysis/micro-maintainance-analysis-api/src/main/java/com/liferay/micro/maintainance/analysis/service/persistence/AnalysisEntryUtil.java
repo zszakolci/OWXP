@@ -443,136 +443,48 @@ public class AnalysisEntryUtil {
 	}
 
 	/**
-	* Returns all the analysis entries where analysisId = &#63;.
+	* Returns the analysis entry where analysisId = &#63; or throws a {@link NoSuchEntryException} if it could not be found.
 	*
 	* @param analysisId the analysis ID
-	* @return the matching analysis entries
+	* @return the matching analysis entry
+	* @throws NoSuchEntryException if a matching analysis entry could not be found
 	*/
-	public static List<AnalysisEntry> findByAnalysisId(long analysisId) {
+	public static AnalysisEntry findByAnalysisId(long analysisId)
+		throws com.liferay.micro.maintainance.analysis.exception.NoSuchEntryException {
 		return getPersistence().findByAnalysisId(analysisId);
 	}
 
 	/**
-	* Returns a range of all the analysis entries where analysisId = &#63;.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AnalysisEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
+	* Returns the analysis entry where analysisId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
 	*
 	* @param analysisId the analysis ID
-	* @param start the lower bound of the range of analysis entries
-	* @param end the upper bound of the range of analysis entries (not inclusive)
-	* @return the range of matching analysis entries
+	* @return the matching analysis entry, or <code>null</code> if a matching analysis entry could not be found
 	*/
-	public static List<AnalysisEntry> findByAnalysisId(long analysisId,
-		int start, int end) {
-		return getPersistence().findByAnalysisId(analysisId, start, end);
+	public static AnalysisEntry fetchByAnalysisId(long analysisId) {
+		return getPersistence().fetchByAnalysisId(analysisId);
 	}
 
 	/**
-	* Returns an ordered range of all the analysis entries where analysisId = &#63;.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AnalysisEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
+	* Returns the analysis entry where analysisId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
 	*
 	* @param analysisId the analysis ID
-	* @param start the lower bound of the range of analysis entries
-	* @param end the upper bound of the range of analysis entries (not inclusive)
-	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	* @return the ordered range of matching analysis entries
-	*/
-	public static List<AnalysisEntry> findByAnalysisId(long analysisId,
-		int start, int end, OrderByComparator<AnalysisEntry> orderByComparator) {
-		return getPersistence()
-				   .findByAnalysisId(analysisId, start, end, orderByComparator);
-	}
-
-	/**
-	* Returns an ordered range of all the analysis entries where analysisId = &#63;.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AnalysisEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param analysisId the analysis ID
-	* @param start the lower bound of the range of analysis entries
-	* @param end the upper bound of the range of analysis entries (not inclusive)
-	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	* @param retrieveFromCache whether to retrieve from the finder cache
-	* @return the ordered range of matching analysis entries
+	* @return the matching analysis entry, or <code>null</code> if a matching analysis entry could not be found
 	*/
-	public static List<AnalysisEntry> findByAnalysisId(long analysisId,
-		int start, int end, OrderByComparator<AnalysisEntry> orderByComparator,
+	public static AnalysisEntry fetchByAnalysisId(long analysisId,
 		boolean retrieveFromCache) {
-		return getPersistence()
-				   .findByAnalysisId(analysisId, start, end, orderByComparator,
-			retrieveFromCache);
+		return getPersistence().fetchByAnalysisId(analysisId, retrieveFromCache);
 	}
 
 	/**
-	* Returns the first analysis entry in the ordered set where analysisId = &#63;.
+	* Removes the analysis entry where analysisId = &#63; from the database.
 	*
 	* @param analysisId the analysis ID
-	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	* @return the first matching analysis entry
-	* @throws NoSuchEntryException if a matching analysis entry could not be found
+	* @return the analysis entry that was removed
 	*/
-	public static AnalysisEntry findByAnalysisId_First(long analysisId,
-		OrderByComparator<AnalysisEntry> orderByComparator)
+	public static AnalysisEntry removeByAnalysisId(long analysisId)
 		throws com.liferay.micro.maintainance.analysis.exception.NoSuchEntryException {
-		return getPersistence()
-				   .findByAnalysisId_First(analysisId, orderByComparator);
-	}
-
-	/**
-	* Returns the first analysis entry in the ordered set where analysisId = &#63;.
-	*
-	* @param analysisId the analysis ID
-	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	* @return the first matching analysis entry, or <code>null</code> if a matching analysis entry could not be found
-	*/
-	public static AnalysisEntry fetchByAnalysisId_First(long analysisId,
-		OrderByComparator<AnalysisEntry> orderByComparator) {
-		return getPersistence()
-				   .fetchByAnalysisId_First(analysisId, orderByComparator);
-	}
-
-	/**
-	* Returns the last analysis entry in the ordered set where analysisId = &#63;.
-	*
-	* @param analysisId the analysis ID
-	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	* @return the last matching analysis entry
-	* @throws NoSuchEntryException if a matching analysis entry could not be found
-	*/
-	public static AnalysisEntry findByAnalysisId_Last(long analysisId,
-		OrderByComparator<AnalysisEntry> orderByComparator)
-		throws com.liferay.micro.maintainance.analysis.exception.NoSuchEntryException {
-		return getPersistence()
-				   .findByAnalysisId_Last(analysisId, orderByComparator);
-	}
-
-	/**
-	* Returns the last analysis entry in the ordered set where analysisId = &#63;.
-	*
-	* @param analysisId the analysis ID
-	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	* @return the last matching analysis entry, or <code>null</code> if a matching analysis entry could not be found
-	*/
-	public static AnalysisEntry fetchByAnalysisId_Last(long analysisId,
-		OrderByComparator<AnalysisEntry> orderByComparator) {
-		return getPersistence()
-				   .fetchByAnalysisId_Last(analysisId, orderByComparator);
-	}
-
-	/**
-	* Removes all the analysis entries where analysisId = &#63; from the database.
-	*
-	* @param analysisId the analysis ID
-	*/
-	public static void removeByAnalysisId(long analysisId) {
-		getPersistence().removeByAnalysisId(analysisId);
+		return getPersistence().removeByAnalysisId(analysisId);
 	}
 
 	/**
@@ -743,6 +655,61 @@ public class AnalysisEntryUtil {
 	*/
 	public static int countByCompanyId(long companyId) {
 		return getPersistence().countByCompanyId(companyId);
+	}
+
+	/**
+	* Returns the analysis entry where canMainId = &#63; or throws a {@link NoSuchEntryException} if it could not be found.
+	*
+	* @param canMainId the can main ID
+	* @return the matching analysis entry
+	* @throws NoSuchEntryException if a matching analysis entry could not be found
+	*/
+	public static AnalysisEntry findByCanMainId(long canMainId)
+		throws com.liferay.micro.maintainance.analysis.exception.NoSuchEntryException {
+		return getPersistence().findByCanMainId(canMainId);
+	}
+
+	/**
+	* Returns the analysis entry where canMainId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	*
+	* @param canMainId the can main ID
+	* @return the matching analysis entry, or <code>null</code> if a matching analysis entry could not be found
+	*/
+	public static AnalysisEntry fetchByCanMainId(long canMainId) {
+		return getPersistence().fetchByCanMainId(canMainId);
+	}
+
+	/**
+	* Returns the analysis entry where canMainId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	*
+	* @param canMainId the can main ID
+	* @param retrieveFromCache whether to retrieve from the finder cache
+	* @return the matching analysis entry, or <code>null</code> if a matching analysis entry could not be found
+	*/
+	public static AnalysisEntry fetchByCanMainId(long canMainId,
+		boolean retrieveFromCache) {
+		return getPersistence().fetchByCanMainId(canMainId, retrieveFromCache);
+	}
+
+	/**
+	* Removes the analysis entry where canMainId = &#63; from the database.
+	*
+	* @param canMainId the can main ID
+	* @return the analysis entry that was removed
+	*/
+	public static AnalysisEntry removeByCanMainId(long canMainId)
+		throws com.liferay.micro.maintainance.analysis.exception.NoSuchEntryException {
+		return getPersistence().removeByCanMainId(canMainId);
+	}
+
+	/**
+	* Returns the number of analysis entries where canMainId = &#63;.
+	*
+	* @param canMainId the can main ID
+	* @return the number of matching analysis entries
+	*/
+	public static int countByCanMainId(long canMainId) {
+		return getPersistence().countByCanMainId(canMainId);
 	}
 
 	/**
