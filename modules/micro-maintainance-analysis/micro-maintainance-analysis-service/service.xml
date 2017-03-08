@@ -30,11 +30,14 @@
 
 		<!-- Finder methods -->
 
-		<finder name="AnalysisId" return-type="Collection">
+		<finder name="AnalysisId" return-type="AnalysisEntry">
 			<finder-column name="analysisId" />
 		</finder>
 		<finder name="CompanyId" return-type="Collection">
 			<finder-column name="companyId" />
+		</finder>
+		<finder name="CanMainId" return-type="AnalysisEntry">
+			<finder-column name="canMainId" />
 		</finder>
 		<finder name="A_C" return-type="Collection">
 			<finder-column name="analysisId" />

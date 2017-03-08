@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ProjectionFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -194,6 +195,13 @@ public class AnalysisEntryPersistenceTest {
 		_persistence.countByCompanyId(RandomTestUtil.nextLong());
 
 		_persistence.countByCompanyId(0L);
+	}
+
+	@Test
+	public void testCountByCanMainId() throws Exception {
+		_persistence.countByCanMainId(RandomTestUtil.nextLong());
+
+		_persistence.countByCanMainId(0L);
 	}
 
 	@Test
@@ -463,6 +471,23 @@ public class AnalysisEntryPersistenceTest {
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
 		Assert.assertEquals(0, result.size());
+	}
+
+	@Test
+	public void testResetOriginalValues() throws Exception {
+		AnalysisEntry newAnalysisEntry = addAnalysisEntry();
+
+		_persistence.clearCache();
+
+		AnalysisEntry existingAnalysisEntry = _persistence.findByPrimaryKey(newAnalysisEntry.getPrimaryKey());
+
+		Assert.assertEquals(Long.valueOf(existingAnalysisEntry.getAnalysisId()),
+			ReflectionTestUtil.<Long>invoke(existingAnalysisEntry,
+				"getOriginalAnalysisId", new Class<?>[0]));
+
+		Assert.assertEquals(Long.valueOf(existingAnalysisEntry.getCanMainId()),
+			ReflectionTestUtil.<Long>invoke(existingAnalysisEntry,
+				"getOriginalCanMainId", new Class<?>[0]));
 	}
 
 	protected AnalysisEntry addAnalysisEntry() throws Exception {
