@@ -16,11 +16,13 @@ import com.liferay.micro.maintainance.action.ActionHandler;
 import com.liferay.micro.maintainance.analysis.model.AnalysisEntry;
 import com.liferay.micro.maintainance.analysis.service.persistence.AnalysisEntryUtil;
 import com.liferay.micro.maintainance.configuration.MicroMaintenanceConfiguration;
+import com.liferay.micro.maintainance.decision.service.DecisionEntryLocalServiceUtil;
 import com.liferay.micro.maintainance.task.Task;
 import com.liferay.micro.maintainance.task.TaskHandler;
 import com.liferay.micro.maintainance.task.model.CandidateMaintenance;
 import com.liferay.micro.maintainance.task.service.CandidateMaintenanceLocalServiceUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.BaseSchedulerEntryMessageListener;
@@ -67,7 +69,20 @@ public class TaskMessageListener extends BaseSchedulerEntryMessageListener {
 
 				List<Action> actions = task.analyze(analysisEntry);
 
-				ActionHandler.performActions(actions, analysisEntry);
+				try {
+					ActionHandler.performActions(actions, analysisEntry);
+				}
+				catch (Exception e) {
+					DecisionEntryLocalServiceUtil.addDecisionEntry(
+						analysisEntry.getUserId(), analysisEntry.getAnalysisData(),
+						canMain.getCandidateId(), task.getOutcome(), false);
+
+					throw e;
+				}
+
+				DecisionEntryLocalServiceUtil.addDecisionEntry(
+					analysisEntry.getUserId(), analysisEntry.getAnalysisData(),
+					canMain.getCandidateId(), task.getOutcome(), true);
 			}
 		}
 

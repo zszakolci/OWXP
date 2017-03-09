@@ -57,12 +57,12 @@ public class DecisionEntryLocalServiceUtil {
 	* Adds the results of an analysis to the database
 	*/
 	public static com.liferay.micro.maintainance.decision.model.DecisionEntry addDecisionEntry(
-		long userId, java.lang.String analysisData, long wikiPageId,
-		java.lang.String wikiPageName, java.lang.String outcome, boolean handled)
+		long userId, java.lang.String analysisData, long candidateId,
+		java.lang.String outcome, boolean handled)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
-				   .addDecisionEntry(userId, analysisData, wikiPageId,
-			wikiPageName, outcome, handled);
+				   .addDecisionEntry(userId, analysisData, candidateId,
+			outcome, handled);
 	}
 
 	/**

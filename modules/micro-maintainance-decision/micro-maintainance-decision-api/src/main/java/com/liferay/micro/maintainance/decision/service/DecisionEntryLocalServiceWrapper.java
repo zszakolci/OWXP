@@ -51,11 +51,11 @@ public class DecisionEntryLocalServiceWrapper
 	*/
 	@Override
 	public com.liferay.micro.maintainance.decision.model.DecisionEntry addDecisionEntry(
-		long userId, java.lang.String analysisData, long wikiPageId,
-		java.lang.String wikiPageName, java.lang.String outcome, boolean handled)
+		long userId, java.lang.String analysisData, long candidateId,
+		java.lang.String outcome, boolean handled)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _decisionEntryLocalService.addDecisionEntry(userId,
-			analysisData, wikiPageId, wikiPageName, outcome, handled);
+			analysisData, candidateId, outcome, handled);
 	}
 
 	/**
