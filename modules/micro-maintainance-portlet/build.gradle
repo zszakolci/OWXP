@@ -11,6 +11,7 @@ dependencies {
 	compile project(':modules:micro-maintainance-task:micro-maintainance-task-api')
 	compile project(':modules:micro-maintainance-analysis:micro-maintainance-analysis-api')
 	compile project(':modules:micro-maintainance-candidate:micro-maintainance-candidate-api')
+	compile  project(':modules:micro-maintainance-decision:micro-maintainance-decision-api')
 }
 
 version = '1.0.0'

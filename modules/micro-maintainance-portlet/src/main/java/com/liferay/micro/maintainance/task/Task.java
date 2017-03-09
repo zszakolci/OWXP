@@ -16,4 +16,6 @@ public interface Task {
 	public void setTaskId(long taskId);
 
 	public boolean isAnalyseReady(CandidateMaintenance canMain);
+
+	public String getOutcome();
 }

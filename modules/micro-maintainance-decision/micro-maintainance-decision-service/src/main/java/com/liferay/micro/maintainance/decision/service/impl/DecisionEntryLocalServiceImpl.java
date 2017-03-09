@@ -16,10 +16,14 @@ package com.liferay.micro.maintainance.decision.service.impl;
 
 import java.util.Date;
 
+import com.liferay.micro.maintainance.candidate.model.CandidateEntry;
+import com.liferay.micro.maintainance.candidate.service.CandidateEntryLocalServiceUtil;
 import com.liferay.micro.maintainance.decision.model.DecisionEntry;
 import com.liferay.micro.maintainance.decision.service.base.DecisionEntryLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.wiki.model.WikiPage;
+import com.liferay.wiki.service.WikiPageLocalServiceUtil;
 
 import aQute.bnd.annotation.ProviderType;
 
@@ -46,8 +50,8 @@ public class DecisionEntryLocalServiceImpl
 	 */
 	@Override
 	public DecisionEntry addDecisionEntry(
-			long userId, String analysisData, long wikiPageId,
-			String wikiPageName, String outcome, boolean handled) 
+			long userId, String analysisData, long candidateId, String outcome,
+			boolean handled) 
 		throws PortalException {
 		
 		User user = userPersistence.findByPrimaryKey(userId);
@@ -55,6 +59,12 @@ public class DecisionEntryLocalServiceImpl
 		Date now = new Date();
 
 		DecisionEntry decision = decisionEntryPersistence.create(decisionId);
+		
+		CandidateEntry candidate = 
+			CandidateEntryLocalServiceUtil.getCandidateEntry(candidateId);
+
+		WikiPage wikiPage = 
+			WikiPageLocalServiceUtil.getPageByPageId(candidate.getWikiPageId());
 
 		decision.setCompanyId(user.getCompanyId());
 		decision.setUserId(userId);
@@ -63,8 +73,8 @@ public class DecisionEntryLocalServiceImpl
 		decision.setModifiedDate(now);
 
 		decision.setAnalysisData(analysisData);
-		decision.setWikiPageId(wikiPageId);
-		decision.setWikiPageName(wikiPageName);
+		decision.setWikiPageId(wikiPage.getPageId());
+		decision.setWikiPageName(wikiPage.getTitle());
 		decision.setOutcome(outcome);
 		decision.setHandled(handled);
 
