@@ -77,9 +77,8 @@ public interface DecisionEntryLocalService extends BaseLocalService,
 	* Adds the results of an analysis to the database
 	*/
 	public DecisionEntry addDecisionEntry(long userId,
-		java.lang.String analysisData, long wikiPageId,
-		java.lang.String wikiPageName, java.lang.String outcome, boolean handled)
-		throws PortalException;
+		java.lang.String analysisData, long candidateId,
+		java.lang.String outcome, boolean handled) throws PortalException;
 
 	/**
 	* Creates a new decision entry with the primary key. Does not add the decision entry to the database.
