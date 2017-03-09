@@ -8,7 +8,6 @@ import com.liferay.portal.kernel.portlet.Router;
 import com.liferay.portal.kernel.util.AggregateResourceBundleLoader;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.ResourceBundleLoader;
-import com.liferay.portal.kernel.util.ResourceBundleLoaderUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -18,13 +17,9 @@ import com.liferay.wiki.constants.WikiPortletKeys;
 import com.liferay.wiki.engine.WikiEngine;
 import com.liferay.wiki.engine.input.editor.common.BaseInputEditorWikiEngine;
 import com.liferay.wiki.engine.markdown.pegdown.ast.LiferayPegDownProcessor;
-import com.liferay.wiki.exception.NoSuchNodeException;
 import com.liferay.wiki.exception.PageContentException;
 import com.liferay.wiki.model.WikiPage;
 import com.liferay.wiki.service.WikiNodeLocalService;
-
-import net.htmlparser.jericho.Source;
-import net.htmlparser.jericho.StartTag;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -32,8 +27,12 @@ import java.util.List;
 import java.util.Map;
 
 import javax.portlet.PortletURL;
+
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+
+import net.htmlparser.jericho.Source;
+import net.htmlparser.jericho.StartTag;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -45,7 +44,6 @@ import org.parboiled.Parboiled;
 import org.pegdown.Extensions;
 import org.pegdown.LiferayParser;
 import org.pegdown.LinkRenderer;
-
 @Component(service = WikiEngine.class)
 public class MarkdownEngine extends BaseInputEditorWikiEngine {
 
@@ -56,7 +54,7 @@ public class MarkdownEngine extends BaseInputEditorWikiEngine {
 		throws PageContentException {
 
 		return _liferayPegDownProcessor.get().markdownToHtml(
-				page.getContent(), new LinkRenderer());
+			page.getContent(), new LinkRenderer());
 	}
 
 	@Override
@@ -154,6 +152,28 @@ public class MarkdownEngine extends BaseInputEditorWikiEngine {
 		return null;
 	}
 
+	@Activate
+	protected void activate() {
+		_liferayPegDownProcessor =
+			new ThreadLocal<LiferayPegDownProcessor>() {
+
+				@Override
+				protected LiferayPegDownProcessor initialValue() {
+					LiferayParser liferayParser = Parboiled.createParser(
+							LiferayParser.class,
+							Extensions.ALL & ~Extensions.HARDWRAPS);
+
+					return new LiferayPegDownProcessor(liferayParser);
+				}
+
+			};
+	}
+
+	@Deactivate
+	protected void deactivate() {
+		_liferayPegDownProcessor = null;
+	}
+
 	@Override
 	protected ServletContext getHelpPageServletContext() {
 		return null;
@@ -165,17 +185,6 @@ public class MarkdownEngine extends BaseInputEditorWikiEngine {
 	}
 
 	@Reference(
-		target = "(bundle.symbolic.name=owxp.lang)",
-		unbind = "-"
-	)
-	protected void setResourceBundleLoader(
-		ResourceBundleLoader resourceBundleLoader) {
-
-		_resourceBundleLoader = new AggregateResourceBundleLoader(
-			resourceBundleLoader, LanguageResources.RESOURCE_BUNDLE_LOADER);
-	}
-
-	@Reference(
 		target = "(javax.portlet.name=" + WikiPortletKeys.WIKI + ")",
 		unbind = "-"
 	)
@@ -184,6 +193,14 @@ public class MarkdownEngine extends BaseInputEditorWikiEngine {
 			Portal.FRIENDLY_URL_SEPARATOR + friendlyURLMapper.getMapping();
 
 		_router = friendlyURLMapper.getRouter();
+	}
+
+	@Reference(target = "(bundle.symbolic.name=owxp.lang)", unbind = "-")
+	protected void setResourceBundleLoader(
+		ResourceBundleLoader resourceBundleLoader) {
+
+		_resourceBundleLoader = new AggregateResourceBundleLoader(
+			resourceBundleLoader, LanguageResources.RESOURCE_BUNDLE_LOADER);
 	}
 
 	@Reference
@@ -200,33 +217,15 @@ public class MarkdownEngine extends BaseInputEditorWikiEngine {
 		_wikiNodeLocalService = wikiNodeLocalService;
 	}
 
-	@Activate
-	protected void activate() {
-		_liferayPegDownProcessor =
-			new ThreadLocal<LiferayPegDownProcessor>() {
-				@Override
-				protected LiferayPegDownProcessor initialValue() {
-					LiferayParser liferayParser = Parboiled.createParser(
-							LiferayParser.class, Extensions.ALL & ~Extensions.HARDWRAPS);
-	
-					return new LiferayPegDownProcessor(liferayParser);
-				}
-			
-			};
-	}
-
-	@Deactivate
-	protected void deactivate() {
-		_liferayPegDownProcessor = null;
-	}
-
 	private static final Log _log = LogFactoryUtil.getLog(MarkdownEngine.class);
 
-	private static ThreadLocal<LiferayPegDownProcessor> _liferayPegDownProcessor;
+	private static ThreadLocal<LiferayPegDownProcessor>
+		_liferayPegDownProcessor;
 
 	private String _friendlyURLMapping;
 	private ResourceBundleLoader _resourceBundleLoader;
 	private Router _router;
 	private WikiGroupServiceConfiguration _wikiGroupServiceConfiguration;
 	private WikiNodeLocalService _wikiNodeLocalService;
+
 }

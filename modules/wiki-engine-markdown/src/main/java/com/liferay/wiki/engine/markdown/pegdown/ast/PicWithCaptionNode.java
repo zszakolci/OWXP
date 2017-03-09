@@ -6,7 +6,6 @@ import org.pegdown.ast.Node;
 import org.pegdown.ast.SuperNode;
 import org.pegdown.ast.TextNode;
 import org.pegdown.ast.Visitor;
-
 public class PicWithCaptionNode extends SuperNode {
 
 	public PicWithCaptionNode(String src, Node node) {

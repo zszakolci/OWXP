@@ -1,18 +1,15 @@
 package com.liferay.wiki.engine.markdown.pegdown.ast;
 
-import org.pegdown.PegDownProcessor;
-
-import org.pegdown.LinkRenderer;
-import org.pegdown.Parser;
-import org.pegdown.PegDownProcessor;
-import org.pegdown.ast.RootNode;
-
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 
+import org.pegdown.LinkRenderer;
+import org.pegdown.Parser;
+import org.pegdown.PegDownProcessor;
+import org.pegdown.ast.RootNode;
 public class LiferayPegDownProcessor extends PegDownProcessor {
 
 	public LiferayPegDownProcessor(Parser parser) {
@@ -30,7 +27,7 @@ public class LiferayPegDownProcessor extends PegDownProcessor {
 
 		String html = liferayToHtmlSerializer.toHtml(rootNode);
 
-		return stripIds(html); 
+		return stripIds(html);
 	}
 
 	protected String stripIds(String content) {
@@ -92,5 +89,6 @@ public class LiferayPegDownProcessor extends PegDownProcessor {
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-			LiferayPegDownProcessor.class);
+		LiferayPegDownProcessor.class);
+
 }

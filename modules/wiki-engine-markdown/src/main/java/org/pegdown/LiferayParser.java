@@ -1,10 +1,9 @@
 package org.pegdown;
 
-import org.parboiled.Rule;
-import org.parboiled.common.ArrayBuilder;
-
 import com.liferay.wiki.engine.markdown.pegdown.ast.PicWithCaptionNode;
 
+import org.parboiled.Rule;
+import org.parboiled.common.ArrayBuilder;
 public class LiferayParser extends Parser {
 
 	public LiferayParser(Integer options) {

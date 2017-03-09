@@ -13,7 +13,6 @@ import org.pegdown.ast.Node;
 import org.pegdown.ast.ParaNode;
 import org.pegdown.ast.SuperNode;
 import org.pegdown.ast.TextNode;
-
 public class LiferayToHtmlSerializer extends ToHtmlSerializer {
 
 	public LiferayToHtmlSerializer(LinkRenderer linkRenderer) {
@@ -133,4 +132,5 @@ public class LiferayToHtmlSerializer extends ToHtmlSerializer {
 
 	private final Pattern _headerIdPattern = Pattern.compile(
 		"\\[\\]\\(id=([^\\s]+?)\\)");
+
 }
