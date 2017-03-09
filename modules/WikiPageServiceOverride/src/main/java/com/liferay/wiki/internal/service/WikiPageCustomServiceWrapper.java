@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.mentions.internal.service;
+package com.liferay.wiki.internal.service;
 
 import com.liferay.exportimport.kernel.lar.ExportImportThreadLocal;
 import com.liferay.mentions.configuration.MentionsGroupServiceConfiguration;
@@ -65,14 +65,14 @@ import org.osgi.service.component.annotations.Reference;
  * @author Tamas Molnar
  */
 @Component(immediate = true, service = ServiceWrapper.class)
-public class MentionsWikiPageServiceWrapper
+public class WikiPageCustomServiceWrapper
 	extends WikiPageLocalServiceWrapper {
 
-	public MentionsWikiPageServiceWrapper() {
+	public WikiPageCustomServiceWrapper() {
 		super(null);
 	}
 
-	public MentionsWikiPageServiceWrapper(
+	public WikiPageCustomServiceWrapper(
 		WikiPageLocalService wikiPageLocalService) {
 
 		super(wikiPageLocalService);
