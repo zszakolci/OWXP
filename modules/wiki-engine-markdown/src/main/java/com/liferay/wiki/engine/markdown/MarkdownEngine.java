@@ -172,19 +172,18 @@ public class MarkdownEngine extends BaseInputEditorWikiEngine {
 
 	@Activate
 	protected void activate() {
-		_liferayPegDownProcessor =
-			new ThreadLocal<LiferayPegDownProcessor>() {
+		_liferayPegDownProcessor = new ThreadLocal<LiferayPegDownProcessor>() {
 
-				@Override
-				protected LiferayPegDownProcessor initialValue() {
-					LiferayParser liferayParser = Parboiled.createParser(
-							LiferayParser.class,
-							Extensions.ALL & ~Extensions.HARDWRAPS);
+			@Override
+			protected LiferayPegDownProcessor initialValue() {
+				LiferayParser liferayParser = Parboiled.createParser(
+					LiferayParser.class,
+					Extensions.ALL & ~Extensions.HARDWRAPS);
 
-					return new LiferayPegDownProcessor(liferayParser);
-				}
+				return new LiferayPegDownProcessor(liferayParser);
+			}
 
-			};
+		};
 	}
 
 	@Deactivate
