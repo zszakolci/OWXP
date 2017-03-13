@@ -7,5 +7,8 @@ Import-Package: \
 	javax.servlet;version='[2.5,4)',\
 	*
 
-Private-Package: \
-	com.liferay.micro.maintainance
+
+Export-Package: \
+	com.liferay.micro.maintainance.util,\
+	com.liferay.micro.maintainance.task,\
+	com.liferay.micro.maintainance.action

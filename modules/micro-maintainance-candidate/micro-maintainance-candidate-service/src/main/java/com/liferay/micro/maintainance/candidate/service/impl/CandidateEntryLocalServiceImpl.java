@@ -17,6 +17,7 @@ package com.liferay.micro.maintainance.candidate.service.impl;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import com.liferay.micro.maintainance.analysis.model.AnalysisEntry;
 import com.liferay.micro.maintainance.analysis.service.AnalysisEntryLocalServiceUtil;
@@ -120,10 +121,10 @@ public class CandidateEntryLocalServiceImpl
 		CandidateEntry candidate =
 			CandidateEntryUtil.findByWikiPageId(wikiPageId);
 
-		List<Task> registeredTasks = 
+		Map<Long, Task> registeredTasks = 
 			TaskHandler.getTaskHandlerInstance().getTaskEntries();
 
-		for(Task task : registeredTasks) {
+		for(Task task : registeredTasks.values()) {
 			try {
 				CandidateMaintenanceUtil.findByC_T(
 					candidate.getEntryId(), task.getTaskId());
