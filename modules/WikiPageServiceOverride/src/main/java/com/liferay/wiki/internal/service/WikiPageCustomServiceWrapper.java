@@ -61,6 +61,7 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 /**
+ * @author Istvan Sajtos
  * @author Norbert Kocsis
  * @author Tamas Molnar
  */
