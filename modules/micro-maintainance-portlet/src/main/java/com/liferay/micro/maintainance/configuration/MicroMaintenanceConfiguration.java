@@ -7,7 +7,7 @@ public interface MicroMaintenanceConfiguration {
 
 	@Meta.AD(
 		deflt = "1",
-		required = true
+		required = false
 	)
 	public int checkingPeriodHours();
 
