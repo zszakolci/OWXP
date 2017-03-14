@@ -53,6 +53,14 @@ public class TaskEntryLocalServiceUtil {
 		return getService().addTaskEntry(taskEntry);
 	}
 
+	/**
+	* Upon deploying a task module, this method adds entry for it to the
+	* database as registration.
+	*
+	* @param taskName
+	* @return the TaskEntry that was added
+	* @throws PortalException
+	*/
 	public static com.liferay.micro.maintainance.task.model.TaskEntry addTaskEntry(
 		java.lang.String taskName)
 		throws com.liferay.portal.kernel.exception.PortalException {
