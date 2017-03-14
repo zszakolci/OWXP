@@ -74,7 +74,13 @@ public interface AnalysisEntryLocalService extends BaseLocalService,
 	public AnalysisEntry addAnalysisEntry(AnalysisEntry analysisEntry);
 
 	/**
-	* Adds an analysis entry
+	* Adds an analysis entry, which will store the votes
+	*
+	* @param userId: the id of the user who flagged the page
+	* @param canMainId: the id of the CandidateMaintenance entry, in which the
+	assignment between a task and a candidate is stored.
+	* @return the AnalysisEntry that was added
+	* @throws PortalException
 	*/
 	public AnalysisEntry addAnalysisEntry(long userId, long canMainId)
 		throws PortalException;
