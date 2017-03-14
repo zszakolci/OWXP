@@ -46,7 +46,18 @@ import aQute.bnd.annotation.ProviderType;
 public class CandidateMaintenanceLocalServiceImpl
 	extends CandidateMaintenanceLocalServiceBaseImpl {
 
-
+	/**
+	 * Adds a CandidateMaintenance entry to the database, this way assigning a
+	 * wiki page to a maintenance task. The users can vote, while this entry is
+	 * in the database.
+	 * 
+	 * @param candidateId: the id of the candidate entry belonging to the 
+	 *   flagged wiki page
+	 * @param taskId: the id of the maintenance task for which the page is 
+	 *   flagged 
+	 * @return the CandidateMaintenance entry that was added
+	 * @throws PortalException
+	 */
 	@Override
 	public CandidateMaintenance addCandidateMaintenance(
 			long candidateId, long taskId)
@@ -66,11 +77,13 @@ public class CandidateMaintenanceLocalServiceImpl
 	}
 
 	/**
-	 * Deletes the candidate maintenance with the primary key from the database. Also notifies the appropriate model listeners.
+	 * Deletes the candidate maintenance with the primary key from the database.
+	 * Also deletes the candidate entry if there are no more votes running for
+	 * it.
 	 *
 	 * @param candidateMaintenanceId the primary key of the candidate maintenance
 	 * @return the candidate maintenance that was removed
-	 * @throws PortalException if a candidate maintenance with the primary key could not be found
+	 * @throws PortalException
 	 */
 	@Indexable(type = IndexableType.DELETE)
 	@Override
@@ -90,6 +103,12 @@ public class CandidateMaintenanceLocalServiceImpl
 		return currentCanMain;
 	}
 
+	/**
+	 * Returns the task assignments belonging to the given candidate.
+	 * 
+	 * @param candidatId
+	 * @return List of CandidateMaintenance entries with the given candidateId
+	 */
 	@Override
 	public List<CandidateMaintenance> getCandidateMaintenaceTasks(
 			long candidateId)
@@ -98,6 +117,12 @@ public class CandidateMaintenanceLocalServiceImpl
 		return candidateMaintenancePersistence.findByCandidateIds(candidateId);
 	}
 
+	/**
+	 * Returns number of the task assignments belonging to the given candidate.
+	 * 
+	 * @param candidatId
+	 * @return Number of CandidateMaintenance entries with the given candidateId
+	 */
 	@Override
 	public long getCandidateMaintenaceTasksCount(long candidateId)
 		throws PortalException {
@@ -105,6 +130,12 @@ public class CandidateMaintenanceLocalServiceImpl
 		return getCandidateMaintenaceTasks(candidateId).size();
 	}
 
+	/**
+	 * Returns the candidate assignments belonging to the given task.
+	 * 
+	 * @param taskId
+	 * @return List of CandidateMaintenance entries with the given taskId
+	 */
 	@Override
 	public List<CandidateMaintenance> getMaintenaceTasks(
 			long taskId)
@@ -113,6 +144,12 @@ public class CandidateMaintenanceLocalServiceImpl
 		return candidateMaintenancePersistence.findByTaskIds(taskId);
 	}
 
+	/**
+	 * Returns the number of the candidate assignments belonging to the given task.
+	 * 
+	 * @param taskId
+	 * @return Number of CandidateMaintenance entries with the given taskId
+	 */
 	@Override
 	public long getMaintenaceTasksCount(long taskId)
 		throws PortalException {

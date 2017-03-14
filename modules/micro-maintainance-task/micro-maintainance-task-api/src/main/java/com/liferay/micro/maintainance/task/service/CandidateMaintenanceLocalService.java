@@ -71,6 +71,18 @@ public interface CandidateMaintenanceLocalService extends BaseLocalService,
 	public CandidateMaintenance addCandidateMaintenance(
 		CandidateMaintenance candidateMaintenance);
 
+	/**
+	* Adds a CandidateMaintenance entry to the database, this way assigning a
+	* wiki page to a maintenance task. The users can vote, while this entry is
+	* in the database.
+	*
+	* @param candidateId: the id of the candidate entry belonging to the
+	flagged wiki page
+	* @param taskId: the id of the maintenance task for which the page is
+	flagged
+	* @return the CandidateMaintenance entry that was added
+	* @throws PortalException
+	*/
 	public CandidateMaintenance addCandidateMaintenance(long candidateId,
 		long taskId) throws PortalException;
 
@@ -203,6 +215,12 @@ public interface CandidateMaintenanceLocalService extends BaseLocalService,
 	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
 		int end, OrderByComparator<T> orderByComparator);
 
+	/**
+	* Returns the task assignments belonging to the given candidate.
+	*
+	* @param candidatId
+	* @return List of CandidateMaintenance entries with the given candidateId
+	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<CandidateMaintenance> getCandidateMaintenaceTasks(
 		long candidateId) throws PortalException;
@@ -222,6 +240,12 @@ public interface CandidateMaintenanceLocalService extends BaseLocalService,
 	public List<CandidateMaintenance> getCandidateMaintenances(int start,
 		int end);
 
+	/**
+	* Returns the candidate assignments belonging to the given task.
+	*
+	* @param taskId
+	* @return List of CandidateMaintenance entries with the given taskId
+	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<CandidateMaintenance> getMaintenaceTasks(long taskId)
 		throws PortalException;
@@ -244,10 +268,22 @@ public interface CandidateMaintenanceLocalService extends BaseLocalService,
 	public long dynamicQueryCount(DynamicQuery dynamicQuery,
 		Projection projection);
 
+	/**
+	* Returns number of the task assignments belonging to the given candidate.
+	*
+	* @param candidatId
+	* @return Number of CandidateMaintenance entries with the given candidateId
+	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public long getCandidateMaintenaceTasksCount(long candidateId)
 		throws PortalException;
 
+	/**
+	* Returns the number of the candidate assignments belonging to the given task.
+	*
+	* @param taskId
+	* @return Number of CandidateMaintenance entries with the given taskId
+	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public long getMaintenaceTasksCount(long taskId) throws PortalException;
 }

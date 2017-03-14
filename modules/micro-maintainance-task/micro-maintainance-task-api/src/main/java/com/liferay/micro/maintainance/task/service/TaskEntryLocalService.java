@@ -70,6 +70,14 @@ public interface TaskEntryLocalService extends BaseLocalService,
 	@Indexable(type = IndexableType.REINDEX)
 	public TaskEntry addTaskEntry(TaskEntry taskEntry);
 
+	/**
+	* Upon deploying a task module, this method adds entry for it to the
+	* database as registration.
+	*
+	* @param taskName
+	* @return the TaskEntry that was added
+	* @throws PortalException
+	*/
 	public TaskEntry addTaskEntry(java.lang.String taskName)
 		throws PortalException;
 
