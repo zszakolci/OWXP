@@ -66,8 +66,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Tamas Molnar
  */
 @Component(immediate = true, service = ServiceWrapper.class)
-public class WikiPageCustomServiceWrapper
-	extends WikiPageLocalServiceWrapper {
+public class WikiPageCustomServiceWrapper extends WikiPageLocalServiceWrapper {
 
 	public WikiPageCustomServiceWrapper() {
 		super(null);
@@ -81,10 +80,9 @@ public class WikiPageCustomServiceWrapper
 
 	@Override
 	public WikiPage addPage(
-			long userId, long nodeId, java.lang.String title, double version,
-			java.lang.String content, java.lang.String summary,
-			boolean minorEdit, java.lang.String format, boolean head,
-			java.lang.String parentTitle, java.lang.String redirectTitle,
+			long userId, long nodeId, String title, double version,
+			String content, String summary, boolean minorEdit, String format,
+			boolean head, String parentTitle, String redirectTitle,
 			ServiceContext serviceContext)
 		throws PortalException {
 
@@ -101,9 +99,8 @@ public class WikiPageCustomServiceWrapper
 
 	@Override
 	public WikiPage addPage(
-			long userId, long nodeId, java.lang.String title,
-			java.lang.String content, java.lang.String summary,
-			boolean minorEdit, ServiceContext serviceContext)
+			long userId, long nodeId, String title, String content,
+			String summary, boolean minorEdit, ServiceContext serviceContext)
 		throws PortalException {
 
 		WikiPage page = super.addPage(
