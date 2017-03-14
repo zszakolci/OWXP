@@ -39,11 +39,13 @@ public class TaskHandler {
 		return taskHandlerInstance;
 	}
 
-	/*
-	 * Register maintenance task modules
+	/**
+	 * Registers maintenance task modules
 	 *  called upon deploying a task module
 	 *  adds the task to the database
 	 *  adds the task to the tasklist
+	 *  
+	 * @param task: the deployed task
 	 */
 	public void registerTask(Task task) throws PortalException {
 		TaskEntry taskEntry = 
@@ -59,17 +61,27 @@ public class TaskHandler {
 		registeredTasks.put(task.getTaskId(), task);
 	}
 
-	/*
+	/**
 	 * Unregister task modules
 	 * 	Called upon undeploying a task module
 	 * 	Removes the task from the task list
 	 * 	Remove it from the database
+	 * 
+	 * @param task: the undeployed task
 	 */
 	public void unregisterTask(Task task) throws PortalException {
 		TaskEntryLocalServiceUtil.deleteTaskEntry(task.getTaskId());
 		registeredTasks.remove(task);
 	}
 
+	/**
+	 * Returns the list of the maintenance tasks for which the wiki page with
+	 * the given id is not yet nominated for voting. If a task is not in the
+	 * list the voting should be displayed.
+	 * 
+	 * @param wikiPageId
+	 * @throws PortalException
+	 */
 	public List<Task> getAvailableFlags(long wikiPageId) 
 		throws PortalException {
 
@@ -99,6 +111,16 @@ public class TaskHandler {
 		return ListUtil.fromCollection(registeredTasks.values());
 	}
 
+	/**
+	 * Returns the vote of the user on the given maintenance task for the
+	 * current wiki page, upon visiting the page
+	 * 
+	 * @param userId: the visiting user's id
+	 * @param wikiPageId: the visited wiki page's id
+	 * @param taskId: the current task's id
+	 * @return the vote
+	 * @throws PortalException
+	 */
 	public int getVote(long userId, long wikiPageId, long taskId)
 		throws PortalException {
 
@@ -129,6 +151,16 @@ public class TaskHandler {
 		return VoteConstants.NOT_VOTED;
 	}
 
+	/**
+	 * Stores a user's vote and updates the analysis belonging to the task in 
+	 * question.
+	 * 
+	 * @param userId: the visiting user's id
+	 * @param wikiPageId: the visited wiki page's id
+	 * @param taskId: the current task's id
+	 * @param vote: the user's decision
+	 * @throws PortalException
+	 */
 	public void vote(long userId, long wikiPageId, long taskId, int vote) 
 		throws PortalException {
 

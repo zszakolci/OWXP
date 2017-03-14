@@ -54,7 +54,19 @@ public class CandidateEntryLocalServiceUtil {
 	}
 
 	/**
-	* Adds a candidate entry to the database
+	* Upon flagging a wiki page for a certain maintenance task this method
+	* creates a candidate entry, belonging to the page, in the database.
+	* It also creates an AnalysisEntry element, in which the current status of
+	* the voting is stored, and a CandidateMaintenance element, which binds the
+	* task and the candidate together.
+	*
+	* @param userId: the id of the user who flagged the page
+	* @param groupId: the id of the group to which the wiki page belongs
+	* @param wikiPageId: the id of the flagged wiki page
+	* @param taskId: the id of the maintenance task for which the page is
+	flagged
+	* @return the CandidateEntry that was added
+	* @throws PortalException
 	*/
 	public static com.liferay.micro.maintainance.candidate.model.CandidateEntry addCandidateEntry(
 		long userId, long groupId, long wikiPageId, long taskId)

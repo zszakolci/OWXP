@@ -45,6 +45,14 @@ public class TaskEntryLocalServiceWrapper implements TaskEntryLocalService,
 		return _taskEntryLocalService.addTaskEntry(taskEntry);
 	}
 
+	/**
+	* Upon deploying a task module, this method adds entry for it to the
+	* database as registration.
+	*
+	* @param taskName
+	* @return the TaskEntry that was added
+	* @throws PortalException
+	*/
 	@Override
 	public com.liferay.micro.maintainance.task.model.TaskEntry addTaskEntry(
 		java.lang.String taskName)

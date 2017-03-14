@@ -55,6 +55,15 @@ public class DecisionEntryLocalServiceUtil {
 
 	/**
 	* Adds the results of an analysis to the database
+	*
+	* @param userId: the id of the user who flagged the page
+	* @param analysisData: the gathered votes
+	* @param candidateId: the id of the candidate entry belonging to the
+	flagged wiki page
+	* @param outcome: the actions to be taken
+	* @param handled: indicates if the actions could be executed
+	* @return the DecisionEntry that was added
+	* @throws PortalException
 	*/
 	public static com.liferay.micro.maintainance.decision.model.DecisionEntry addDecisionEntry(
 		long userId, java.lang.String analysisData, long candidateId,

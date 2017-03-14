@@ -57,7 +57,19 @@ public class CandidateEntryLocalServiceImpl
 	extends CandidateEntryLocalServiceBaseImpl {
 
 	/**
-	 * Adds a candidate entry to the database
+	 * Upon flagging a wiki page for a certain maintenance task this method
+	 * creates a candidate entry, belonging to the page, in the database. 
+	 * It also creates an AnalysisEntry element, in which the current status of
+	 * the voting is stored, and a CandidateMaintenance element, which binds the
+	 * task and the candidate together.
+	 * 
+	 * @param userId: the id of the user who flagged the page
+	 * @param groupId: the id of the group to which the wiki page belongs
+	 * @param wikiPageId: the id of the flagged wiki page
+	 * @param taskId: the id of the maintenance task for which the page is 
+	 * flagged 
+	 * @return the CandidateEntry that was added
+	 * @throws PortalException
 	 */
 	@Override
 	public CandidateEntry addCandidateEntry(
@@ -92,11 +104,13 @@ public class CandidateEntryLocalServiceImpl
 	}
 
 	/**
-	 * Deletes the candidate entry with the primary key from the database. Also notifies the appropriate model listeners.
+	 * Deletes the candidate entry, with the given primary key from the
+	 * database. 
 	 *
 	 * @param entryId the primary key of the candidate entry
 	 * @return the candidate entry that was removed
-	 * @throws PortalException if a candidate entry with the primary key could not be found
+	 * @throws PortalException if there are still votes running on the candidate
+	 * 
 	 */
 	@Indexable(type = IndexableType.DELETE)
 	@Override
@@ -111,29 +125,5 @@ public class CandidateEntryLocalServiceImpl
 		}
 
 		return candidateEntryPersistence.remove(entryId);
-	}
-	
-	
-	public List<Task> getAvailableFlags(long wikiPageId) 
-		throws PortalException {
-
-		List<Task> availableFlags = new ArrayList<Task>();
-		CandidateEntry candidate =
-			CandidateEntryUtil.findByWikiPageId(wikiPageId);
-
-		Map<Long, Task> registeredTasks = 
-			TaskHandler.getTaskHandlerInstance().getTaskEntries();
-
-		for(Task task : registeredTasks.values()) {
-			try {
-				CandidateMaintenanceUtil.findByC_T(
-					candidate.getEntryId(), task.getTaskId());
-			}
-			catch (NoSuchCandidateMaintenanceException e) {
-				availableFlags.add(task);
-			}
-		}
-
-		return availableFlags;
 	}
 }

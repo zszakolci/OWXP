@@ -44,6 +44,14 @@ import aQute.bnd.annotation.ProviderType;
 @ProviderType
 public class TaskEntryLocalServiceImpl extends TaskEntryLocalServiceBaseImpl {
 
+	/**
+	 * Upon deploying a task module, this method adds entry for it to the 
+	 * database as registration.
+	 * 
+	 * @param taskName
+	 * @return the TaskEntry that was added
+	 * @throws PortalException
+	 */
 	@Override
 	public TaskEntry addTaskEntry(String taskName) 
 		throws PortalException {
@@ -62,11 +70,12 @@ public class TaskEntryLocalServiceImpl extends TaskEntryLocalServiceBaseImpl {
 	}
 
 	/**
-	 * Deletes the task entry with the primary key from the database. Also notifies the appropriate model listeners.
+	 * Deletes the task entry with the primary key from the database. Also
+	 * invokes the deletion of all the running votes for this maintenance task. 
 	 *
 	 * @param taskId the primary key of the task entry
 	 * @return the task entry that was removed
-	 * @throws PortalException if a task entry with the primary key could not be found
+	 * @throws PortalException
 	 */
 	@Indexable(type = IndexableType.DELETE)
 	@Override

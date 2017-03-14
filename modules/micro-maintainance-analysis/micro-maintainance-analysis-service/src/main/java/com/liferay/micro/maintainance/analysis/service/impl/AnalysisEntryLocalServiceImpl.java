@@ -43,7 +43,13 @@ public class AnalysisEntryLocalServiceImpl
 	extends AnalysisEntryLocalServiceBaseImpl {
 
 	/**
-	 * Adds an analysis entry
+	 * Adds an analysis entry, which will store the votes
+	 * 
+	 * @param userId: the id of the user who flagged the page
+	 * @param canMainId: the id of the CandidateMaintenance entry, in which the
+	 *   assignment between a task and a candidate is stored.
+	 * @return the AnalysisEntry that was added
+	 * @throws PortalException
 	 */
 	@Override
 	public AnalysisEntry addAnalysisEntry(long userId, long canMainId) 
