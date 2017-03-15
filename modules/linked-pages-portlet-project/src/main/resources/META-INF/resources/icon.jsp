@@ -11,7 +11,7 @@ linkedPagesPanelURL.setWindowState(LiferayWindowState.EXCLUSIVE);
 <script src="side-navigation.js"></script>
 
 <li class="control-menu-nav-item">
-	<a class="control-menu-icon lfr-portal-tooltip product-menu-toggle sidenav-toggler" 
+	<a class="control-menu-icon lfr-portal-tooltip product-menu-toggle sidenav-toggler"
 		data-qa-id="Linked Pages" data-content="body" data-title="Linked Pages"
 		data-url="<%= linkedPagesPanelURL.toString() %>"
 		data-toggle="sidenav"
@@ -21,7 +21,6 @@ linkedPagesPanelURL.setWindowState(LiferayWindowState.EXCLUSIVE);
 		href="#<%= portletNamespace %>linkedPagesPanelId" id="<%= portletNamespace %>linkedPagesToggleId">
 
 		<aui:icon image="link" markupView="lexicon" />
-
 	</a>
 </li>
 

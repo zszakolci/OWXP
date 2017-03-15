@@ -1,13 +1,5 @@
 package com.liferay.grow.linkedpages;
 
-import java.util.Locale;
-
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.User;
@@ -17,16 +9,28 @@ import com.liferay.product.navigation.control.menu.BaseJSPProductNavigationContr
 import com.liferay.product.navigation.control.menu.ProductNavigationControlMenuEntry;
 import com.liferay.product.navigation.control.menu.constants.ProductNavigationControlMenuCategoryKeys;
 
+import java.util.Locale;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 @Component(
-    immediate = true,
-    property = {
-        "product.navigation.control.menu.category.key=" + ProductNavigationControlMenuCategoryKeys.USER,
-        "product.navigation.control.menu.category.order:Integer=500",
-    },
-    service = ProductNavigationControlMenuEntry.class
+	immediate = true,
+	property = {
+		"product.navigation.control.menu.category.key=" + ProductNavigationControlMenuCategoryKeys.USER,
+		"product.navigation.control.menu.category.order:Integer=500"
+	},
+	service = ProductNavigationControlMenuEntry.class
 )
-public class LinkedPagesPortletControlMenuEntry 
+public class LinkedPagesPortletControlMenuEntry
 	extends BaseJSPProductNavigationControlMenuEntry {
+
+	@Override
+	public String getBodyJspPath() {
+		return "/view.jsp";
+	}
 
 	@Override
 	public String getIconJspPath() {
@@ -36,11 +40,6 @@ public class LinkedPagesPortletControlMenuEntry
 	@Override
 	public String getLabel(Locale locale) {
 		return "Linked Pages";
-	}
-
-	@Override
-	public String getBodyJspPath() {
-		return "/view.jsp";
 	}
 
 	@Override
@@ -75,4 +74,5 @@ public class LinkedPagesPortletControlMenuEntry
 	public void setServletContext(ServletContext servletContext) {
 		super.setServletContext(servletContext);
 	}
+
 }

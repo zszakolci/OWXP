@@ -1,58 +1,54 @@
 package com.liferay.grow.linkedpages;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.TreeSet;
-
-import javax.servlet.http.HttpServletRequest;
-
 import com.liferay.grow.linkedpages.util.PageLink;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.CharPool;
-import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.wiki.model.WikiPage;
 import com.liferay.wiki.service.WikiNodeLocalServiceUtil;
 import com.liferay.wiki.service.WikiPageLocalServiceUtil;
 
+import java.util.ArrayList;
+import java.util.TreeSet;
+
+import javax.servlet.http.HttpServletRequest;
 public class LinkedPagesView {
 
-	/*
+	/**
 	 * Finding a linked pages in a wiki page
 	 * Based on Grow Navigation ADT
 	 * https://grow.liferay.com/group/guest/people/-/wiki/Grow/Grow+navigation+ADT
 	 */
 	public LinkedPagesView(ThemeDisplay themeDisplay) {
-		_linkedPages = new TreeSet<PageLink>();
+		_linkedPages = new TreeSet<>();
 		HttpServletRequest request = themeDisplay.getRequest();
 
-		String wikiNode = ParamUtil.getString(request, "p_r_p__http://www.liferay.com/public-render-parameters/wiki_nodeName");
-		String wikiTitle = ParamUtil.getString(request, "p_r_p__http://www.liferay.com/public-render-parameters/wiki_title");
-		
+		String wikiNode = ParamUtil.getString(
+			request,
+			"p_r_p__http://www.liferay.com/public-render-parameters/wiki_nodeName");
+		String wikiTitle = ParamUtil.getString(
+			request,
+			"p_r_p__http://www.liferay.com/public-render-parameters/wiki_title");
+
 		long groupId = themeDisplay.getScopeGroupId();
 
 		fillLinkedPages(groupId, wikiNode, wikiTitle);
 	}
 
-	public ArrayList<PageLink> getLinkedPages() {
-		ArrayList<PageLink> linkedPages = new ArrayList<PageLink>();
+	public void fillLinkedPages(
+		long groupId, String nodeTitle, String pageTitle) {
 
-		linkedPages.addAll(_linkedPages);
-
-		return linkedPages;
-	}
-
-	public void fillLinkedPages(long groupId, String nodeTitle, String pageTitle) {
 		try {
 			long nodeId = WikiNodeLocalServiceUtil.getNode(
 				groupId, nodeTitle).getNodeId();
 
 			WikiPage wikiPage = WikiPageLocalServiceUtil.getPage(
 				nodeId, pageTitle);
+
 			String content = wikiPage.getContent();
 
 			if (wikiPage.getFormat().equals("creole")) {
@@ -70,9 +66,31 @@ public class LinkedPagesView {
 		}
 	}
 
+	public ArrayList<PageLink> getLinkedPages() {
+		ArrayList<PageLink> linkedPages = new ArrayList<>();
+
+		linkedPages.addAll(_linkedPages);
+
+		return linkedPages;
+	}
+
+	private void addLink(String link) {
+		if (!link.contains(_GROW_URL+_PUBLIC_PAGE)) {
+			String title = link.substring(link.lastIndexOf('/')+1);
+
+			title = title.replace('+', CharPool.SPACE);
+
+			if (title.contains("#section")) {
+				title = title.substring(0, title.indexOf("#section"));
+			}
+
+			_linkedPages.add(new PageLink(title, link));
+		}
+	}
+
 	private void addLinksCreole(String content) {
-		while(content.indexOf(_GROW_URL) > 0) {
-			content = content.substring(content.indexOf(_GROW_URL)); 
+		while (content.indexOf(_GROW_URL) > 0) {
+			content = content.substring(content.indexOf(_GROW_URL));
 			String link = content.substring(0, content.indexOf("]]"));
 
 			if (link.contains("|")) {
@@ -86,8 +104,8 @@ public class LinkedPagesView {
 	}
 
 	private void addLinksHTML(String content) {
-		while(content.indexOf(_GROW_URL) > 0) {
-			content = content.substring(content.indexOf(_GROW_URL)); 
+		while (content.indexOf(_GROW_URL) > 0) {
+			content = content.substring(content.indexOf(_GROW_URL));
 			String link = content.substring(0, content.indexOf("\">"));
 
 			addLink(link);
@@ -102,7 +120,7 @@ public class LinkedPagesView {
 
 		String[] contentElements = StringUtil.split(content, CharPool.SPACE);
 
-		for (String element: contentElements) {
+		for (String element : contentElements) {
 			if (element.contains(_GROW_URL)) {
 				if (element.startsWith("(")) {
 					element = element.substring(1);
@@ -117,23 +135,13 @@ public class LinkedPagesView {
 		}
 	}
 
-	private void addLink(String link) {
-		if (!link.contains(_GROW_URL+_PUBLIC_PAGE)) {
-			String title = link.substring(link.lastIndexOf('/')+1);
-
-			title = title.replace('+', CharPool.SPACE);
-
-			if (title.contains("#section")) {
-				title = title.substring(0, title.indexOf("#section"));
-			}
-
-			_linkedPages.add(
-				new PageLink(title, link));
-		}
-	}
-
 	private static final String _GROW_URL = "https://grow.liferay.com/";
+
 	private static final String _PUBLIC_PAGE = "web";
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		LinkedPagesView.class);
+
 	private TreeSet<PageLink> _linkedPages;
-	private Log _log = LogFactoryUtil.getLog(LinkedPagesView.class);
+
 }
