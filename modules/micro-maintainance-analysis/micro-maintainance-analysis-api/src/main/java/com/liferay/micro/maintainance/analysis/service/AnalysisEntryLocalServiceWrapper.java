@@ -120,6 +120,12 @@ public class AnalysisEntryLocalServiceWrapper
 			companyId);
 	}
 
+	@Override
+	public com.liferay.micro.maintainance.analysis.model.AnalysisEntry getAnalysisByCandidateMaintenance(
+		long canMainId) {
+		return _analysisEntryLocalService.getAnalysisByCandidateMaintenance(canMainId);
+	}
+
 	/**
 	* Returns the analysis entry with the primary key.
 	*

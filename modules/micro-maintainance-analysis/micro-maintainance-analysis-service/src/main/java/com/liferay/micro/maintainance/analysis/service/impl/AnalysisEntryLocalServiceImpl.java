@@ -18,6 +18,10 @@ import java.util.Date;
 
 import com.liferay.micro.maintainance.analysis.model.AnalysisEntry;
 import com.liferay.micro.maintainance.analysis.service.base.AnalysisEntryLocalServiceBaseImpl;
+import com.liferay.micro.maintainance.analysis.service.persistence.AnalysisEntryUtil;
+import com.liferay.micro.maintainance.analysis.exception.NoSuchEntryException;
+import com.liferay.micro.maintainance.candidate.model.CandidateEntry;
+import com.liferay.micro.maintainance.candidate.service.persistence.CandidateEntryUtil;
 import com.liferay.micro.maintainance.util.VotesJSONSerializer;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
@@ -75,5 +79,14 @@ public class AnalysisEntryLocalServiceImpl
 		analysisEntryPersistence.update(analysisEntry);
 
 		return analysisEntry;
+	}
+
+	@Override
+	public AnalysisEntry getAnalysisByCandidateMaintenance(long canMainId) {
+		try {
+			return AnalysisEntryUtil.findByCanMainId(canMainId);
+		} catch (NoSuchEntryException e) {
+			return null;
+		}
 	}
 }

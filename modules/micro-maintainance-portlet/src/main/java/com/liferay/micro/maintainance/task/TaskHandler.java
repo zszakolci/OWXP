@@ -5,20 +5,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.liferay.micro.maintainance.analysis.exception.NoSuchUserException;
 import com.liferay.micro.maintainance.analysis.model.AnalysisEntry;
 import com.liferay.micro.maintainance.analysis.model.AnalysisUser;
+import com.liferay.micro.maintainance.analysis.service.AnalysisEntryLocalServiceUtil;
 import com.liferay.micro.maintainance.analysis.service.AnalysisUserLocalServiceUtil;
-import com.liferay.micro.maintainance.analysis.service.persistence.AnalysisEntryUtil;
-import com.liferay.micro.maintainance.analysis.service.persistence.AnalysisUserUtil;
 import com.liferay.micro.maintainance.candidate.model.CandidateEntry;
-import com.liferay.micro.maintainance.candidate.service.persistence.CandidateEntryUtil;
-import com.liferay.micro.maintainance.task.exception.NoSuchCandidateMaintenanceException;
+import com.liferay.micro.maintainance.candidate.service.CandidateEntryLocalServiceUtil;
 import com.liferay.micro.maintainance.task.model.CandidateMaintenance;
 import com.liferay.micro.maintainance.task.model.TaskEntry;
+import com.liferay.micro.maintainance.task.service.CandidateMaintenanceLocalServiceUtil;
 import com.liferay.micro.maintainance.task.service.TaskEntryLocalServiceUtil;
-import com.liferay.micro.maintainance.task.service.persistence.CandidateMaintenanceUtil;
-import com.liferay.micro.maintainance.task.service.persistence.TaskEntryUtil;
 import com.liferay.micro.maintainance.util.VoteConstants;
 import com.liferay.micro.maintainance.util.VotesJSONSerializer;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -49,7 +45,7 @@ public class TaskHandler {
 	 */
 	public void registerTask(Task task) throws PortalException {
 		TaskEntry taskEntry = 
-			TaskEntryUtil.findByTasksByName(task.getTaskName());
+			TaskEntryLocalServiceUtil.getTaskEntryByName(task.getTaskName());
 
 		if(Validator.isNull(taskEntry)) {
 			taskEntry =
@@ -71,7 +67,7 @@ public class TaskHandler {
 	 */
 	public void unregisterTask(Task task) throws PortalException {
 		TaskEntryLocalServiceUtil.deleteTaskEntry(task.getTaskId());
-		registeredTasks.remove(task);
+		registeredTasks.remove(task.getTaskId());
 	}
 
 	/**
@@ -82,21 +78,24 @@ public class TaskHandler {
 	 * @param wikiPageId
 	 * @throws PortalException
 	 */
-	public List<Task> getAvailableFlags(long wikiPageId) 
+	public List<Task> getAvailableFlags(long wikiPageId)
 		throws PortalException {
 
 		List<Task> availableFlags = new ArrayList<Task>();
 
 		CandidateEntry candidate =
-			CandidateEntryUtil.findByWikiPageId(wikiPageId);
+			CandidateEntryLocalServiceUtil.getCandidateByWikiPageId(wikiPageId);
 
-		for(Task task : registeredTasks.values()) {
-			try {
-				CandidateMaintenanceUtil.findByC_T(
-					candidate.getEntryId(), task.getTaskId());
-			}
-			catch (NoSuchCandidateMaintenanceException e) {
-				availableFlags.add(task);
+		if(candidate == null) {
+			availableFlags.addAll(registeredTasks.values());
+		}
+		else {
+			for(Task task : registeredTasks.values()) {
+				if(CandidateMaintenanceLocalServiceUtil
+						.getCandidateMaintenaceTask(
+							candidate.getEntryId(), task.getTaskId()) == null) {
+					availableFlags.add(task);
+				}
 			}
 		}
 
@@ -125,28 +124,29 @@ public class TaskHandler {
 		throws PortalException {
 
 		CandidateEntry candidateEntry =
-			CandidateEntryUtil.findByWikiPageId(wikiPageId);
+			CandidateEntryLocalServiceUtil.getCandidateByWikiPageId(wikiPageId);
 
 		CandidateMaintenance canMain =
-			CandidateMaintenanceUtil.findByC_T(
+			CandidateMaintenanceLocalServiceUtil.getCandidateMaintenaceTask(
 				candidateEntry.getEntryId(), taskId);
 
 		AnalysisEntry analysisEntry;
 
-		analysisEntry = AnalysisEntryUtil.findByCanMainId(
-			canMain.getCandidateMaintenanceId());
+		analysisEntry = AnalysisEntryLocalServiceUtil
+			.getAnalysisByCandidateMaintenance(
+				canMain.getCandidateMaintenanceId());
 
 		long analysisId = analysisEntry.getAnalysisId();
 
-		try {
-			AnalysisUser analysisUser = 
-				AnalysisUserUtil.findByA_U(analysisId, userId);
-			
+		AnalysisUser analysisUser = 
+			AnalysisUserLocalServiceUtil.getAnalysisUser(analysisId, userId);
+
+		if(analysisUser != null) {
 			return analysisUser.getVoted();
-		} catch (NoSuchUserException e) {
-			AnalysisUserLocalServiceUtil.addAnalysisUser(
-				analysisId, userId, VoteConstants.NOT_VOTED);
 		}
+		
+		AnalysisUserLocalServiceUtil.addAnalysisUser(
+			analysisId, userId, VoteConstants.NOT_VOTED);
 
 		return VoteConstants.NOT_VOTED;
 	}
@@ -165,21 +165,22 @@ public class TaskHandler {
 		throws PortalException {
 
 		CandidateEntry candidateEntry =
-				CandidateEntryUtil.findByWikiPageId(wikiPageId);
+			CandidateEntryLocalServiceUtil.getCandidateByWikiPageId(wikiPageId);
 
 		CandidateMaintenance canMain =
-			CandidateMaintenanceUtil.findByC_T(
+			CandidateMaintenanceLocalServiceUtil.getCandidateMaintenaceTask(
 				candidateEntry.getEntryId(), taskId);
 
 		AnalysisEntry analysisEntry;
 
-		analysisEntry = AnalysisEntryUtil.findByCanMainId(
-			canMain.getCandidateMaintenanceId());
+		analysisEntry = AnalysisEntryLocalServiceUtil
+			.getAnalysisByCandidateMaintenance(
+				canMain.getCandidateMaintenanceId());
 
 		long analysisId = analysisEntry.getAnalysisId();
 
 		AnalysisUser analysisUser = 
-			AnalysisUserUtil.findByA_U(analysisId, userId);
+			AnalysisUserLocalServiceUtil.getAnalysisUser(analysisId, userId);
 
 		int previousVote = analysisUser.getVoted();
 
@@ -199,5 +200,5 @@ public class TaskHandler {
 	}
 
 	private Map<Long, Task> registeredTasks;
-	private static TaskHandler taskHandlerInstance = null;
+	private static TaskHandler taskHandlerInstance;
 }

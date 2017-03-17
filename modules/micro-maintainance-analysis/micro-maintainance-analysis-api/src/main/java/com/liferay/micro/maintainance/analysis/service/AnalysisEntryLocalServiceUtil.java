@@ -120,6 +120,11 @@ public class AnalysisEntryLocalServiceUtil {
 		return getService().fetchAnalysisEntryByUuidAndCompanyId(uuid, companyId);
 	}
 
+	public static com.liferay.micro.maintainance.analysis.model.AnalysisEntry getAnalysisByCandidateMaintenance(
+		long canMainId) {
+		return getService().getAnalysisByCandidateMaintenance(canMainId);
+	}
+
 	/**
 	* Returns the analysis entry with the primary key.
 	*
