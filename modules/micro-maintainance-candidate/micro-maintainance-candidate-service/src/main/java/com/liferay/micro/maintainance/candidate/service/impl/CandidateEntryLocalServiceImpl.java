@@ -31,6 +31,7 @@ import com.liferay.micro.maintainance.task.exception.NoSuchCandidateMaintenanceE
 import com.liferay.micro.maintainance.task.model.CandidateMaintenance;
 import com.liferay.micro.maintainance.task.service.CandidateMaintenanceLocalServiceUtil;
 import com.liferay.micro.maintainance.task.service.persistence.CandidateMaintenanceUtil;
+import com.liferay.micro.maintainance.task.service.persistence.TaskEntryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.search.Indexable;
@@ -125,5 +126,14 @@ public class CandidateEntryLocalServiceImpl
 		}
 
 		return candidateEntryPersistence.remove(entryId);
+	}
+
+	@Override
+	public CandidateEntry getCandidateByWikiPageId(long wikiPageId) {
+		try {
+			return CandidateEntryUtil.findByWikiPageId(wikiPageId);
+		} catch (NoSuchEntryException e) {
+			return null;
+		}
 	}
 }

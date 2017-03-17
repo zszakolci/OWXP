@@ -17,12 +17,12 @@ package com.liferay.micro.maintainance.task.service.impl;
 import java.util.Date;
 import java.util.List;
 
-import com.liferay.micro.maintainance.candidate.model.CandidateEntry;
 import com.liferay.micro.maintainance.candidate.service.CandidateEntryLocalServiceUtil;
+import com.liferay.micro.maintainance.task.exception.NoSuchCandidateMaintenanceException;
 import com.liferay.micro.maintainance.task.model.CandidateMaintenance;
 import com.liferay.micro.maintainance.task.service.base.CandidateMaintenanceLocalServiceBaseImpl;
+import com.liferay.micro.maintainance.task.service.persistence.CandidateMaintenanceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 
@@ -101,6 +101,18 @@ public class CandidateMaintenanceLocalServiceImpl
 		}
 
 		return currentCanMain;
+	}
+
+	@Override
+	public CandidateMaintenance getCandidateMaintenaceTask(
+			long candidateId, long taskId)
+		throws PortalException {
+
+		try {
+			return CandidateMaintenanceUtil.findByC_T(candidateId, taskId);
+		} catch (NoSuchCandidateMaintenanceException e) {
+			return null;
+		}
 	}
 
 	/**

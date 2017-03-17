@@ -100,6 +100,12 @@ public class AnalysisUserLocalServiceWrapper implements AnalysisUserLocalService
 		return _analysisUserLocalService.fetchAnalysisUser(analysisUserId);
 	}
 
+	@Override
+	public com.liferay.micro.maintainance.analysis.model.AnalysisUser getAnalysisUser(
+		long analysisId, long userId) {
+		return _analysisUserLocalService.getAnalysisUser(analysisId, userId);
+	}
+
 	/**
 	* Returns the analysis user with the primary key.
 	*
