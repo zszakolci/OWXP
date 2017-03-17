@@ -120,6 +120,10 @@ public interface CandidateMaintenanceLocalService extends BaseLocalService,
 	public CandidateMaintenance fetchCandidateMaintenance(
 		long candidateMaintenanceId);
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public CandidateMaintenance getCandidateMaintenaceTask(long candidateId,
+		long taskId) throws PortalException;
+
 	/**
 	* Returns the candidate maintenance with the primary key.
 	*

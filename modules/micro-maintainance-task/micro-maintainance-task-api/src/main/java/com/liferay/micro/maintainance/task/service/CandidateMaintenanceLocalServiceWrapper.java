@@ -110,6 +110,14 @@ public class CandidateMaintenanceLocalServiceWrapper
 		return _candidateMaintenanceLocalService.fetchCandidateMaintenance(candidateMaintenanceId);
 	}
 
+	@Override
+	public com.liferay.micro.maintainance.task.model.CandidateMaintenance getCandidateMaintenaceTask(
+		long candidateId, long taskId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _candidateMaintenanceLocalService.getCandidateMaintenaceTask(candidateId,
+			taskId);
+	}
+
 	/**
 	* Returns the candidate maintenance with the primary key.
 	*

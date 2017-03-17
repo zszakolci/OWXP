@@ -118,6 +118,11 @@ public class TaskEntryLocalServiceUtil {
 		return getService().getTaskEntry(taskId);
 	}
 
+	public static com.liferay.micro.maintainance.task.model.TaskEntry getTaskEntryByName(
+		java.lang.String taskName) {
+		return getService().getTaskEntryByName(taskName);
+	}
+
 	/**
 	* Updates the task entry in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*

@@ -111,6 +111,12 @@ public class CandidateMaintenanceLocalServiceUtil {
 		return getService().fetchCandidateMaintenance(candidateMaintenanceId);
 	}
 
+	public static com.liferay.micro.maintainance.task.model.CandidateMaintenance getCandidateMaintenaceTask(
+		long candidateId, long taskId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getCandidateMaintenaceTask(candidateId, taskId);
+	}
+
 	/**
 	* Returns the candidate maintenance with the primary key.
 	*

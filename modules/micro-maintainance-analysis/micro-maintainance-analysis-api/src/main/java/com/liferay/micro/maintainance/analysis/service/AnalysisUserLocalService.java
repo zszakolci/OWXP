@@ -107,6 +107,9 @@ public interface AnalysisUserLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public AnalysisUser fetchAnalysisUser(long analysisUserId);
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public AnalysisUser getAnalysisUser(long analysisId, long userId);
+
 	/**
 	* Returns the analysis user with the primary key.
 	*

@@ -127,6 +127,11 @@ public class CandidateEntryLocalServiceUtil {
 		return getService().fetchCandidateEntryByUuidAndGroupId(uuid, groupId);
 	}
 
+	public static com.liferay.micro.maintainance.candidate.model.CandidateEntry getCandidateByWikiPageId(
+		long wikiPageId) {
+		return getService().getCandidateByWikiPageId(wikiPageId);
+	}
+
 	/**
 	* Returns the candidate entry with the primary key.
 	*
