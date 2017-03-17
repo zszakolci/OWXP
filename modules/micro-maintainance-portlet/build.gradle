@@ -6,6 +6,8 @@ dependencies {
 	compile 'jstl:jstl:1.2'
 	compile 'biz.aQute.bnd:biz.aQute.bndlib:3.1.0'
 	compile group: "com.liferay", name: "com.liferay.portal.configuration.metatype", version: "2.0.7"
+	compile group: "com.liferay", name: "com.liferay.wiki.api", version: "2.2.0"
+	compile group: "com.liferay", name: "com.liferay.wiki.service", version: "1.2.0"
 
 	compile project(':modules:micro-maintainance-task:micro-maintainance-task-api')
 	compile project(':modules:micro-maintainance-analysis:micro-maintainance-analysis-api')
