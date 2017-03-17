@@ -133,6 +133,9 @@ public interface CandidateEntryLocalService extends BaseLocalService,
 	public CandidateEntry fetchCandidateEntryByUuidAndGroupId(
 		java.lang.String uuid, long groupId);
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public CandidateEntry getCandidateByWikiPageId(long wikiPageId);
+
 	/**
 	* Returns the candidate entry with the primary key.
 	*

@@ -127,6 +127,9 @@ public interface AnalysisEntryLocalService extends BaseLocalService,
 	public AnalysisEntry fetchAnalysisEntryByUuidAndCompanyId(
 		java.lang.String uuid, long companyId);
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public AnalysisEntry getAnalysisByCandidateMaintenance(long canMainId);
+
 	/**
 	* Returns the analysis entry with the primary key.
 	*

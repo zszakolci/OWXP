@@ -17,13 +17,18 @@ package com.liferay.micro.maintainance.task.service.impl;
 import java.util.Date;
 import java.util.List;
 
+import com.liferay.micro.maintainance.task.exception.NoSuchEntryException;
 import com.liferay.micro.maintainance.task.model.CandidateMaintenance;
 import com.liferay.micro.maintainance.task.model.TaskEntry;
 import com.liferay.micro.maintainance.task.service.CandidateMaintenanceLocalServiceUtil;
 import com.liferay.micro.maintainance.task.service.base.TaskEntryLocalServiceBaseImpl;
+import com.liferay.micro.maintainance.task.service.persistence.TaskEntryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
+import com.liferay.portal.kernel.service.UserLocalServiceUtil;
+import com.liferay.portal.kernel.util.Validator;
 
 import aQute.bnd.annotation.ProviderType;
 
@@ -91,5 +96,14 @@ public class TaskEntryLocalServiceImpl extends TaskEntryLocalServiceBaseImpl {
 		}
 
 		return taskEntryPersistence.remove(taskId);
+	}
+
+	@Override
+	public TaskEntry getTaskEntryByName(String taskName) {
+		try {
+			return TaskEntryUtil.findByTasksByName(taskName);
+		} catch (NoSuchEntryException e) {
+			return null;
+		}
 	}
 }

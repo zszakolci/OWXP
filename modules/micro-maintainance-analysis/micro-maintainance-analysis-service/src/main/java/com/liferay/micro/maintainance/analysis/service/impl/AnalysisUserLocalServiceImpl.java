@@ -14,8 +14,10 @@
 
 package com.liferay.micro.maintainance.analysis.service.impl;
 
+import com.liferay.micro.maintainance.analysis.exception.NoSuchUserException;
 import com.liferay.micro.maintainance.analysis.model.AnalysisUser;
 import com.liferay.micro.maintainance.analysis.service.base.AnalysisUserLocalServiceBaseImpl;
+import com.liferay.micro.maintainance.analysis.service.persistence.AnalysisUserUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
 
@@ -61,5 +63,14 @@ public class AnalysisUserLocalServiceImpl
 		analysisUserPersistence.update(analysisUser);
 
 		return analysisUser;
+	}
+
+	@Override
+	public AnalysisUser getAnalysisUser(long analysisId, long userId) {
+		try {
+			return AnalysisUserUtil.findByA_U(analysisId, userId);
+		} catch (NoSuchUserException e) {
+			return null;
+		}
 	}
 }

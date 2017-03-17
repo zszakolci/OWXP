@@ -127,6 +127,12 @@ public class CandidateEntryLocalServiceWrapper
 			groupId);
 	}
 
+	@Override
+	public com.liferay.micro.maintainance.candidate.model.CandidateEntry getCandidateByWikiPageId(
+		long wikiPageId) {
+		return _candidateEntryLocalService.getCandidateByWikiPageId(wikiPageId);
+	}
+
 	/**
 	* Returns the candidate entry with the primary key.
 	*

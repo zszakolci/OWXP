@@ -102,6 +102,11 @@ public class AnalysisUserLocalServiceUtil {
 		return getService().fetchAnalysisUser(analysisUserId);
 	}
 
+	public static com.liferay.micro.maintainance.analysis.model.AnalysisUser getAnalysisUser(
+		long analysisId, long userId) {
+		return getService().getAnalysisUser(analysisId, userId);
+	}
+
 	/**
 	* Returns the analysis user with the primary key.
 	*
