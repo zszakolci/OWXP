@@ -19,6 +19,8 @@
 <%
 boolean actionRequired = ParamUtil.getBoolean(request, "actionRequired");
 
+int archivedUserNotificationEventsCount = UserNotificationEventLocalServiceUtil.getArchivedUserNotificationEventsCount(themeDisplay.getUserId(), UserNotificationDeliveryConstants.TYPE_WEBSITE, false);
+
 int userNotificationEventsCount = UserNotificationEventLocalServiceUtil.getDeliveredUserNotificationEventsCount(themeDisplay.getUserId(), UserNotificationDeliveryConstants.TYPE_WEBSITE, true, actionRequired);
 %>
 
@@ -59,6 +61,17 @@ int userNotificationEventsCount = UserNotificationEventLocalServiceUtil.getDeliv
 			portletURL="<%= currentURLObj %>"
 			selectedDisplayStyle="descriptive"
 		/>
+
+		<c:if test="<%= !actionRequired && (archivedUserNotificationEventsCount != 0) %>">
+			<portlet:actionURL name="/notifications/markAllAsRead" var="markAllAsRead" />
+
+			<liferay-ui:icon
+				iconCssClass="icon-remove"
+				label="<%= true %>"
+				message="Mark all as read"
+				url="<%= markAllAsRead %>"
+			/>
+		</c:if>
 	</liferay-frontend:management-bar-buttons>
 
 	<liferay-frontend:management-bar-action-buttons>
