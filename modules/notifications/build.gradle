@@ -1,4 +1,5 @@
 dependencies {
+	compile group: "com.liferay", name: "com.liferay.application.list.api", version: "2.0.0"
 	compile group: "com.liferay", name: "com.liferay.notifications.web", version: "1.0.16"
 
 	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "2.0.0"
