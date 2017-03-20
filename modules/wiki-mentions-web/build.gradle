@@ -1,4 +1,5 @@
 dependencies {
+	compile group: "com.liferay", name: "com.liferay.mentions.api", version: "default"
 	compile group: "com.liferay", name: "com.liferay.mentions.web", version: "default"
 	compile group: "com.liferay", name: "com.liferay.wiki.api", version: "2.2.0"
 
