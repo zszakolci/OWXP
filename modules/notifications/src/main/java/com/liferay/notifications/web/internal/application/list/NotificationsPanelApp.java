@@ -21,12 +21,7 @@ import com.liferay.notifications.web.internal.constants.NotificationsPortletKeys
 import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.UserNotificationDeliveryConstants;
-import com.liferay.portal.kernel.service.PortalPreferencesLocalServiceUtil;
 import com.liferay.portal.kernel.service.UserNotificationEventLocalService;
-import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.PortletKeys;
-
-import javax.portlet.PortletPreferences;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -39,7 +34,8 @@ import org.osgi.service.component.annotations.Reference;
 	property = {
 		"javax.portlet.name=" + NotificationsPortletKeys.NOTIFICATIONS,
 		"panel.app.order:Integer=400",
-		"panel.category.key=" + PanelCategoryKeys.USER_MY_ACCOUNT
+		"panel.category.key=" + PanelCategoryKeys.USER_MY_ACCOUNT,
+		"service.ranking:Integer=100"
 	},
 	service = PanelApp.class
 )
@@ -51,31 +47,10 @@ public class NotificationsPanelApp extends BasePanelApp {
 			return 0;
 		}
 
-		PortletPreferences portletPreferences =
-			PortalPreferencesLocalServiceUtil.getPreferences(
-				user.getUserId(), PortletKeys.PREFS_OWNER_TYPE_USER);
-
-		boolean useLegacyUserNotifiationEventsCount = GetterUtil.getBoolean(
-			portletPreferences.getValue(
-				"useLegacyUserNotifiationEventsCount",
-				Boolean.TRUE.toString()));
-
-		int userNotifiationEventsCount = 0;
-
-		if (useLegacyUserNotifiationEventsCount) {
-			userNotifiationEventsCount =
-				_userNotificationEventLocalService.
-					getArchivedUserNotificationEventsCount(
-						user.getUserId(),
-						UserNotificationDeliveryConstants.TYPE_WEBSITE, false);
-		}
-		else {
-			userNotifiationEventsCount = GetterUtil.getInteger(
-				portletPreferences.getValue(
-					"userNotifiationEventsCount", null));
-		}
-
-		return userNotifiationEventsCount;
+		return _userNotificationEventLocalService.
+			getArchivedUserNotificationEventsCount(
+				user.getUserId(),
+				UserNotificationDeliveryConstants.TYPE_WEBSITE, false);
 	}
 
 	@Override
