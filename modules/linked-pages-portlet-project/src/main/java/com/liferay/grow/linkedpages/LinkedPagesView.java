@@ -151,7 +151,7 @@ public class LinkedPagesView {
 				}
 
 				if (element.endsWith(")")) {
-					element = element.substring(0, element.length() - 2);
+					element = element.substring(0, element.length() - 1);
 				}
 
 				_addLink(element);
