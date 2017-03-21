@@ -14,32 +14,40 @@
 
 package com.liferay.grow.linkedpages.util;
 
+import com.liferay.portal.kernel.util.StringUtil;
+
 /**
  * @author Laszlo Hudak
  */
-public class PageLink implements Comparable {
+public class PageLink implements Comparable<PageLink> {
 
 	public PageLink(String pageTitle, String pageLink) {
-		this._pageLink = pageLink;
-		this._pageTitle = pageTitle;
+		_pageTitle = pageTitle;
+		_pageLink = pageLink;
 	}
 
 	@Override
-	public int compareTo(Object o) {
-		return _pageTitle.toLowerCase().compareTo(
-			((PageLink)o).getPageTitle().toLowerCase());
+	public int compareTo(PageLink pageLink) {
+		return StringUtil.toLowerCase(_pageTitle).compareTo(
+			StringUtil.toLowerCase(pageLink.getPageTitle()));
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj instanceof PageLink) {
-			if (_pageLink.equals(((PageLink)obj).getPageLink()) &&
-				_pageTitle.equals(((PageLink)obj).getPageTitle())) {
+		if (this == obj) {
+			return true;
+		}
 
-				return true;
-			}
-
+		if (!(obj instanceof PageLink)) {
 			return false;
+		}
+
+		PageLink pageLink = (PageLink)obj;
+
+		if (_pageLink.equals(pageLink.getPageLink()) &&
+			_pageTitle.equals(pageLink.getPageTitle())) {
+
+			return true;
 		}
 
 		return false;
@@ -54,11 +62,11 @@ public class PageLink implements Comparable {
 	}
 
 	public void setPageLink(String pageLink) {
-		this._pageLink = pageLink;
+		_pageLink = pageLink;
 	}
 
 	public void setPageTitle(String pageTitle) {
-		this._pageTitle = pageTitle;
+		_pageTitle = pageTitle;
 	}
 
 	private String _pageLink;

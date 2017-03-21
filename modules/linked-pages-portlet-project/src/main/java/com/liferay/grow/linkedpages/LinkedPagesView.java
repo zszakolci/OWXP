@@ -47,10 +47,12 @@ public class LinkedPagesView {
 
 		String wikiNode = ParamUtil.getString(
 			request,
-			"p_r_p__http://www.liferay.com/public-render-parameters/wiki_nodeName");
+			"p_r_p__http://www.liferay.com/public-render-parameters" +
+				"/wiki_nodeName");
 		String wikiTitle = ParamUtil.getString(
 			request,
-			"p_r_p__http://www.liferay.com/public-render-parameters/wiki_title");
+			"p_r_p__http://www.liferay.com/public-render-parameters" +
+				"/wiki_title");
 
 		long groupId = themeDisplay.getScopeGroupId();
 
@@ -70,17 +72,19 @@ public class LinkedPagesView {
 			String content = wikiPage.getContent();
 
 			if (wikiPage.getFormat().equals("creole")) {
-				addLinksCreole(content);
+				_addLinksCreole(content);
 			}
 			else if (wikiPage.getFormat().equals("html")) {
-				addLinksHTML(content);
+				_addLinksHTML(content);
 			}
 			else if (wikiPage.getFormat().equals("markdown")) {
-				addLinksMarkdown(content);
+				_addLinksMarkdown(content);
 			}
-
-		} catch (PortalException e) {
-			_log.debug(e.getMessage());
+		}
+		catch (PortalException pe) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(pe.getMessage());
+			}
 		}
 	}
 
@@ -92,9 +96,9 @@ public class LinkedPagesView {
 		return linkedPages;
 	}
 
-	private void addLink(String link) {
-		if (!link.contains(_GROW_URL+_PUBLIC_PAGE)) {
-			String title = link.substring(link.lastIndexOf('/')+1);
+	private void _addLink(String link) {
+		if (!link.contains(_GROW_URL + _PUBLIC_PAGE)) {
+			String title = link.substring(link.lastIndexOf('/') + 1);
 
 			title = title.replace('+', CharPool.SPACE);
 
@@ -106,35 +110,37 @@ public class LinkedPagesView {
 		}
 	}
 
-	private void addLinksCreole(String content) {
+	private void _addLinksCreole(String content) {
 		while (content.indexOf(_GROW_URL) > 0) {
 			content = content.substring(content.indexOf(_GROW_URL));
+
 			String link = content.substring(0, content.indexOf("]]"));
 
 			if (link.contains("|")) {
 				link = link.substring(0, link.indexOf("|"));
 			}
 
-			addLink(link);
+			_addLink(link);
 
-			content = content.substring(content.indexOf("]]")+2);
+			content = content.substring(content.indexOf("]]") + 2);
 		}
 	}
 
-	private void addLinksHTML(String content) {
+	private void _addLinksHTML(String content) {
 		while (content.indexOf(_GROW_URL) > 0) {
 			content = content.substring(content.indexOf(_GROW_URL));
+
 			String link = content.substring(0, content.indexOf("\">"));
 
-			addLink(link);
+			_addLink(link);
 
-			content = content.substring(content.indexOf("</a>")+4);
+			content = content.substring(content.indexOf("</a>") + 4);
 		}
 	}
 
-	private void addLinksMarkdown(String content) {
-		content = content.replace(CharPool.NEW_LINE, CharPool.SPACE)
-			.replace(CharPool.CLOSE_BRACKET, CharPool.SPACE);
+	private void _addLinksMarkdown(String content) {
+		content = content.replace(CharPool.NEW_LINE, CharPool.SPACE).replace(
+			CharPool.CLOSE_BRACKET, CharPool.SPACE);
 
 		String[] contentElements = StringUtil.split(content, CharPool.SPACE);
 
@@ -145,10 +151,10 @@ public class LinkedPagesView {
 				}
 
 				if (element.endsWith(")")) {
-					element = element.substring(0, element.length()-2);
+					element = element.substring(0, element.length() - 2);
 				}
 
-				addLink(element);
+				_addLink(element);
 			}
 		}
 	}
