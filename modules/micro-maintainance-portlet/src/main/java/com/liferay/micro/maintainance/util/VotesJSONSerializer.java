@@ -53,7 +53,7 @@ public class VotesJSONSerializer {
 
 	private static void decreaseVote(JSONObject jsonObject, String vote) {
 		int votes = jsonObject.getInt(vote);
-		jsonObject.put(vote, -votes);
+		jsonObject.put(vote, --votes);
 	}
 
 	private static JSONFactory _jsonFactory;
