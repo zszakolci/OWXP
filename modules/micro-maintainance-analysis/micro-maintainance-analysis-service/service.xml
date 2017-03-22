@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+CD<?xml version="1.0"?>
 <!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 6.2.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_6_2_0.dtd">
 
 <service-builder package-path="com.liferay.micro.maintainance.analysis">
@@ -36,7 +36,7 @@
 		<finder name="CompanyId" return-type="Collection">
 			<finder-column name="companyId" />
 		</finder>
-		<finder name="CanMainId" return-type="AnalysisEntry">
+		<finder name=" CanMainId" return-type="AnalysisEntry">
 			<finder-column name="canMainId" />
 		</finder>
 		<finder name="A_C" return-type="Collection">
@@ -61,7 +61,7 @@
 			<finder-column name="companyId" />
 			<finder-column name="userId" />
 		</finder>
-		<finder name="U_cD" return-type="Collection">
+		<finder name="U_CD" return-type="Collection">
 			<finder-column name="userId" />
 			<finder-column name="createDate" />
 		</finder>
@@ -101,7 +101,7 @@
 			<finder-column name="analysisId" />
 			<finder-column name="userId" />
 		</finder>
-		<finder name="AU" return-type="AnalysisUser">
+		<finder name="AnalysisUserId" return-type="AnalysisUser">
 			<finder-column name="analysisUserId" />
 		</finder>
 		<finder name="Voted" return-type="Collection">

@@ -25,10 +25,10 @@
 
 		<!-- Finder methods -->
 
-		<finder name="TasksById" return-type="TaskEntry">
+		<finder name=" TasksById" return-type="TaskEntry">
 			<finder-column name="taskId" />
 		</finder>
-		<finder name="TasksByName" return-type="TaskEntry">
+		<finder name=" TasksByName" return-type="TaskEntry">
 			<finder-column name="taskName" />
 		</finder>
 	</entity>
@@ -47,10 +47,10 @@
 
 		<!-- Finder methods -->
 
-		<finder name="CandidateIds" return-type="Collection">
+		<finder name=" CandidateIds" return-type="Collection">
 			<finder-column name="candidateId" />
 		</finder>
-		<finder name="TaskIds" return-type="Collection">
+		<finder name=" TaskIds" return-type="Collection">
 			<finder-column name="taskId" />
 		</finder>
 		<finder name="C_T" return-type="CandidateMaintenance">
