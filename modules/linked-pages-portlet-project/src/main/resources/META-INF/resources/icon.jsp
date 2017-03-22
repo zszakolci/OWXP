@@ -24,8 +24,6 @@ PortletURL linkedPagesPanelURL = PortletURLFactoryUtil.create(request, LinkedPag
 linkedPagesPanelURL.setWindowState(LiferayWindowState.EXCLUSIVE);
 %>
 
-<script src="side-navigation.js"></script>
-
 <li class="control-menu-nav-item">
 	<a class="control-menu-icon lfr-portal-tooltip product-menu-toggle sidenav-toggler"
 		data-qa-id="Linked Pages" data-content="body" data-title="Linked Pages"
