@@ -81,7 +81,7 @@ public class TaskEntryLocalServiceImpl extends TaskEntryLocalServiceBaseImpl {
 	@Override
 	public TaskEntry deleteTaskEntry(long taskEntryId) throws PortalException {
 		List<CandidateMaintenance> canMainTasks =
-			CandidateMaintenanceLocalServiceUtil.getMaintenaceTasks(
+			CandidateMaintenanceLocalServiceUtil.getMaintenaceTasks (
 				taskEntryId);
 
 		for (CandidateMaintenance canMaintask : canMainTasks) {
