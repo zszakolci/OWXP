@@ -67,7 +67,7 @@ public class CandidateMaintenanceLocalServiceImpl
 		Date now = new Date();
 
 		CandidateMaintenance candidateMaintenance =
-			candidateMaintenancePersistence.create(candidateId);
+			candidateMaintenancePersistence.create(canMainId);
 
 		candidateMaintenance.setCandidateId(candidateId);
 		candidateMaintenance.setTaskId(taskId);
