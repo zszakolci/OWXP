@@ -34,7 +34,8 @@ import com.liferay.micro.maintainance.analysis.service.base.AnalysisUserServiceB
  */
 @ProviderType
 public class AnalysisUserServiceImpl extends AnalysisUserServiceBaseImpl {
-	/*
+
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never reference this class directly. Always use {@link com.liferay.micro.maintainance.analysis.service.AnalysisUserServiceUtil} to access the analysis user remote service.

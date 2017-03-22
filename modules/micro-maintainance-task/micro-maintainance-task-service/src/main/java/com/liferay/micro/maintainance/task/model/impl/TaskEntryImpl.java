@@ -27,11 +27,13 @@ import aQute.bnd.annotation.ProviderType;
  */
 @ProviderType
 public class TaskEntryImpl extends TaskEntryBaseImpl {
-	/*
+
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never reference this class directly. All methods that expect a task entry model instance should use the {@link com.liferay.micro.maintainance.task.model.TaskEntry} interface instead.
 	 */
 	public TaskEntryImpl() {
 	}
+
 }

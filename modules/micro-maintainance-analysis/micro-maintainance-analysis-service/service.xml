@@ -3,11 +3,11 @@
 
 <service-builder package-path="com.liferay.micro.maintainance.analysis">
 	<namespace>Analysis</namespace>
-	<entity name="AnalysisEntry" uuid="true" local-service="true" remote-service="true" trash-enabled="false">
+	<entity local-service="true" name="AnalysisEntry" remote-service="true" trash-enabled="false" uuid="true">
 
 		<!-- PK fields -->
 
-		<column name="analysisId" type="long" primary="true" />
+		<column name="analysisId" primary="true" type="long" />
 
 		<!-- Audit fields -->
 
@@ -43,7 +43,7 @@
 			<finder-column name="analysisId" />
 			<finder-column name="companyId" />
 		</finder>
-		
+
 		<finder name="A_CM" return-type="Collection">
 			<finder-column name="analysisId" />
 			<finder-column name="canMainId" />
@@ -65,14 +65,13 @@
 			<finder-column name="userId" />
 			<finder-column name="createDate" />
 		</finder>
-
 	</entity>
 
-	<entity name="AnalysisUser" uuid="true" local-service="true" remote-service="true" trash-enabled="false">
+	<entity local-service="true" name="AnalysisUser" remote-service="true" trash-enabled="false" uuid="true">
 
 		<!-- PK fields -->
 
-		<column name="analysisUserId" type="long" primary="true" />
+		<column name="analysisUserId" primary="true" type="long" />
 
 		<!-- Other fields -->
 

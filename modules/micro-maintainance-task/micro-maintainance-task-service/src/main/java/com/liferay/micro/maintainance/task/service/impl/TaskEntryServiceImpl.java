@@ -34,7 +34,8 @@ import com.liferay.micro.maintainance.task.service.base.TaskEntryServiceBaseImpl
  */
 @ProviderType
 public class TaskEntryServiceImpl extends TaskEntryServiceBaseImpl {
-	/*
+
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never reference this class directly. Always use {@link com.liferay.micro.maintainance.task.service.TaskEntryServiceUtil} to access the task entry remote service.

@@ -27,11 +27,13 @@ import aQute.bnd.annotation.ProviderType;
  */
 @ProviderType
 public class CandidateMaintenanceImpl extends CandidateMaintenanceBaseImpl {
-	/*
+
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never reference this class directly. All methods that expect a candidate maintenance model instance should use the {@link com.liferay.micro.maintainance.task.model.CandidateMaintenance} interface instead.
 	 */
 	public CandidateMaintenanceImpl() {
 	}
+
 }

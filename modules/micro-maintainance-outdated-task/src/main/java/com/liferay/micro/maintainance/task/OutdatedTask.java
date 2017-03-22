@@ -1,20 +1,14 @@
 package com.liferay.micro.maintainance.task;
 
-import java.util.HashMap;
-import java.util.List;
-
 import com.liferay.micro.maintainance.action.Action;
 import com.liferay.micro.maintainance.analysis.model.AnalysisEntry;
 import com.liferay.micro.maintainance.task.model.CandidateMaintenance;
 
+import java.util.List;
 public class OutdatedTask implements Task {
 
-	protected OutdatedTask() {
-		this.taskId = 0;
-	}
-
 	public static OutdatedTask getOutdatedTaskInstance() {
-		if(outdatedTask == null) {
+		if (outdatedTask == null) {
 			outdatedTask = new OutdatedTask();
 		}
 
@@ -23,8 +17,15 @@ public class OutdatedTask implements Task {
 
 	@Override
 	public List<Action> analyze(AnalysisEntry analysisEntry) {
+
 		// TODO Auto-generated method stub
+
 		return null;
+	}
+
+	@Override
+	public String getOutcome() {
+		return outcome;
 	}
 
 	@Override
@@ -38,23 +39,27 @@ public class OutdatedTask implements Task {
 	}
 
 	@Override
-	public void setTaskId(long taskId) {
-		this.taskId = taskId;
-	}
-
-	@Override
 	public boolean isAnalyseReady(CandidateMaintenance canMain) {
+
 		// TODO Auto-generated method stub
+
 		return false;
 	}
 
 	@Override
-	public String getOutcome() {
-		return outcome;
+	public void setTaskId(long taskId) {
+		this.taskId = taskId;
+	}
+
+	protected OutdatedTask() {
+		this.taskId = 0;
 	}
 
 	private static String TASK_NAME = "Outdated";
-	private long taskId = 0;
+
 	private static OutdatedTask outdatedTask = null;
+
 	private String outcome = "";
+	private long taskId = 0;
+
 }

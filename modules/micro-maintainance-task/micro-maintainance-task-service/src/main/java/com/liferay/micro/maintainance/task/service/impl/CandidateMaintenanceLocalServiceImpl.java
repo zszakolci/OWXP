@@ -14,8 +14,7 @@
 
 package com.liferay.micro.maintainance.task.service.impl;
 
-import java.util.Date;
-import java.util.List;
+import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.micro.maintainance.candidate.service.CandidateEntryLocalServiceUtil;
 import com.liferay.micro.maintainance.task.exception.NoSuchCandidateMaintenanceException;
@@ -26,7 +25,8 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 
-import aQute.bnd.annotation.ProviderType;
+import java.util.Date;
+import java.util.List;
 
 /**
  * The implementation of the candidate maintenance local service.
@@ -50,11 +50,11 @@ public class CandidateMaintenanceLocalServiceImpl
 	 * Adds a CandidateMaintenance entry to the database, this way assigning a
 	 * wiki page to a maintenance task. The users can vote, while this entry is
 	 * in the database.
-	 * 
-	 * @param candidateId: the id of the candidate entry belonging to the 
+	 *
+	 * @param candidateId: the id of the candidate entry belonging to the
 	 *   flagged wiki page
-	 * @param taskId: the id of the maintenance task for which the page is 
-	 *   flagged 
+	 * @param taskId: the id of the maintenance task for which the page is
+	 *   flagged
 	 * @return the CandidateMaintenance entry that was added
 	 * @throws PortalException
 	 */
@@ -62,11 +62,11 @@ public class CandidateMaintenanceLocalServiceImpl
 	public CandidateMaintenance addCandidateMaintenance(
 			long candidateId, long taskId)
 		throws PortalException {
-		
+
 		long canMainId = counterLocalService.increment();
 		Date now = new Date();
 
-		CandidateMaintenance candidateMaintenance = 
+		CandidateMaintenance candidateMaintenance =
 			candidateMaintenancePersistence.create(candidateId);
 
 		candidateMaintenance.setCandidateId(candidateId);
@@ -88,15 +88,15 @@ public class CandidateMaintenanceLocalServiceImpl
 	@Indexable(type = IndexableType.DELETE)
 	@Override
 	public CandidateMaintenance deleteCandidateMaintenance(
-			long candidateMaintenanceId) 
+			long candidateMaintenanceId)
 		throws PortalException {
 
-		CandidateMaintenance currentCanMain = 
+		CandidateMaintenance currentCanMain =
 			candidateMaintenancePersistence.remove(candidateMaintenanceId);
 
 		long candidateId = currentCanMain.getCandidateId();
 
-		if(getCandidateMaintenaceTasksCount(candidateId) == 0) {
+		if (getCandidateMaintenaceTasksCount(candidateId) == 0) {
 			CandidateEntryLocalServiceUtil.deleteCandidateEntry(candidateId);
 		}
 
@@ -117,7 +117,7 @@ public class CandidateMaintenanceLocalServiceImpl
 
 	/**
 	 * Returns the task assignments belonging to the given candidate.
-	 * 
+	 *
 	 * @param candidatId
 	 * @return List of CandidateMaintenance entries with the given candidateId
 	 */
@@ -131,7 +131,7 @@ public class CandidateMaintenanceLocalServiceImpl
 
 	/**
 	 * Returns number of the task assignments belonging to the given candidate.
-	 * 
+	 *
 	 * @param candidatId
 	 * @return Number of CandidateMaintenance entries with the given candidateId
 	 */
@@ -144,13 +144,12 @@ public class CandidateMaintenanceLocalServiceImpl
 
 	/**
 	 * Returns the candidate assignments belonging to the given task.
-	 * 
+	 *
 	 * @param taskId
 	 * @return List of CandidateMaintenance entries with the given taskId
 	 */
 	@Override
-	public List<CandidateMaintenance> getMaintenaceTasks(
-			long taskId)
+	public List<CandidateMaintenance> getMaintenaceTasks(long taskId)
 		throws PortalException {
 
 		return candidateMaintenancePersistence.findByTaskIds(taskId);
@@ -158,14 +157,12 @@ public class CandidateMaintenanceLocalServiceImpl
 
 	/**
 	 * Returns the number of the candidate assignments belonging to the given task.
-	 * 
+	 *
 	 * @param taskId
 	 * @return Number of CandidateMaintenance entries with the given taskId
 	 */
 	@Override
-	public long getMaintenaceTasksCount(long taskId)
-		throws PortalException {
-
+	public long getMaintenaceTasksCount(long taskId) throws PortalException {
 		return getMaintenaceTasks(taskId).size();
 	}
 

@@ -14,14 +14,14 @@
 
 package com.liferay.micro.maintainance.analysis.service.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.micro.maintainance.analysis.exception.NoSuchUserException;
 import com.liferay.micro.maintainance.analysis.model.AnalysisUser;
 import com.liferay.micro.maintainance.analysis.service.base.AnalysisUserLocalServiceBaseImpl;
 import com.liferay.micro.maintainance.analysis.service.persistence.AnalysisUserUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
-
-import aQute.bnd.annotation.ProviderType;
 
 /**
  * The implementation of the analysis user local service.
@@ -73,4 +73,5 @@ public class AnalysisUserLocalServiceImpl
 			return null;
 		}
 	}
+
 }

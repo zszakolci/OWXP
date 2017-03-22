@@ -34,7 +34,8 @@ import com.liferay.micro.maintainance.analysis.service.base.AnalysisEntryService
  */
 @ProviderType
 public class AnalysisEntryServiceImpl extends AnalysisEntryServiceBaseImpl {
-	/*
+
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never reference this class directly. Always use {@link com.liferay.micro.maintainance.analysis.service.AnalysisEntryServiceUtil} to access the analysis entry remote service.

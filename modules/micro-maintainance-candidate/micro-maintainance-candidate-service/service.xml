@@ -3,11 +3,11 @@
 
 <service-builder package-path="com.liferay.micro.maintainance.candidate">
 	<namespace>Candidate</namespace>
-	<entity name="CandidateEntry" uuid="true" local-service="true" remote-service="true" trash-enabled="false">
+	<entity local-service="true" name="CandidateEntry" remote-service="true" trash-enabled="false" uuid="true">
 
 		<!-- PK fields -->
 
-		<column name="entryId" type="long" primary="true" />
+		<column name="entryId" primary="true" type="long" />
 
 		<!-- Group instance -->
 
@@ -45,7 +45,7 @@
 		</finder>
 		<finder name="C_ctD" return-type="Collection">
 			<finder-column name="companyId" />
-			<finder-column name="createDate" comparator="&lt;" />
+			<finder-column comparator="&lt;" name="createDate" />
 		</finder>
 		<finder name="G_P" return-type="CandidateEntry" unique="true">
 			<finder-column name="groupId" />
@@ -68,7 +68,7 @@
 			<finder-column name="createDate" />
 		</finder>
 	</entity>
-	
+
 	<exceptions>
 	</exceptions>
 </service-builder>

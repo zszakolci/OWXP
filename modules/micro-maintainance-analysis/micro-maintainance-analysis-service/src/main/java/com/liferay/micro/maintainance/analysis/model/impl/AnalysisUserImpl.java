@@ -27,11 +27,13 @@ import aQute.bnd.annotation.ProviderType;
  */
 @ProviderType
 public class AnalysisUserImpl extends AnalysisUserBaseImpl {
-	/*
+
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never reference this class directly. All methods that expect a analysis user model instance should use the {@link com.liferay.micro.maintainance.analysis.model.AnalysisUser} interface instead.
 	 */
 	public AnalysisUserImpl() {
 	}
+
 }

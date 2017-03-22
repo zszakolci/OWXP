@@ -35,7 +35,8 @@ import com.liferay.micro.maintainance.task.service.base.CandidateMaintenanceServ
 @ProviderType
 public class CandidateMaintenanceServiceImpl
 	extends CandidateMaintenanceServiceBaseImpl {
-	/*
+
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never reference this class directly. Always use {@link com.liferay.micro.maintainance.task.service.CandidateMaintenanceServiceUtil} to access the candidate maintenance remote service.

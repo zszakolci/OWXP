@@ -1,10 +1,5 @@
 package com.liferay.micro.maintainance.task;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.liferay.micro.maintainance.analysis.model.AnalysisEntry;
 import com.liferay.micro.maintainance.analysis.model.AnalysisUser;
 import com.liferay.micro.maintainance.analysis.service.AnalysisEntryLocalServiceUtil;
@@ -21,14 +16,14 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.Validator;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 public class TaskHandler {
 
-	protected TaskHandler() {
-		registeredTasks = new HashMap<Long, Task>();
-	}
-
 	public static TaskHandler getTaskHandlerInstance() {
-		if(taskHandlerInstance == null) {
+		if (taskHandlerInstance == null) {
 			taskHandlerInstance = new TaskHandler();
 		}
 
@@ -36,62 +31,27 @@ public class TaskHandler {
 	}
 
 	/**
-	 * Registers maintenance task modules
-	 *  called upon deploying a task module
-	 *  adds the task to the database
-	 *  adds the task to the tasklist
-	 *  
-	 * @param task: the deployed task
-	 */
-	public void registerTask(Task task) throws PortalException {
-		TaskEntry taskEntry = 
-			TaskEntryLocalServiceUtil.getTaskEntryByName(task.getTaskName());
-
-		if(Validator.isNull(taskEntry)) {
-			taskEntry =
-				TaskEntryLocalServiceUtil.addTaskEntry(task.getTaskName());
-		}
-
-		task.setTaskId(taskEntry.getTaskId());
-
-		registeredTasks.put(task.getTaskId(), task);
-	}
-
-	/**
-	 * Unregister task modules
-	 * 	Called upon undeploying a task module
-	 * 	Removes the task from the task list
-	 * 	Remove it from the database
-	 * 
-	 * @param task: the undeployed task
-	 */
-	public void unregisterTask(Task task) throws PortalException {
-		TaskEntryLocalServiceUtil.deleteTaskEntry(task.getTaskId());
-		registeredTasks.remove(task);
-	}
-
-	/**
 	 * Returns the list of the maintenance tasks for which the wiki page with
 	 * the given id is not yet nominated for voting. If a task is not in the
 	 * list the voting should be displayed.
-	 * 
+	 *
 	 * @param wikiPageId
 	 * @throws PortalException
 	 */
 	public List<Task> getAvailableFlags(long wikiPageId)
 		throws PortalException {
 
-		List<Task> availableFlags = new ArrayList<Task>();
+		List<Task> availableFlags = new ArrayList<>();
 
 		CandidateEntry candidate =
 			CandidateEntryLocalServiceUtil.getCandidateByWikiPageId(wikiPageId);
 
-		if(candidate == null) {
+		if (candidate == null) {
 			availableFlags.addAll(registeredTasks.values());
 		}
 		else {
-			for(Task task : registeredTasks.values()) {
-				if(CandidateMaintenanceLocalServiceUtil
+			for (Task task : registeredTasks.values()) {
+				if (CandidateMaintenanceLocalServiceUtil
 						.getCandidateMaintenaceTask(
 							candidate.getEntryId(), task.getTaskId()) == null) {
 					availableFlags.add(task);
@@ -113,7 +73,7 @@ public class TaskHandler {
 	/**
 	 * Returns the vote of the user on the given maintenance task for the
 	 * current wiki page, upon visiting the page
-	 * 
+	 *
 	 * @param userId: the visiting user's id
 	 * @param wikiPageId: the visited wiki page's id
 	 * @param taskId: the current task's id
@@ -138,13 +98,13 @@ public class TaskHandler {
 
 		long analysisId = analysisEntry.getAnalysisId();
 
-		AnalysisUser analysisUser = 
+		AnalysisUser analysisUser =
 			AnalysisUserLocalServiceUtil.getAnalysisUser(analysisId, userId);
 
-		if(analysisUser != null) {
+		if (analysisUser != null) {
 			return analysisUser.getVoted();
 		}
-		
+
 		AnalysisUserLocalServiceUtil.addAnalysisUser(
 			analysisId, userId, VoteConstants.NOT_VOTED);
 
@@ -152,16 +112,55 @@ public class TaskHandler {
 	}
 
 	/**
-	 * Stores a user's vote and updates the analysis belonging to the task in 
+	 * Registers maintenance task modules
+	 *  called upon deploying a task module
+	 *  adds the task to the database
+	 *  adds the task to the tasklist
+	 *
+	 * @param task: the deployed task
+	 */
+	public void registerTask(Task task) throws PortalException {
+		TaskEntry taskEntry = TaskEntryLocalServiceUtil.getTaskEntryByName(
+			task.getTaskName());
+
+		if (Validator.isNull(taskEntry)) {
+			taskEntry = TaskEntryLocalServiceUtil.addTaskEntry(
+				task.getTaskName());
+		}
+
+		task.setTaskId(taskEntry.getTaskId());
+
+		registeredTasks.put(task.getTaskId(), task);
+	}
+
+	public void setTaskEntries(Map<Long, Task> taskEntries) {
+		this.registeredTasks = taskEntries;
+	}
+
+	/**
+	 * Unregister task modules
+	 * 	Called upon undeploying a task module
+	 * 	Removes the task from the task list
+	 * 	Remove it from the database
+	 *
+	 * @param task: the undeployed task
+	 */
+	public void unregisterTask(Task task) throws PortalException {
+		TaskEntryLocalServiceUtil.deleteTaskEntry(task.getTaskId());
+		registeredTasks.remove(task);
+	}
+
+	/**
+	 * Stores a user's vote and updates the analysis belonging to the task in
 	 * question.
-	 * 
+	 *
 	 * @param userId: the visiting user's id
 	 * @param wikiPageId: the visited wiki page's id
 	 * @param taskId: the current task's id
 	 * @param vote: the user's decision
 	 * @throws PortalException
 	 */
-	public void vote(long userId, long wikiPageId, long taskId, int vote) 
+	public void vote(long userId, long wikiPageId, long taskId, int vote)
 		throws PortalException {
 
 		CandidateEntry candidateEntry =
@@ -179,7 +178,7 @@ public class TaskHandler {
 
 		long analysisId = analysisEntry.getAnalysisId();
 
-		AnalysisUser analysisUser = 
+		AnalysisUser analysisUser =
 			AnalysisUserLocalServiceUtil.getAnalysisUser(analysisId, userId);
 
 		int previousVote = analysisUser.getVoted();
@@ -195,10 +194,12 @@ public class TaskHandler {
 		analysisEntry.persist();
 	}
 
-	public void setTaskEntries(Map<Long,Task> taskEntries) {
-		this.registeredTasks = taskEntries;
+	protected TaskHandler() {
+		registeredTasks = new HashMap<>();
 	}
 
-	private Map<Long, Task> registeredTasks;
 	private static TaskHandler taskHandlerInstance = null;
+
+	private Map<Long, Task> registeredTasks;
+
 }

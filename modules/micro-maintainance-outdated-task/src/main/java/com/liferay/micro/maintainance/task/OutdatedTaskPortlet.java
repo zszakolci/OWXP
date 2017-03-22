@@ -1,9 +1,9 @@
 package com.liferay.micro.maintainance.task;
 
+import com.liferay.portal.kernel.exception.PortalException;
+
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.portlet.GenericPortlet;
 import javax.portlet.Portlet;
@@ -14,11 +14,6 @@ import javax.portlet.RenderResponse;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
-import org.osgi.service.component.annotations.Modified;
-
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.scheduler.SchedulerException;
-
 @Component(
 	immediate = true,
 	property = {
@@ -31,15 +26,6 @@ import com.liferay.portal.kernel.scheduler.SchedulerException;
 )
 public class OutdatedTaskPortlet extends GenericPortlet {
 
-	@Override
-	protected void doView(RenderRequest request, RenderResponse response)
-		throws PortletException, IOException {
-
-		PrintWriter printWriter = response.getWriter();
-
-		printWriter.print("micro-maintainance-outdated-task Portlet - Hello World!");
-	}
-
 	@Activate
 	protected void activate() throws PortalException {
 		outdatedTask = OutdatedTask.getOutdatedTaskInstance();
@@ -48,9 +34,19 @@ public class OutdatedTaskPortlet extends GenericPortlet {
 
 	@Deactivate
 	protected void deactivate() throws PortalException {
-
 		TaskHandler.getTaskHandlerInstance().unregisterTask(outdatedTask);
 	}
 
+	@Override
+	protected void doView(RenderRequest request, RenderResponse response)
+		throws IOException, PortletException {
+
+		PrintWriter printWriter = response.getWriter();
+
+		printWriter.print(
+			"micro-maintainance-outdated-task Portlet - Hello World!");
+	}
+
 	private static OutdatedTask outdatedTask;
+
 }

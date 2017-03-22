@@ -14,8 +14,7 @@
 
 package com.liferay.micro.maintainance.task.service.impl;
 
-import java.util.Date;
-import java.util.List;
+import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.micro.maintainance.task.exception.NoSuchEntryException;
 import com.liferay.micro.maintainance.task.model.CandidateMaintenance;
@@ -26,11 +25,9 @@ import com.liferay.micro.maintainance.task.service.persistence.TaskEntryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
-import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
-import com.liferay.portal.kernel.service.UserLocalServiceUtil;
-import com.liferay.portal.kernel.util.Validator;
 
-import aQute.bnd.annotation.ProviderType;
+import java.util.Date;
+import java.util.List;
 
 /**
  * The implementation of the task entry local service.
@@ -50,17 +47,15 @@ import aQute.bnd.annotation.ProviderType;
 public class TaskEntryLocalServiceImpl extends TaskEntryLocalServiceBaseImpl {
 
 	/**
-	 * Upon deploying a task module, this method adds entry for it to the 
+	 * Upon deploying a task module, this method adds entry for it to the
 	 * database as registration.
-	 * 
+	 *
 	 * @param taskName
 	 * @return the TaskEntry that was added
 	 * @throws PortalException
 	 */
 	@Override
-	public TaskEntry addTaskEntry(String taskName) 
-		throws PortalException {
-
+	public TaskEntry addTaskEntry(String taskName) throws PortalException {
 		long taskId = counterLocalService.increment();
 		Date now = new Date();
 
@@ -76,7 +71,7 @@ public class TaskEntryLocalServiceImpl extends TaskEntryLocalServiceBaseImpl {
 
 	/**
 	 * Deletes the task entry with the primary key from the database. Also
-	 * invokes the deletion of all the running votes for this maintenance task. 
+	 * invokes the deletion of all the running votes for this maintenance task.
 	 *
 	 * @param taskId the primary key of the task entry
 	 * @return the task entry that was removed
@@ -85,8 +80,7 @@ public class TaskEntryLocalServiceImpl extends TaskEntryLocalServiceBaseImpl {
 	@Indexable(type = IndexableType.DELETE)
 	@Override
 	public TaskEntry deleteTaskEntry(long taskId) throws PortalException {
-		
-		List<CandidateMaintenance> canMainTasks = 
+		List<CandidateMaintenance> canMainTasks =
 			CandidateMaintenanceLocalServiceUtil.getMaintenaceTasks(taskId);
 
 		for (CandidateMaintenance canMaintask : canMainTasks) {
@@ -106,4 +100,5 @@ public class TaskEntryLocalServiceImpl extends TaskEntryLocalServiceBaseImpl {
 			return null;
 		}
 	}
+
 }

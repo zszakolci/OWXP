@@ -27,11 +27,13 @@ import aQute.bnd.annotation.ProviderType;
  */
 @ProviderType
 public class AnalysisEntryImpl extends AnalysisEntryBaseImpl {
-	/*
+
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never reference this class directly. All methods that expect a analysis entry model instance should use the {@link com.liferay.micro.maintainance.analysis.model.AnalysisEntry} interface instead.
 	 */
 	public AnalysisEntryImpl() {
 	}
+
 }
