@@ -54,16 +54,17 @@ public class AnalysisEntryLocalServiceImpl
 	 * @throws PortalException
 	 */
 	@Override
-	public AnalysisEntry addAnalysisEntry(long userId, long canMainId)
+	public AnalysisEntry addAnalysisEntry(
+			long userId, long candidateMaintananceId)
 		throws PortalException {
 
 		User user = userPersistence.findByPrimaryKey(userId);
 		Date now = new Date();
 
-		long analysisId = counterLocalService.increment();
+		long analysisEntryId = counterLocalService.increment();
 
 		AnalysisEntry analysisEntry = analysisEntryPersistence.create(
-			analysisId);
+			analysisEntryId);
 
 		analysisEntry.setCompanyId(user.getCompanyId());
 		analysisEntry.setUserId(userId);
@@ -72,7 +73,7 @@ public class AnalysisEntryLocalServiceImpl
 		analysisEntry.setModifiedDate(now);
 
 		analysisEntry.setAnalysisData(VotesJSONSerializer.createVotes());
-		analysisEntry.setCanMainId(canMainId);
+		analysisEntry.setCanMainId(candidateMaintananceId);
 
 		analysisEntryPersistence.update(analysisEntry);
 
@@ -80,9 +81,11 @@ public class AnalysisEntryLocalServiceImpl
 	}
 
 	@Override
-	public AnalysisEntry getAnalysisByCandidateMaintenance(long canMainId) {
+	public AnalysisEntry getAnalysisByCandidateMaintenance(
+		long candidateMaintananceId) {
+
 		try {
-			return AnalysisEntryUtil.findByCanMainId(canMainId);
+			return AnalysisEntryUtil.findByCanMainId(candidateMaintananceId);
 		} catch (NoSuchEntryException e) {
 			return null;
 		}

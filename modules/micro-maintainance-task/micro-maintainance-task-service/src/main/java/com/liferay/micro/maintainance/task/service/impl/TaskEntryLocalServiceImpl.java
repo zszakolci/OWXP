@@ -56,10 +56,10 @@ public class TaskEntryLocalServiceImpl extends TaskEntryLocalServiceBaseImpl {
 	 */
 	@Override
 	public TaskEntry addTaskEntry(String taskName) throws PortalException {
-		long taskId = counterLocalService.increment();
+		long taskEntryId = counterLocalService.increment();
 		Date now = new Date();
 
-		TaskEntry taskEntry = taskEntryPersistence.create(taskId);
+		TaskEntry taskEntry = taskEntryPersistence.create(taskEntryId);
 
 		taskEntry.setTaskName(taskName);
 		taskEntry.setCreateDate(now);
@@ -73,15 +73,16 @@ public class TaskEntryLocalServiceImpl extends TaskEntryLocalServiceBaseImpl {
 	 * Deletes the task entry with the primary key from the database. Also
 	 * invokes the deletion of all the running votes for this maintenance task.
 	 *
-	 * @param taskId the primary key of the task entry
+	 * @param taskEntryId the primary key of the task entry
 	 * @return the task entry that was removed
 	 * @throws PortalException
 	 */
 	@Indexable(type = IndexableType.DELETE)
 	@Override
-	public TaskEntry deleteTaskEntry(long taskId) throws PortalException {
+	public TaskEntry deleteTaskEntry(long taskEntryId) throws PortalException {
 		List<CandidateMaintenance> canMainTasks =
-			CandidateMaintenanceLocalServiceUtil.getMaintenaceTasks(taskId);
+			CandidateMaintenanceLocalServiceUtil.getMaintenaceTasks(
+				taskEntryId);
 
 		for (CandidateMaintenance canMaintask : canMainTasks) {
 			CandidateMaintenanceLocalServiceUtil
@@ -89,7 +90,7 @@ public class TaskEntryLocalServiceImpl extends TaskEntryLocalServiceBaseImpl {
 					canMaintask.getCandidateMaintenanceId());
 		}
 
-		return taskEntryPersistence.remove(taskId);
+		return taskEntryPersistence.remove(taskEntryId);
 	}
 
 	@Override

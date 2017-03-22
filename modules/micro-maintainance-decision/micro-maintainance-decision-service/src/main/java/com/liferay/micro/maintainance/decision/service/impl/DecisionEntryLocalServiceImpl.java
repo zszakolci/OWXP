@@ -59,21 +59,22 @@ public class DecisionEntryLocalServiceImpl
 	 */
 	@Override
 	public DecisionEntry addDecisionEntry(
-			long userId, String analysisData, long candidateId, String outcome,
-			boolean handled)
+			long userId, String analysisData, long candidateEntryId,
+			String outcome, boolean handled)
 		throws PortalException {
 
 		User user = userPersistence.findByPrimaryKey(userId);
-		long decisionId = counterLocalService.increment();
+		long decisionEntryId = counterLocalService.increment();
 		Date now = new Date();
 
-		DecisionEntry decision = decisionEntryPersistence.create(decisionId);
+		DecisionEntry decision = decisionEntryPersistence.create(
+			decisionEntryId);
 
-		CandidateEntry candidate =
-			CandidateEntryLocalServiceUtil.getCandidateEntry(candidateId);
+		CandidateEntry candidateEntry =
+			CandidateEntryLocalServiceUtil.getCandidateEntry(candidateEntryId);
 
 		WikiPage wikiPage = WikiPageLocalServiceUtil.getPageByPageId(
-			candidate.getWikiPageId());
+			candidateEntry.getWikiPageId());
 
 		decision.setCompanyId(user.getCompanyId());
 		decision.setUserId(userId);

@@ -66,15 +66,15 @@ public class CandidateEntryLocalServiceImpl
 	 */
 	@Override
 	public CandidateEntry addCandidateEntry(
-			long userId, long groupId, long wikiPageId, long taskId)
+			long userId, long groupId, long wikiPageId, long taskEntryId)
 		throws PortalException {
 
 		User user = userPersistence.findByPrimaryKey(userId);
-		long candidateId = counterLocalService.increment();
+		long candidateEntryId = counterLocalService.increment();
 		Date now = new Date();
 
 		CandidateEntry candidate = candidateEntryPersistence.create(
-			candidateId);
+			candidateEntryId);
 
 		candidate.setGroupId(groupId);
 
@@ -88,11 +88,12 @@ public class CandidateEntryLocalServiceImpl
 
 		candidateEntryPersistence.update(candidate);
 
-		CandidateMaintenance canMain = CandidateMaintenanceLocalServiceUtil
-			.addCandidateMaintenance(candidateId, taskId);
+		CandidateMaintenance candidateMaintenance =
+			CandidateMaintenanceLocalServiceUtil.addCandidateMaintenance(
+				candidateEntryId, taskEntryId);
 
-		AnalysisEntry analysisEntry = AnalysisEntryLocalServiceUtil
-			.addAnalysisEntry(userId, canMain.getCandidateMaintenanceId());
+		AnalysisEntryLocalServiceUtil.addAnalysisEntry(
+			userId, candidateMaintenance.getCandidateMaintenanceId());
 
 		return candidate;
 	}
@@ -101,24 +102,24 @@ public class CandidateEntryLocalServiceImpl
 	 * Deletes the candidate entry, with the given primary key from the
 	 * database.
 	 *
-	 * @param entryId the primary key of the candidate entry
+	 * @param candidateEntryId the primary key of the candidate entry
 	 * @return the candidate entry that was removed
 	 * @throws PortalException if there are still votes running on the candidate
 	 *
 	 */
 	@Indexable(type = IndexableType.DELETE)
 	@Override
-	public CandidateEntry deleteCandidateEntry(long entryId)
+	public CandidateEntry deleteCandidateEntry(long candidateEntryId)
 		throws PortalException {
 
 		long canMainCount = CandidateMaintenanceLocalServiceUtil
-			.getCandidateMaintenaceTasksCount(entryId);
+			.getCandidateMaintenaceTasksCount(candidateEntryId);
 
 		if (canMainCount > 0) {
 			throw new PortalException();
 		}
 
-		return candidateEntryPersistence.remove(entryId);
+		return candidateEntryPersistence.remove(candidateEntryId);
 	}
 
 	@Override

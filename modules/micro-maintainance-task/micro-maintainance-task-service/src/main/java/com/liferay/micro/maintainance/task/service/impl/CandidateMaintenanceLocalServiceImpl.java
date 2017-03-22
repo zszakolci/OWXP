@@ -60,17 +60,18 @@ public class CandidateMaintenanceLocalServiceImpl
 	 */
 	@Override
 	public CandidateMaintenance addCandidateMaintenance(
-			long candidateId, long taskId)
+			long candidateEntryId, long taskEntryId)
 		throws PortalException {
 
-		long canMainId = counterLocalService.increment();
+		long candidateMaintenanceId = counterLocalService.increment();
+
 		Date now = new Date();
 
 		CandidateMaintenance candidateMaintenance =
-			candidateMaintenancePersistence.create(canMainId);
+			candidateMaintenancePersistence.create(candidateMaintenanceId);
 
-		candidateMaintenance.setCandidateId(candidateId);
-		candidateMaintenance.setTaskId(taskId);
+		candidateMaintenance.setCandidateId(candidateEntryId);
+		candidateMaintenance.setTaskId(taskEntryId);
 		candidateMaintenance.setCreateDate(now);
 
 		return candidateMaintenance;
@@ -91,25 +92,26 @@ public class CandidateMaintenanceLocalServiceImpl
 			long candidateMaintenanceId)
 		throws PortalException {
 
-		CandidateMaintenance currentCanMain =
+		CandidateMaintenance currentCandidateMaintenance =
 			candidateMaintenancePersistence.remove(candidateMaintenanceId);
 
-		long candidateId = currentCanMain.getCandidateId();
+		long candidateEntryId = currentCandidateMaintenance.getCandidateId();
 
-		if (getCandidateMaintenaceTasksCount(candidateId) == 0) {
-			CandidateEntryLocalServiceUtil.deleteCandidateEntry(candidateId);
+		if (getCandidateMaintenaceTasksCount(candidateEntryId) == 0) {
+			CandidateEntryLocalServiceUtil.deleteCandidateEntry(
+				candidateEntryId);
 		}
 
-		return currentCanMain;
+		return currentCandidateMaintenance;
 	}
 
 	@Override
 	public CandidateMaintenance getCandidateMaintenaceTask(
-			long candidateId, long taskId)
+			long candidateEntryId, long taskId)
 		throws PortalException {
 
 		try {
-			return CandidateMaintenanceUtil.findByC_T(candidateId, taskId);
+			return CandidateMaintenanceUtil.findByC_T(candidateEntryId, taskId);
 		} catch (NoSuchCandidateMaintenanceException e) {
 			return null;
 		}
@@ -123,10 +125,11 @@ public class CandidateMaintenanceLocalServiceImpl
 	 */
 	@Override
 	public List<CandidateMaintenance> getCandidateMaintenaceTasks(
-			long candidateId)
+			long candidateEntryId)
 		throws PortalException {
 
-		return candidateMaintenancePersistence.findByCandidateIds(candidateId);
+		return candidateMaintenancePersistence.findByCandidateIds(
+			candidateEntryId);
 	}
 
 	/**
@@ -136,34 +139,36 @@ public class CandidateMaintenanceLocalServiceImpl
 	 * @return Number of CandidateMaintenance entries with the given candidateId
 	 */
 	@Override
-	public long getCandidateMaintenaceTasksCount(long candidateId)
+	public long getCandidateMaintenaceTasksCount(long candidateEntryId)
 		throws PortalException {
 
-		return getCandidateMaintenaceTasks(candidateId).size();
+		return getCandidateMaintenaceTasks(candidateEntryId).size();
 	}
 
 	/**
 	 * Returns the candidate assignments belonging to the given task.
 	 *
-	 * @param taskId
+	 * @param taskEntryId
 	 * @return List of CandidateMaintenance entries with the given taskId
 	 */
 	@Override
-	public List<CandidateMaintenance> getMaintenaceTasks(long taskId)
+	public List<CandidateMaintenance> getMaintenaceTasks(long taskEntryId)
 		throws PortalException {
 
-		return candidateMaintenancePersistence.findByTaskIds(taskId);
+		return candidateMaintenancePersistence.findByTaskIds(taskEntryId);
 	}
 
 	/**
 	 * Returns the number of the candidate assignments belonging to the given task.
 	 *
-	 * @param taskId
+	 * @param taskEntryId
 	 * @return Number of CandidateMaintenance entries with the given taskId
 	 */
 	@Override
-	public long getMaintenaceTasksCount(long taskId) throws PortalException {
-		return getMaintenaceTasks(taskId).size();
+	public long getMaintenaceTasksCount(long taskEntryId)
+		throws PortalException {
+
+		return getMaintenaceTasks(taskEntryId).size();
 	}
 
 }
