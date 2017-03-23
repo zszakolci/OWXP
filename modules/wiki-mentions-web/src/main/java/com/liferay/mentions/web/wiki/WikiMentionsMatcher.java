@@ -22,7 +22,6 @@ import org.osgi.service.component.annotations.Component;
 
 /**
  * @author Norbert Kocsis
- *
  */
 @Component(
 	immediate = true,
