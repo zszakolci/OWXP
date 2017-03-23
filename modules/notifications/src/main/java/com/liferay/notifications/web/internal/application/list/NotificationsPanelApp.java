@@ -21,11 +21,7 @@ import com.liferay.notifications.web.internal.constants.NotificationsPortletKeys
 import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.UserNotificationDeliveryConstants;
-import com.liferay.portal.kernel.model.UserNotificationEvent;
-import com.liferay.portal.kernel.portlet.PortalPreferences;
-import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portal.kernel.service.UserNotificationEventLocalService;
-import com.liferay.portal.kernel.util.GetterUtil;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -51,33 +47,10 @@ public class NotificationsPanelApp extends BasePanelApp {
 			return 0;
 		}
 
-		PortalPreferences portalPreferences =
-			PortletPreferencesFactoryUtil.getPortalPreferences(
-				user.getUserId(), true);
-
-		boolean useLegacyUserNotifciationEventsCount = GetterUtil.getBoolean(
-			portalPreferences.getValue(
-				UserNotificationEvent.class.getName(),
-				"useLegacyUserNotificationEventsCount",
-				Boolean.TRUE.toString()));
-
-		int userNotifiationEventsCount = 0;
-
-		if (useLegacyUserNotifciationEventsCount) {
-			userNotifiationEventsCount =
-				_userNotificationEventLocalService.
-					getArchivedUserNotificationEventsCount(
-						user.getUserId(),
-						UserNotificationDeliveryConstants.TYPE_WEBSITE, false);
-		}
-		else {
-			userNotifiationEventsCount = GetterUtil.getInteger(
-				portalPreferences.getValue(
-					UserNotificationEvent.class.getName(),
-					"userNotificationEventsCount"));
-		}
-
-		return userNotifiationEventsCount;
+		return _userNotificationEventLocalService.
+			getArchivedUserNotificationEventsCount(
+				user.getUserId(),
+				UserNotificationDeliveryConstants.TYPE_WEBSITE, false);
 	}
 
 	@Override
