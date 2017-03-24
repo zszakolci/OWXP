@@ -16,10 +16,15 @@
 
 <%@ include file="/init.jsp" %>
 
+<%@ page import="com.liferay.portal.kernel.portlet.PortalPreferences" %>
+<%@ page import="com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil" %>
+
 <%
+_resetUserNoticationEventsCount(themeDisplay.getUserId());
+
 boolean actionRequired = ParamUtil.getBoolean(request, "actionRequired");
 
-int archivedUserNotificationEventsCount = UserNotificationEventLocalServiceUtil.getArchivedUserNotificationEventsCount(themeDisplay.getUserId(), UserNotificationDeliveryConstants.TYPE_WEBSITE, false);
+int archivedUserNotificationEventsCount = UserNotificationEventLocalServiceUtil.getArchivedUserNotificationEventsCount(themeDisplay.getUserId(), UserNotificationDeliveryConstants.TYPE_WEBSITE, false, false);
 
 int userNotificationEventsCount = UserNotificationEventLocalServiceUtil.getDeliveredUserNotificationEventsCount(themeDisplay.getUserId(), UserNotificationDeliveryConstants.TYPE_WEBSITE, true, actionRequired);
 %>
@@ -176,3 +181,18 @@ int userNotificationEventsCount = UserNotificationEventLocalServiceUtil.getDeliv
 		return notice;
 	}
 </aui:script>
+
+<%!
+private void _resetUserNoticationEventsCount(long userId) {
+	PortalPreferences portalPreferences =
+		PortletPreferencesFactoryUtil.getPortalPreferences(userId, true);
+
+	portalPreferences.setValue(
+		UserNotificationEvent.class.getName(),
+		"useLegacyUserNotificationEventsCount", "false");
+
+	portalPreferences.setValue(
+		UserNotificationEvent.class.getName(),
+		"userNotificationEventsCount", "0");
+}
+%>
