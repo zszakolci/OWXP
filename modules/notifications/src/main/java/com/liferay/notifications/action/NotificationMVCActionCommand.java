@@ -102,6 +102,12 @@ public class NotificationMVCActionCommand extends BaseMVCActionCommand {
 						UserNotificationEvent userNotificationEvent)
 					throws PortalException {
 
+					userNotificationEvent =
+						_userNotificationEventLocalService.
+							fetchUserNotificationEvent(
+								userNotificationEvent.
+									getUserNotificationEventId());
+
 					userNotificationEvent.setArchived(true);
 
 					_userNotificationEventLocalService.
