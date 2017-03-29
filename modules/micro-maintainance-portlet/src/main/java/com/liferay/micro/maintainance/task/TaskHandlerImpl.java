@@ -69,6 +69,28 @@ public class TaskHandlerImpl implements TaskHandler {
 	}
 
 	@Override
+	public List<Task> getRunningVotes(long wikiPageId)
+		throws PortalException {
+
+		List<Task> runningVotes = new ArrayList<>();
+
+		CandidateEntry candidateEntry =
+			CandidateEntryLocalServiceUtil.getCandidateByWikiPageId(wikiPageId);
+
+		for (Task task : _registeredTasks.values()) {
+			if (CandidateMaintenanceLocalServiceUtil.
+					getCandidateMaintenaceTask(
+						candidateEntry.getCandidateEntryId(),
+						task.getTaskId()) != null) {
+
+				runningVotes.add(task);
+			}
+		}
+
+		return runningVotes;
+	}
+
+	@Override
 	public Map<Long, Task> getTaskEntries() {
 		return _registeredTasks;
 	}
