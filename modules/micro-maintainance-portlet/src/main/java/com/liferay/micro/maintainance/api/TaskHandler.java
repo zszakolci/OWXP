@@ -13,6 +13,8 @@ public interface TaskHandler {
 
 	public List<Task> getAvailableFlags(long wikiPageId) throws PortalException;
 
+	public List<Task> getRunningVotes(long wikiPageId) throws PortalException;
+
 	public Map<Long, Task> getTaskEntries();
 
 	public List<Task> getTaskEntryList();
