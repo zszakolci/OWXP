@@ -88,6 +88,8 @@ public class DecisionEntryLocalServiceImpl
 		decision.setOutcome(outcome);
 		decision.setHandled(handled);
 
+		decisionEntryPersistence.update(decision);
+
 		return decision;
 	}
 
