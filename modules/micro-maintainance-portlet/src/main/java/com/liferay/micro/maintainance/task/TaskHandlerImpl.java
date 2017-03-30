@@ -77,6 +77,10 @@ public class TaskHandlerImpl implements TaskHandler {
 		CandidateEntry candidateEntry =
 			CandidateEntryLocalServiceUtil.getCandidateByWikiPageId(wikiPageId);
 
+		if (candidateEntry == null) {
+			return runningVotes; 
+		}
+
 		for (Task task : _registeredTasks.values()) {
 			if (CandidateMaintenanceLocalServiceUtil.
 					getCandidateMaintenaceTask(

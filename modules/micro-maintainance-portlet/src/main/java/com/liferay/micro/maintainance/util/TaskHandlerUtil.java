@@ -23,7 +23,7 @@ public class TaskHandlerUtil {
 		return _taskHandler.getAvailableFlags(wikiPageId);
 	}
 
-	public List<Task> getRunningVotes(long wikiPageId)
+	public static List<Task> getRunningVotes(long wikiPageId)
 			throws PortalException {
 
 		return _taskHandler.getRunningVotes(wikiPageId);
