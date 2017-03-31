@@ -208,7 +208,7 @@ public class TaskHandlerImpl implements TaskHandler {
 	 */
 	@Override
 	public void unregisterTask(Task task) throws PortalException {
-		TaskEntryLocalServiceUtil.deleteTaskEntry(task.getTaskId());
+		// TaskEntryLocalServiceUtil.deleteTaskEntry(task.getTaskId());
 		_registeredTasks.remove(task.getTaskId());
 	}
 
