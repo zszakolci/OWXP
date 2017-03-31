@@ -66,7 +66,7 @@ public class LinkedPagesView {
 			long nodeId = WikiNodeLocalServiceUtil.getNode(
 				groupId, nodeTitle).getNodeId();
 
-			WikiPage wikiPage = WikiPageLocalServiceUtil.getPage(
+			wikiPage = WikiPageLocalServiceUtil.getPage(
 				nodeId, pageTitle);
 
 			String content = wikiPage.getContent();
@@ -94,6 +94,10 @@ public class LinkedPagesView {
 		linkedPages.addAll(_linkedPages);
 
 		return linkedPages;
+	}
+
+	public WikiPage getWikiPage() {
+		return wikiPage;
 	}
 
 	private void _addLink(String link) {
@@ -167,5 +171,7 @@ public class LinkedPagesView {
 		LinkedPagesView.class);
 
 	private TreeSet<PageLink> _linkedPages;
+	
+	private WikiPage wikiPage = null;
 
 }

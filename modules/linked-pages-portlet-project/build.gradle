@@ -7,6 +7,12 @@ dependencies {
 	compile group: "javax.servlet", name: "servlet-api", version: "2.5"
 	compile group: "jstl", name: "jstl", version: "1.2"
 	compile group: "org.osgi", name: "org.osgi.compendium", version: "5.0.0"
+
+	compile project(':modules:micro-maintainance-task:micro-maintainance-task-api')
+	compile project(':modules:micro-maintainance-analysis:micro-maintainance-analysis-api')
+	compile project(':modules:micro-maintainance-candidate:micro-maintainance-candidate-api')
+	compile project(':modules:micro-maintainance-decision:micro-maintainance-decision-api')
+	compile project(':modules:micro-maintainance-portlet')
 }
 
 version = '1.0.0'

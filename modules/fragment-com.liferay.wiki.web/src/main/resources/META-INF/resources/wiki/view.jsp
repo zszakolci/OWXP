@@ -145,6 +145,8 @@ if (layoutAssetEntry != null) {
 		}
 	}
 }
+
+List<Task> availableTasks = TaskHandlerUtil.getAvailableFlags(wikiPage.getPageId());
 %>
 
 <c:if test="<%= portletTitleBasedNavigation %>">
@@ -529,3 +531,80 @@ if (layoutAssetEntry != null) {
 		</c:if>
 	</div>
 </div>
+
+<c:if test="<%= availableTasks.size() > 0 %>">
+	<div style="display:none" id="iconContainer">
+		<%
+			for (Task task : availableTasks) {
+				Map<String, Object> data = new HashMap<String, Object>();
+
+				data.put("taskid", task.getTaskId());
+		%>
+				<liferay-ui:icon
+					cssClass="maintainance-task"
+					data="<%= data %>"
+					iconCssClass="icon-spinner"
+					message="<%= task.getTaskName() %>"
+					url="javascript:;"
+				/>
+		<%
+			}
+		%>
+	</div>
+
+	<aui:script sandbox="<%= true %>" use="aui-popover, widget-anim">
+		var iconContainer = A.one('#iconContainer');
+		var triggerAnim = A.one('#myPopoverAnim');
+
+		var popoverAnim = new A.Popover(
+			{
+				align: {
+					node: triggerAnim,
+					points:[A.WidgetPositionAlign.LC, A.WidgetPositionAlign.RC]
+				},
+				bodyContent: iconContainer.html(),
+				cssClass: 'task-flagging',
+				plugins: [A.Plugin.WidgetAnim],
+				position: 'right',
+				zIndex: 1
+			}
+		).render();
+
+		triggerAnim.on(
+			'click',
+			function() {
+				popoverAnim.set('visible', !popoverAnim.get('visible'));
+			}
+		);
+
+		A.one('body').delegate(
+			'click',
+			function(event) {
+				var currentTarget = event.currentTarget;
+
+				Liferay.Service(
+					'/candidate.candidateentry/add-candidate-entry',
+					{
+						taskId: currentTarget.getData()['taskid'],
+						groupId: <%= scopeGroupId %>,
+						wikiPageId: <%= wikiPage.getPageId() %>,
+						userId: <%= themeDisplay.getUserId() %>
+					},
+					function(response) {
+						if (response.candidateEntryId) {
+							currentTarget.hide();
+
+							var tasks = triggerAnim.all('.maintainance-task');
+
+							if (!tasks.size()) {
+								A.one('.task-flagging').hide();
+								triggerAnim.attr('disabled', true);
+							}
+						}
+					} 
+				);
+			},
+			'.task-flagging .maintainance-task a'
+		);
+	</aui:script>
+</c:if>
