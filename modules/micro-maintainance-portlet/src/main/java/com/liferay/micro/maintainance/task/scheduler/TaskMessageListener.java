@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.scheduler.StorageType;
 import com.liferay.portal.kernel.scheduler.StorageTypeAware;
 import com.liferay.portal.kernel.scheduler.Trigger;
 import com.liferay.portal.kernel.scheduler.TriggerFactory;
+import com.liferay.portal.kernel.util.ListUtil;
 
 import java.util.Date;
 import java.util.List;
@@ -163,6 +164,16 @@ public class TaskMessageListener extends BaseSchedulerEntryMessageListener {
 						candidateMaintenance.getCandidateMaintenanceId());
 
 				List<Action> actions = task.analyze(analysisEntry);
+
+				if (ListUtil.isEmpty(actions)) {
+					DecisionEntryLocalServiceUtil.addDecisionEntry(
+						analysisEntry.getUserId(),
+						analysisEntry.getAnalysisData(),
+						candidateMaintenance.getCandidateEntryId(),
+						task.getOutcome(), false);
+
+					return;
+				}
 
 				try {
 					ActionHandler.performActions(actions, analysisEntry);
