@@ -25,7 +25,7 @@ import com.liferay.wiki.constants.WikiPortletKeys;
 		"editor.name=ckeditor", "javax.portlet.name=" + WikiPortletKeys.WIKI,
 		"javax.portlet.name=" + WikiPortletKeys.WIKI_DISPLAY,
 		"javax.portlet.name=" + WikiPortletKeys.WIKI_ADMIN,
-		"service.ranking:Integer=10"
+		"service.ranking:Integer=100"
 	},
 	service = EditorConfigContributor.class
 )
