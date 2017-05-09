@@ -1,0 +1,4 @@
+Bundle-Name: Weighted Screen
+Bundle-SymbolicName: weightedscreen
+Bundle-Version: 1.0.0
+Require-Capability: soy;filter:="(type=metal)"
