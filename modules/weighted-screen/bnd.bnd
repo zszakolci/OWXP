@@ -1,4 +1,6 @@
-Bundle-Name: Weighted Screen
-Bundle-SymbolicName: weightedscreen
+Bundle-Name: weighted-screen
+Bundle-SymbolicName: weighted.screen
 Bundle-Version: 1.0.0
 Require-Capability: soy;filter:="(type=metal)"
+Include-Resource: package.json
+Web-ContextPath: /weighted-screen
