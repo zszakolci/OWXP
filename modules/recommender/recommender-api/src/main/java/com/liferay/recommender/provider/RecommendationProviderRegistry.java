@@ -15,6 +15,8 @@
 package com.liferay.recommender.provider;
 
 /**
+ * TODO Write JavaDoc
+ *
  * @author Tibor Lipusz
  */
 public interface RecommendationProviderRegistry {

@@ -17,6 +17,8 @@ package com.liferay.recommender.provider;
 import java.util.List;
 
 /**
+ * TODO Write JavaDoc
+ *
  * @author Tibor Lipusz
  */
 public interface RecommendationProvider<T> {
