@@ -17,9 +17,16 @@ package com.liferay.recommender.service.impl;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.spring.extender.service.ServiceReference;
+import com.liferay.recommender.provider.RecommendationProvider;
+import com.liferay.recommender.provider.RecommendationProviderRegistry;
 import com.liferay.recommender.service.base.RecommenderServiceBaseImpl;
 
+import java.util.List;
+
 /**
+ * TODO Write JavaDoc
+ *
  * The implementation of the recommender remote service.
  *
  * <p>
@@ -29,10 +36,43 @@ import com.liferay.recommender.service.base.RecommenderServiceBaseImpl;
  * This is a remote service. Methods of this service are expected to have security checks based on the propagated JAAS credentials because this service can be accessed remotely.
  * </p>
  *
- * @author Brian Wing Shun Chan
- * @see RecommenderServiceBaseImpl
- * @see com.liferay.recommender.service.RecommenderServiceUtil
+ * @author Tibor Lipusz
  */
 @ProviderType
 public class RecommenderServiceImpl extends RecommenderServiceBaseImpl {
+
+	@Override
+	public List<String> getRecommendations(
+			long userId, String className, int maxEntries)
+		throws PortalException {
+
+		// TODO Do permission check
+		// PermissionChecker permissionChecker = getPermissionChecker();
+
+		// TODO Check registory
+
+		if (recommendationProviderRegistry == null) {
+			throw new PortalException();
+		}
+
+		RecommendationProvider<?> recommendationProvider =
+			recommendationProviderRegistry.getRecommendationProvider(className);
+
+		if (recommendationProvider == null) {
+			throw new UnsupportedOperationException(
+				"Recommendations for " + className + " is not supported.");
+		}
+
+		try {
+			return recommendationProvider.getRecommendationURLs(
+				userId, maxEntries);
+		}
+		catch (Exception exception) {
+			throw new PortalException(exception);
+		}
+	}
+
+	@ServiceReference(type = RecommendationProviderRegistry.class)
+	protected RecommendationProviderRegistry recommendationProviderRegistry;
+
 }
