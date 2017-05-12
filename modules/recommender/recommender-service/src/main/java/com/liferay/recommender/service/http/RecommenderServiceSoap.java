@@ -16,9 +16,16 @@ package com.liferay.recommender.service.http;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+
+import com.liferay.recommender.service.RecommenderServiceUtil;
+
+import java.rmi.RemoteException;
+
 /**
  * Provides the SOAP utility for the
- * {@link com.liferay.recommender.service.RecommenderServiceUtil} service utility. The
+ * {@link RecommenderServiceUtil} service utility. The
  * static methods of this class calls the same methods of the service utility.
  * However, the signatures are different because it is difficult for SOAP to
  * support certain types.
@@ -42,9 +49,25 @@ import aQute.bnd.annotation.ProviderType;
  *
  * @author Brian Wing Shun Chan
  * @see RecommenderServiceHttp
- * @see com.liferay.recommender.service.RecommenderServiceUtil
+ * @see RecommenderServiceUtil
  * @generated
  */
 @ProviderType
 public class RecommenderServiceSoap {
+	public static java.lang.String[] getRecommendations(long userId,
+		java.lang.String className, int maxEntries) throws RemoteException {
+		try {
+			java.util.List<java.lang.String> returnValue = RecommenderServiceUtil.getRecommendations(userId,
+					className, maxEntries);
+
+			return returnValue.toArray(new java.lang.String[returnValue.size()]);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	private static Log _log = LogFactoryUtil.getLog(RecommenderServiceSoap.class);
 }

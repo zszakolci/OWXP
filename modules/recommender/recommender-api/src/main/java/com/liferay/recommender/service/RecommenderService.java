@@ -23,7 +23,10 @@ import com.liferay.portal.kernel.security.access.control.AccessControlled;
 import com.liferay.portal.kernel.service.BaseService;
 import com.liferay.portal.kernel.spring.osgi.OSGiBeanProperties;
 import com.liferay.portal.kernel.transaction.Isolation;
+import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
+
+import java.util.List;
 
 /**
  * Provides the remote service interface for Recommender. Methods of this
@@ -56,4 +59,8 @@ public interface RecommenderService extends BaseService {
 	* @return the OSGi service identifier
 	*/
 	public java.lang.String getOSGiServiceIdentifier();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<java.lang.String> getRecommendations(long userId,
+		java.lang.String className, int maxEntries) throws PortalException;
 }

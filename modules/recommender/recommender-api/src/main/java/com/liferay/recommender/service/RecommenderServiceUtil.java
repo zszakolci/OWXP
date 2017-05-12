@@ -51,6 +51,12 @@ public class RecommenderServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
+	public static java.util.List<java.lang.String> getRecommendations(
+		long userId, java.lang.String className, int maxEntries)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getRecommendations(userId, className, maxEntries);
+	}
+
 	public static RecommenderService getService() {
 		return _serviceTracker.getService();
 	}

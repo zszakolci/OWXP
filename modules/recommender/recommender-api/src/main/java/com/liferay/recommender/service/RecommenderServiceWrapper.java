@@ -43,6 +43,14 @@ public class RecommenderServiceWrapper implements RecommenderService,
 	}
 
 	@Override
+	public java.util.List<java.lang.String> getRecommendations(long userId,
+		java.lang.String className, int maxEntries)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _recommenderService.getRecommendations(userId, className,
+			maxEntries);
+	}
+
+	@Override
 	public RecommenderService getWrappedService() {
 		return _recommenderService;
 	}
