@@ -12,10 +12,21 @@
  * details.
  */
 
-package com.liferay.recommender;
+package com.liferay.recommender.provider;
+
+import java.util.List;
 
 /**
  * @author Tibor Lipusz
  */
 public interface RecommendationProvider<T> {
+
+	public String getProviderType();
+
+	public List<T> getRecommendations(long userId, int maxEntries)
+		throws Exception;
+
+	public List<String> getRecommendationURLs(long userId, int maxEntries)
+		throws Exception;
+
 }
