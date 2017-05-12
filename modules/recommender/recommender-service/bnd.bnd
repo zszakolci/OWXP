@@ -1,5 +1,5 @@
 Bundle-Name: Liferay Recommender Service
 Bundle-SymbolicName: com.liferay.recommender.service
-Bundle-Version: 1.0.0
-Liferay-Require-SchemaVersion: 1.0.0
+Bundle-Version: 0.0.1
+Liferay-Require-SchemaVersion: 0.0.1
 Liferay-Service: true
