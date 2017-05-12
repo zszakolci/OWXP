@@ -18,11 +18,13 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.recommender.provider.RecommendationProvider;
 import com.liferay.wiki.model.WikiPage;
+import com.liferay.wiki.service.WikiPageLocalService;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Tibor Lipusz
@@ -68,7 +70,37 @@ public class WikiPageRecommendationProvider
 		return new ArrayList<>();
 	}
 
+	/**
+	 * TODO Amadea
+	*/
+	protected List<WikiPage> getLikedWikiPages(long userId) {
+		return null;
+	}
+
+	/**
+	 * TODO Tibi
+	 */
+	protected List<WikiPage> getSubscribedWikiPages(long userId) {
+		return null;
+	}
+
+	/**
+	 * TODO Giros
+	 */
+	protected List<WikiPage> getVisitedWikiPages(long userId) {
+		return null;
+	}
+
+	@Reference(unbind = "-")
+	protected void setWikiPageLocalService(
+		WikiPageLocalService wikiPageLocalService) {
+
+		_wikiPageLocalService = wikiPageLocalService;
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		WikiPageRecommendationProvider.class);
+
+	private WikiPageLocalService _wikiPageLocalService;
 
 }
