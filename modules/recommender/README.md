@@ -1,5 +1,7 @@
 ## Liferay Recommender (TODO - Write Doc)
 
+ :exclamation: **This project is actively being developed thus the content of this file is not finalized either**. :exclamation:  
+ 
 ## Structure
 
 ### `recommender-api`  
@@ -16,3 +18,12 @@
 
 ### `recommender-service`
 - `com.liferay.recommender.service.impl.RecommenderServiceImpl`: Implementation for the remote recommender service API.
+
+## Development
+
+1. Create a new [Liferay Workspace](https://dev.liferay.com/develop/tutorials/-/knowledge_base/7-0/liferay-workspace) [with Blade CLI](https://dev.liferay.com/develop/tutorials/-/knowledge_base/7-0/creating-a-liferay-workspace-with-blade-cli)  
+2. Clone this repository  
+3. Copy all files and folders except for the "modules" directory from the newly initialized Liferay Workspace into the root of the local copy of this repository  
+4. Open [root]/`gradle.properties` and edit property `liferay.workspace.home.dir` to configure where to deploy the built artifacts  
+
+Now you should be able to use Gradle Wrapper to build and deploy the modules.
