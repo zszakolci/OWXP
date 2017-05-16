@@ -1,0 +1,24 @@
+#weightedscreen {
+	.node {
+		box-sizing: border-box;
+		position: absolute;
+		overflow: hidden;
+	}
+
+	.node-label {
+		color: #fff;
+		font-size: 14px;
+		padding: 4px;
+		white-space: pre;
+	}
+
+	.node-label a {
+		color: #fff;
+	}
+
+	.node-value {
+		color: rgba(0,0,0,0.8);
+		font-size: 9px;
+		margin-top: 1px;
+	}
+}
