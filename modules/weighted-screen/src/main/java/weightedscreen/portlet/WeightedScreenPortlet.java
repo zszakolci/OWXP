@@ -35,7 +35,7 @@ import org.osgi.service.component.annotations.Component;
 		"javax.portlet.init-param.copy-request-parameters=true",
 		"javax.portlet.init-param.template-path=/",
 		"javax.portlet.init-param.view-template=WeightedScreen",
-		"javax.portlet.name=weighted_screen_portlet",
+		"javax.portlet.name=" + WeightedScreenPortletKeys.WEIGHTEDSCREEN,
 		"javax.portlet.resource-bundle=content.Language",
 		"javax.portlet.security-role-ref=power-user,user",
 		"javax.portlet.supports.mime-type=text/html"
