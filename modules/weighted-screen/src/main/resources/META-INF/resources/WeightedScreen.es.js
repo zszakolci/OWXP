@@ -1,7 +1,10 @@
-import Component from 'metal-component/src/Component';
 import core from 'metal/src/core';
+import Ajax from 'metal-ajax/src/Ajax';
+import Component from 'metal-component/src/Component';
 import dom from 'metal-dom/src/dom';
+import MultiMap from 'metal-multimap/src/MultiMap';
 import Soy from 'metal-soy/src/Soy';
+
 import templates from './WeightedScreen.soy';
 
 import * as d3 from 'weighted-screen/js/d3';
@@ -15,9 +18,13 @@ class WeightedScreen extends Component {
 	constructor(opt_config) {
 		super(opt_config);
 
-		this.createNodes_();
-		this.createScreen_();
+		this.getWikiPagesURL = opt_config.getWikiPagesURL;
+		this.portletNamespace = opt_config.portletNamespace;
 
+		this.start = 0;
+		this.end = 10;
+
+		this.getWikiPages_();
 	}
 
 	createScreen_() {
@@ -38,7 +45,7 @@ class WeightedScreen extends Component {
 			}
 		);
 
-		let sizes = this.getParentSizes();
+		let sizes = this.getParentSizes_();
 
 		let treemap = d3.treemap()
 			.size(
@@ -154,20 +161,7 @@ class WeightedScreen extends Component {
 			);
 	}
 
-	createNodes_() {
-		let data = [
-			{ "id": 3, "name": "A Day in the Life of a Product Owner", "views": 148, "url": "https://grow.liferay.com/group/guest/learn/-/wiki/Grow/A+Day+in+the+Life+of+a+Product+Owner" },
-			{ "id": 4, "name": "Advanced System Architecture", "views": 121, "url": "https://grow.liferay.com/group/guest/learn/-/wiki/Grow/Advanced+System+Architecture" },
-			{ "id": 5, "name": "Annotations in Liferay portal", "views": 114, "url": "https://grow.liferay.com/group/guest/learn/-/wiki/Grow/Annotations+in+Liferay+portal" },
-			{ "id": 6, "name": "Basic cluster config", "views": 141, "url": "https://grow.liferay.com/group/guest/learn/-/wiki/Grow/Basic+cluster+config" },
-			{ "id": 7, "name": "Cloud DB", "views": 155, "url": "https://grow.liferay.com/group/guest/learn/-/wiki/Grow/Cloud+DB" },
-			{ "id": 2, "name": "Clustering Basics", "views": 147, "url": "https://grow.liferay.com/group/guest/learn/-/wiki/Grow/Clustering+Basics" },
-			{ "id": 8, "name": "Company Meeting Q video collection", "views": 174, "url": "https://grow.liferay.com/group/guest/learn/-/wiki/Grow/Company+Meeting+Q+video+collection" },
-			{ "id": 9, "name": "CS & TS workflow", "views": 177, "url": "https://grow.liferay.com/group/guest/learn/-/wiki/Grow/CS+&+TS+workflow" },
-			{ "id": 10, "name": "Data Dialogs 2016", "views": 185, "url": "https://grow.liferay.com/group/guest/learn/-/wiki/Grow/Data+Dialogs+2016" },
-			{ "id": 11, "name": "Eclipse Hot Keys", "views": 541, "url": "https://grow.liferay.com/group/guest/learn/-/wiki/Grow/Eclipse+Hot+Keys" }
-		];
-
+	createNodes_(data) {
 		if (this.shuffled) {
 			d3.shuffle(data);
 		}
@@ -177,7 +171,7 @@ class WeightedScreen extends Component {
 		};
 	}
 
-	getParentSizes() {
+	getParentSizes_() {
 		let height = 0;
 		let width = 0;
 
@@ -192,6 +186,34 @@ class WeightedScreen extends Component {
 			height: height,
 			width: width
 		};
+	}
+
+	getWikiPages_() {
+		this.loading = true;
+
+		let opt_params = new MultiMap();
+
+		opt_params.add(this.portletNamespace + 'start', this.start);
+		opt_params.add(this.portletNamespace + 'end', this.end);
+
+		Ajax.request(
+			this.getWikiPagesURL,
+			'GET',
+			null,
+			null,
+			opt_params
+		)
+		.then((response) => {
+			let wikiPages = [];
+
+			if (response.response) {
+				wikiPages = JSON.parse(response.response);
+			}
+
+			this.createNodes_(wikiPages);
+
+			this.createScreen_();
+		});
 	}
 }
 
