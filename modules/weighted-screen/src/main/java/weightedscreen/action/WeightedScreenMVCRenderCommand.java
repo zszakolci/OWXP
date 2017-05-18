@@ -6,7 +6,6 @@ import javax.portlet.ResourceURL;
 
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
 import com.liferay.portal.kernel.template.Template;
-import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.WebKeys;
 
 import weightedscreen.portlet.WeightedScreenPortletKeys;
