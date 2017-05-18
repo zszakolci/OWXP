@@ -31,99 +31,88 @@ if (wikiPage != null) {
 
 %>
 
-<div>
-	<div class="closed lfr-admin-panel lfr-product-menu-panel lfr-simulation-panel sidenav-fixed sidenav-menu-slider sidenav-right" id="<%= portletNamespace %>linkedPagesPanelId">
-		<div class="product-menu sidebar sidebar-inverse sidenav-menu">
-			<div class="sidebar-header">
-				<span><liferay-ui:message key="linked_pages_portlet_project_LinkedPagesPortlet.caption"/></span>
+
+<div id="linkedPages">
+	<h4 class="header">Linked Pages</h4>
+	<c:choose>
+		<c:when test="<%= linkedPagesView.getLinkedPages().isEmpty() %>">
+			<div class="content">
+				No Wiki page is available
 			</div>
+		</c:when>
+		<c:otherwise>
+			<div class="content">
+				<ul class="nav">
 
-			<div class="sidebar-body"></div>
+					<%
+					for (PageLink pageLink : linkedPagesView.getLinkedPages()) {
+					%>
 
-			<div id="linkedPages">
-				<h4 class="header">Linked Pages</h4>
-				<c:choose>
-					<c:when test="<%= linkedPagesView.getLinkedPages().isEmpty() %>">
-						<div class="content">
-							No Wiki page is available
-						</div>
-					</c:when>
-					<c:otherwise>
-						<div class="content">
-							<ul class="nav">
+						<li class="">
+							<a href="<%= pageLink.getPageLink() %>" style="color:#6a708b;">
+								<%= pageLink.getPageTitle() %>
+							</a>
+						</li>
 
-								<%
-								for (PageLink pageLink : linkedPagesView.getLinkedPages()) {
-								%>
+					<%
+					}
+					%>
 
-									<li class="">
-										<a href="<%= pageLink.getPageLink() %>" style="color:#6a708b;">
-											<%= pageLink.getPageTitle() %>
-										</a>
-									</li>
+				</ul>
+			</div>
+		</c:otherwise>
+	</c:choose>
 
-								<%
-								}
-								%>
+	<h4 class="header">Votings</h4>
 
-							</ul>
-						</div>
-					</c:otherwise>
-				</c:choose>
+	<c:choose>
+		<c:when test="<%= availableTasks.isEmpty() %>">
+			<div class="content">
+				No voting tasks are available
+			</div>
+		</c:when>
+		<c:otherwise>
+			<div class="content">
+			<%
+				for (Task task : availableTasks) {
+					String taskName = task.getTaskName();
 
-				<h4 class="header">Votings</h4>
+					int vote = TaskHandlerUtil.getVote(themeDisplay.getUserId(), wikiPage.getPageId(), task.getTaskId());
+			%>
+					<div>
+						<h5><%= task.getTaskName() %></h5>
+						<aui:input checked="<%= vote == 1 %>" label="Agree" name="<%= taskName %>" type="radio" value="<%= true %>" />
 
-				<c:choose>
-					<c:when test="<%= availableTasks.isEmpty() %>">
-						<div class="content">
-							No voting tasks are available
-						</div>
-					</c:when>
-					<c:otherwise>
-						<div class="content">
-						<%
-							for (Task task : availableTasks) {
-								String taskName = task.getTaskName();
+						<aui:input checked="<%= vote == 0 %>" label="Not Agree" name="<%= taskName %>" type="radio" value="<%= false %>" />
 
-								int vote = TaskHandlerUtil.getVote(themeDisplay.getUserId(), wikiPage.getPageId(), task.getTaskId());
-						%>
-								<div>
-									<h5><%= task.getTaskName() %></h5>
-									<aui:input checked="<%= vote == 1 %>" label="Agree" name="<%= taskName %>" type="radio" value="<%= true %>" />
+						<aui:script use="aui-base">
+							var <%= taskName %>CheckboxNodes = A.all('input[name="<%= taskName %>"]');
 
-									<aui:input checked="<%= vote == 0 %>" label="Not Agree" name="<%= taskName %>" type="radio" value="<%= false %>" />
+							<%= taskName %>CheckboxNodes.each(
+								function(node) {
+									node.on(
+										'change',
+										function(event) {
+											var radioValue = event.currentTarget.attr('value');
+											var value = 1;
 
-									<aui:script use="aui-base">
-										var <%= taskName %>CheckboxNodes = A.all('input[name="<%= taskName %>"]');
-
-										<%= taskName %>CheckboxNodes.each(
-											function(node) {
-												node.on(
-													'change',
-													function(event) {
-														var radioValue = event.currentTarget.attr('value');
-														var value = 1;
-
-														if (radioValue === 'false') {
-															value = 0;
-														}
-
-														window.<portlet:namespace />votingService(<%= task.getTaskId()%>, value);
-													}
-												);
+											if (radioValue === 'false') {
+												value = 0;
 											}
-										);
-									</aui:script>
-								</div>
-						<%
-							}
-						%>
-						</div>
-					</c:otherwise>
-				</c:choose>
+
+											window.<portlet:namespace />votingService(<%= task.getTaskId()%>, value);
+										}
+									);
+								}
+							);
+						</aui:script>
+					</div>
+			<%
+				}
+			%>
 			</div>
-		</div>
-	</div>
+		</c:otherwise>
+	</c:choose>
 </div>
 
 <c:if test="<%= wikiPage != null %>">
@@ -153,7 +142,7 @@ if (wikiPage != null) {
 				vote: value
 			},
 			function(response) {
-			} 
+			}
 		);
 	}
 	</aui:script>
