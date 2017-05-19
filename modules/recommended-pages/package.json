@@ -7,6 +7,6 @@
 		"metal-component": "^2.4.5",
 		"metal-soy": "^2.4.5"
 	},
-	"name": "hello-soy-web",
+	"name": "recommended-pages",
 	"version": "1.0.0"
 }
