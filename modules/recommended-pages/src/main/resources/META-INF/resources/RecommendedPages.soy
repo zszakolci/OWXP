@@ -1,11 +1,40 @@
 {namespace RecommendedPages}
 
 /**
- * Prints the Recommended Pages portlet main view.
- *
+ * @param id
  */
 {template .render}
-	<div>
-		Recommended Pages
-	</div>
+	{@param? name: string}
+	{@param? recommendedPages: ?}
+	<section id="{$id}">
+		<h4 class="text-default">{$name}</h4>
+
+		<div class="row">
+			<ul class="list-group">
+			{if $recommendedPages}
+				{foreach $page in $recommendedPages}
+					{call .renderPage_}
+						{param page: $page /}
+					{/call}
+				{/foreach}
+			{/if}
+			</ul>
+		</div>
+	</section>
+{/template}
+
+/**
+ *
+ */
+{template .renderPage_}
+	{@param? page: ?}
+	<li class="list-group-item">
+		<div class="list-group-item-content">
+			<h3>
+				<a href="{$page.url}">{$page.title}</a>
+			</h3>
+
+			<p class="text-default">{$page.extractedContent}</p>
+		</div>
+	</li>
 {/template}
