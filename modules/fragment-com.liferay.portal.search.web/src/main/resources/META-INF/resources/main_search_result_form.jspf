@@ -14,6 +14,21 @@
  */
 --%>
 
+<%
+AssetEntry assetEntry = AssetEntryLocalServiceUtil.fetchEntry(
+	searchResultSummaryDisplayContext.getClassName(), searchResultSummaryDisplayContext.getClassPK());
+
+boolean official = false;
+
+String[] tagNames = assetEntry.getTagNames();
+
+for (String tagName : tagNames) {
+	if (StringUtil.equalsIgnoreCase(tagName, "official")) {
+		official = true;
+	}
+}
+%>
+
 <c:if test="<%= searchResultSummaryDisplayContext.isUserPortraitVisible() %>">
 	<liferay-ui:search-container-column-text>
 		<liferay-ui:user-portrait
@@ -27,6 +42,13 @@
 	colspan="<%= 2 %>"
 >
 	<h5>
+		<c:if test="<%= official %>">
+			<liferay-ui:icon
+				iconCssClass="icon-check"
+				message="Official"
+			/>
+		</c:if>
+
 		<a href="<%= searchResultSummaryDisplayContext.getViewURL() %>">
 			<strong><%= searchResultSummaryDisplayContext.getHighlightedTitle() %></strong>
 		</a>
