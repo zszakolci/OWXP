@@ -109,8 +109,6 @@ PortletURL taggedPagesURL = renderResponse.createRenderURL();
 taggedPagesURL.setParameter("mvcRenderCommandName", "/wiki/view_tagged_pages");
 taggedPagesURL.setParameter("nodeId", String.valueOf(node.getNodeId()));
 
-AssetEntryServiceUtil.incrementViewCounter(WikiPage.class.getName(), wikiPage.getResourcePrimKey());
-
 if (Validator.isNotNull(ParamUtil.getString(request, "title"))) {
 	AssetUtil.addLayoutTags(request, AssetTagLocalServiceUtil.getTags(WikiPage.class.getName(), wikiPage.getResourcePrimKey()));
 }
@@ -119,6 +117,8 @@ AssetEntry layoutAssetEntry = null;
 
 if (wikiPage != null) {
 	layoutAssetEntry = AssetEntryLocalServiceUtil.getEntry(WikiPage.class.getName(), wikiPage.getResourcePrimKey());
+
+	AssetEntryServiceUtil.incrementViewCounter(layoutAssetEntry);
 
 	request.setAttribute(WebKeys.LAYOUT_ASSET_ENTRY, layoutAssetEntry);
 }
