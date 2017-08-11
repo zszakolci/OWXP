@@ -540,23 +540,27 @@ List<Task> availableTasks = TaskHandlerUtil.getAvailableFlags(wikiPage.getPageId
 </div>
 
 <c:if test="<%= availableTasks.size() > 0 %>">
-	<div style="display:none" id="iconContainer">
-		<%
-			for (Task task : availableTasks) {
-				Map<String, Object> data = new HashMap<String, Object>();
+	<div id="iconContainer" style="display:none">
 
-				data.put("taskid", task.getTaskId());
-		%>
-				<liferay-ui:icon
-					cssClass="maintainance-task"
-					data="<%= data %>"
-					iconCssClass="icon-spinner"
-					message="<%= task.getTaskName() %>"
-					url="javascript:;"
-				/>
 		<%
-			}
+		for (Task task : availableTasks) {
+			Map<String, Object> data = new HashMap<String, Object>();
+
+			data.put("taskid", task.getTaskId());
 		%>
+
+			<liferay-ui:icon
+				cssClass="maintainance-task"
+				data="<%= data %>"
+				iconCssClass="icon-spinner"
+				message="<%= task.getTaskName() %>"
+				url="javascript:;"
+			/>
+
+		<%
+		}
+		%>
+
 	</div>
 
 	<aui:script sandbox="<%= true %>" use="aui-popover, widget-anim">
@@ -608,7 +612,7 @@ List<Task> availableTasks = TaskHandlerUtil.getAvailableFlags(wikiPage.getPageId
 								triggerAnim.attr('disabled', true);
 							}
 						}
-					} 
+					}
 				);
 			},
 			'.task-flagging .maintainance-task a'
