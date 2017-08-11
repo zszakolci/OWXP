@@ -401,7 +401,7 @@ List<Task> availableTasks = TaskHandlerUtil.getAvailableFlags(wikiPage.getPageId
 
 												<div class="col-md-4">
 													<liferay-frontend:horizontal-card
-														text="<%= HtmlUtil.escape(fileEntry.getTitle()) %>"
+														text="<%= fileEntry.getTitle() %>"
 														url="<%= rowURL %>"
 													>
 														<liferay-frontend:horizontal-card-col>
