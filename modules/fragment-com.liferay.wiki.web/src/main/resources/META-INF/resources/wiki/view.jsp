@@ -580,20 +580,18 @@ List<Task> availableTasks = TaskHandlerUtil.getAvailableFlags(wikiPage.getPageId
 				zIndex: 1
 			}
 		).render();
-		
-		
-		$('.sidenav-toggler').on('click', function(){
+
+		$('.sidenav-toggler').on('click', function() {
 			popoverAnim.set('visible', false);
 		});
-		
+
 		$(window).scroll(function() {
-			popoverAnim.set('visible', false);			
+			popoverAnim.set('visible', false);
 		});
-		
+
 		triggerAnim.on('click',function() {
 			popoverAnim.set('visible', !popoverAnim.get('visible'));
 		});
-
 
 		A.one('body').delegate(
 			'click',
