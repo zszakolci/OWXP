@@ -575,8 +575,8 @@ List<Task> availableTasks = TaskHandlerUtil.getAvailableFlags(wikiPage.getPageId
 				},
 				bodyContent: iconContainer.html(),
 				cssClass: 'task-flagging',
-				plugins: [A.Plugin.WidgetAnim],
 				position: 'right',
+				visible: false,
 				zIndex: 1
 			}
 		).render();
