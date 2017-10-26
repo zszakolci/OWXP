@@ -14,8 +14,6 @@
 
 package com.liferay.social.activity.customizer.service.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.social.activity.customizer.service.base.CustomSocialActivitySetLocalServiceBaseImpl;
 
 /**
@@ -32,7 +30,6 @@ import com.liferay.social.activity.customizer.service.base.CustomSocialActivityS
  * @see CustomSocialActivitySetLocalServiceBaseImpl
  * @see com.liferay.social.activity.customizer.service.CustomSocialActivitySetLocalServiceUtil
  */
-@ProviderType
 public class CustomSocialActivitySetLocalServiceImpl
 	extends CustomSocialActivitySetLocalServiceBaseImpl {
 

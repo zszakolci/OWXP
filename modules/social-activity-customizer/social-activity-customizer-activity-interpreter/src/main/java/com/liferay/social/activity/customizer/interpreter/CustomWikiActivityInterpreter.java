@@ -1,3 +1,17 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
 package com.liferay.social.activity.customizer.interpreter;
 
 import com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil;
@@ -5,7 +19,7 @@ import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.asset.kernel.model.AssetRenderer;
 import com.liferay.asset.kernel.model.AssetRendererFactory;
 import com.liferay.asset.kernel.model.AssetTag;
-import com.liferay.asset.kernel.service.AssetEntryLocalServiceUtil;
+import com.liferay.asset.kernel.service.AssetEntryLocalService;
 import com.liferay.portal.kernel.exception.NoSuchModelException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
@@ -17,15 +31,15 @@ import com.liferay.portal.kernel.portletfilerepository.PortletFileRepositoryUtil
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
-import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
-import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
+import com.liferay.portal.kernel.service.GroupLocalService;
+import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.service.UserLocalServiceUtil;
+import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.AggregateResourceBundleLoader;
 import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HtmlUtil;
-import com.liferay.portal.kernel.util.HttpUtil;
+import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.ResourceBundleLoader;
 import com.liferay.portal.kernel.util.ResourceBundleLoaderUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -93,10 +107,10 @@ public class CustomWikiActivityInterpreter
 			return null;
 		}
 
-		Group group = GroupLocalServiceUtil.fetchFriendlyURLGroup(
+		Group group = _groupLocalService.fetchFriendlyURLGroup(
 			serviceContext.getCompanyId(), "/guest");
 
-		long plid = LayoutLocalServiceUtil.getDefaultPlid(
+		long plid = _layoutLocalService.getDefaultPlid(
 			group.getGroupId(), true);
 
 		WikiPage page = _wikiPageLocalService.getPage(classPK);
@@ -115,7 +129,7 @@ public class CustomWikiActivityInterpreter
 			return viewEntryURL;
 		}
 
-		return HttpUtil.setParameter(url, "noSuchEntryRedirect", viewEntryURL);
+		return _http.setParameter(url, "noSuchEntryRedirect", viewEntryURL);
 	}
 
 	protected String getAttachmentTitle(
@@ -163,7 +177,7 @@ public class CustomWikiActivityInterpreter
 				sb.append("&nodeId=");
 				sb.append(pageResource.getNodeId());
 				sb.append("&title=");
-				sb.append(HttpUtil.encodeURL(pageResource.getTitle()));
+				sb.append(_http.encodeURL(pageResource.getTitle()));
 				sb.append("&fileName=");
 				sb.append(fileEntryTitle);
 
@@ -194,7 +208,7 @@ public class CustomWikiActivityInterpreter
 		WikiPageResource pageResource =
 			_wikiPageResourceLocalService.getWikiPageResource(classPK);
 
-		AssetEntry assetEntry = AssetEntryLocalServiceUtil.fetchEntry(
+		AssetEntry assetEntry = _assetEntryLocalService.fetchEntry(
 			className, pageResource.getPrimaryKey());
 
 		int viewCount = assetEntry.getViewCount();
@@ -394,6 +408,25 @@ public class CustomWikiActivityInterpreter
 		return true;
 	}
 
+	@Reference(unbind = "-")
+	protected void setAssetEntryLocalService(
+		AssetEntryLocalService assetEntryLocalService) {
+
+		_assetEntryLocalService = assetEntryLocalService;
+	}
+
+	@Reference(unbind = "-")
+	protected void setGroupLocalService(GroupLocalService groupLocalService) {
+		_groupLocalService = groupLocalService;
+	}
+
+	@Reference(unbind = "-")
+	protected void setLayoutLocalService(
+		LayoutLocalService layoutLocalService) {
+
+		_layoutLocalService = layoutLocalService;
+	}
+
 	@Reference(
 		target = "(bundle.symbolic.name=com.liferay.wiki.web)", unbind = "-"
 	)
@@ -403,6 +436,11 @@ public class CustomWikiActivityInterpreter
 		_resourceBundleLoader = new AggregateResourceBundleLoader(
 			resourceBundleLoader,
 			ResourceBundleLoaderUtil.getPortalResourceBundleLoader());
+	}
+
+	@Reference(unbind = "-")
+	protected void setUserLocalService(UserLocalService userLocalService) {
+		_userLocalService = userLocalService;
 	}
 
 	@Reference(unbind = "-")
@@ -494,7 +532,7 @@ public class CustomWikiActivityInterpreter
 			AssetTag tag, long userId, ServiceContext serviceContext)
 		throws PortalException {
 
-		User user = UserLocalServiceUtil.getUser(userId);
+		User user = _userLocalService.getUser(userId);
 
 		String tagName = tag.getName();
 
@@ -540,7 +578,15 @@ public class CustomWikiActivityInterpreter
 	private static final Log _log = LogFactoryUtil.getLog(
 		CustomWikiActivityInterpreter.class);
 
+	private AssetEntryLocalService _assetEntryLocalService;
+	private GroupLocalService _groupLocalService;
+
+	@Reference
+	private Http _http;
+
+	private LayoutLocalService _layoutLocalService;
 	private ResourceBundleLoader _resourceBundleLoader;
+	private UserLocalService _userLocalService;
 	private WikiPageLocalService _wikiPageLocalService;
 	private WikiPageResourceLocalService _wikiPageResourceLocalService;
 
