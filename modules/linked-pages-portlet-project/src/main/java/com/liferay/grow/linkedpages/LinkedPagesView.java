@@ -68,18 +68,17 @@ public class LinkedPagesView {
 			long nodeId = WikiNodeLocalServiceUtil.getNode(
 				groupId, nodeTitle).getNodeId();
 
-			wikiPage = WikiPageLocalServiceUtil.getPage(
-				nodeId, pageTitle);
+			_wikiPage = WikiPageLocalServiceUtil.getPage(nodeId, pageTitle);
 
-			String content = wikiPage.getContent();
+			String content = _wikiPage.getContent();
 
-			if (wikiPage.getFormat().equals("creole")) {
+			if (_wikiPage.getFormat().equals("creole")) {
 				_addLinksCreole(content);
 			}
-			else if (wikiPage.getFormat().equals("html")) {
+			else if (_wikiPage.getFormat().equals("html")) {
 				_addLinksHTML(content);
 			}
-			else if (wikiPage.getFormat().equals("markdown")) {
+			else if (_wikiPage.getFormat().equals("markdown")) {
 				_addLinksMarkdown(content);
 			}
 		}
@@ -99,7 +98,7 @@ public class LinkedPagesView {
 	}
 
 	public WikiPage getWikiPage() {
-		return wikiPage;
+		return _wikiPage;
 	}
 
 	private void _addLink(String link) {
@@ -173,7 +172,6 @@ public class LinkedPagesView {
 		LinkedPagesView.class);
 
 	private TreeSet<PageLink> _linkedPages;
-	
-	private WikiPage wikiPage = null;
+	private WikiPage _wikiPage = null;
 
 }

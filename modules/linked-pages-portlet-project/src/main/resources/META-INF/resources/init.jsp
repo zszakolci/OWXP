@@ -27,14 +27,14 @@ taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
 page import="com.liferay.grow.linkedpages.util.LinkedPagesPortletKeys" %><%@
 page import="com.liferay.grow.linkedpages.util.PageLink" %><%@
 page import="com.liferay.micro.maintainance.api.Task" %><%@
-page import="com.liferay.micro.maintainance.util.TaskHandlerUtil" %><%@ 
+page import="com.liferay.micro.maintainance.util.TaskHandlerUtil" %><%@
 page import="com.liferay.portal.kernel.portlet.LiferayWindowState" %><%@
 page import="com.liferay.portal.kernel.portlet.PortletURLFactoryUtil" %><%@
 page import="com.liferay.portal.kernel.util.PortalUtil" %><%@
 page import="com.liferay.wiki.model.WikiPage" %>
 
-<%@ page import="java.util.List" %> <%@
-page import="java.util.ArrayList" %>
+<%@ page import="java.util.ArrayList" %><%@
+page import="java.util.List" %>
 
 <%@ page import="javax.portlet.PortletRequest" %><%@
 page import="javax.portlet.PortletURL" %>

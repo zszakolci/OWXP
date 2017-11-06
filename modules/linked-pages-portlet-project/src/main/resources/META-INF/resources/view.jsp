@@ -28,7 +28,6 @@ List<Task> availableTasks = new ArrayList<Task>();
 if (wikiPage != null) {
 	availableTasks = TaskHandlerUtil.getRunningVotes(wikiPage.getPageId());
 }
-
 %>
 
 <div>
@@ -81,12 +80,14 @@ if (wikiPage != null) {
 					</c:when>
 					<c:otherwise>
 						<div class="content">
-						<%
+
+							<%
 							for (Task task : availableTasks) {
 								String taskName = task.getTaskName();
 
 								int vote = TaskHandlerUtil.getVote(themeDisplay.getUserId(), wikiPage.getPageId(), task.getTaskId());
-						%>
+							%>
+
 								<div>
 									<h5><%= task.getTaskName() %></h5>
 									<aui:input checked="<%= vote == 1 %>" label="Agree" name="<%= taskName %>" type="radio" value="<%= true %>" />
@@ -108,16 +109,18 @@ if (wikiPage != null) {
 															value = 0;
 														}
 
-														window.<portlet:namespace />votingService(<%= task.getTaskId()%>, value);
+														window.<portlet:namespace />votingService(<%= task.getTaskId() %>, value);
 													}
 												);
 											}
 										);
 									</aui:script>
 								</div>
-						<%
+
+							<%
 							}
-						%>
+							%>
+
 						</div>
 					</c:otherwise>
 				</c:choose>
@@ -153,7 +156,7 @@ if (wikiPage != null) {
 				vote: value
 			},
 			function(response) {
-			} 
+			}
 		);
 	}
 	</aui:script>
