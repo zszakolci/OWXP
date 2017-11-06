@@ -47,11 +47,11 @@ public class LinkedPagesView {
 
 		String wikiNode = ParamUtil.getString(
 			request,
-			"p_r_p__http://www.liferay.com/public-render-parameters" +
+			"p_r_p_http://www.liferay.com/public-render-parameters" +
 				"/wiki_nodeName");
 		String wikiTitle = ParamUtil.getString(
 			request,
-			"p_r_p__http://www.liferay.com/public-render-parameters" +
+			"p_r_p_http://www.liferay.com/public-render-parameters" +
 				"/wiki_title");
 
 		long groupId = themeDisplay.getScopeGroupId();
