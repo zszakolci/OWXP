@@ -18,6 +18,7 @@ import com.liferay.grow.linkedpages.util.PageLink;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.portlet.PortletQName;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -47,12 +48,13 @@ public class LinkedPagesView {
 
 		String wikiNode = ParamUtil.getString(
 			request,
-			"p_r_p_http://www.liferay.com/public-render-parameters" +
-				"/wiki_nodeName");
+			PortletQName.PUBLIC_RENDER_PARAMETER_NAMESPACE +
+				"http://www.liferay.com/public-render-parameters" +
+					"/wiki_nodeName");
 		String wikiTitle = ParamUtil.getString(
 			request,
-			"p_r_p_http://www.liferay.com/public-render-parameters" +
-				"/wiki_title");
+			PortletQName.PUBLIC_RENDER_PARAMETER_NAMESPACE +
+				"http://www.liferay.com/public-render-parameters/wiki_title");
 
 		long groupId = themeDisplay.getScopeGroupId();
 
