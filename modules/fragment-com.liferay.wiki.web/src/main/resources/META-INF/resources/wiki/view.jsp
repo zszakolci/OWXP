@@ -589,9 +589,12 @@ List<Task> availableTasks = TaskHandlerUtil.getAvailableFlags(wikiPage.getPageId
 			popoverAnim.set('visible', false);
 		});
 
-		triggerAnim.on('click',function() {
-			popoverAnim.set('visible', !popoverAnim.get('visible'));
-		});
+		if (triggerAnim) {
+			triggerAnim.on('click',function() {
+				popoverAnim.set('visible', !popoverAnim.get('visible'));
+			});
+		}
+
 
 		A.one('body').delegate(
 			'click',
