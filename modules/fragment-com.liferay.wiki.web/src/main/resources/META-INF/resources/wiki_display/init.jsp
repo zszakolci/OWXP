@@ -20,7 +20,7 @@
 page import="com.liferay.wiki.exception.NoSuchNodeException" %><%@
 page import="com.liferay.wiki.web.internal.display.context.logic.WikiPortletInstanceSettingsHelper" %><%@
 page import="com.liferay.wiki.web.internal.display.context.util.WikiRequestHelper" %><%@
-page import="com.liferay.wiki.web.util.WikiWebComponentProvider" %>
+page import="com.liferay.wiki.web.internal.util.WikiWebComponentProvider" %>
 
 <%
 WikiRequestHelper wikiRequestHelper = new WikiRequestHelper(request);
