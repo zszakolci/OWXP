@@ -16,7 +16,14 @@
 
 <%@ include file="/init.jsp" %>
 
+<%@ page import="com.liferay.portal.kernel.model.UserNotificationDeliveryConstants" %><%@
+page import="com.liferay.portal.kernel.portlet.PortalPreferences" %><%@
+page import="com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil" %><%@
+page import="com.liferay.portal.kernel.service.UserNotificationEventLocalServiceUtil" %>
+
 <%
+int archivedUserNotificationEventsCount = UserNotificationEventLocalServiceUtil.getArchivedUserNotificationEventsCount(themeDisplay.getUserId(), UserNotificationDeliveryConstants.TYPE_WEBSITE, false, false);
+
 String navigation = ParamUtil.getString(request, "navigation", "all");
 
 boolean actionRequired = ParamUtil.getBoolean(request, "actionRequired");
@@ -76,6 +83,17 @@ navigationURL.setParameter(SearchContainer.DEFAULT_CUR_PARAM, "0");
 			portletURL="<%= currentURLObj %>"
 			selectedDisplayStyle="descriptive"
 		/>
+
+		<c:if test="<%= !actionRequired && (archivedUserNotificationEventsCount != 0) %>">
+			<portlet:actionURL name="/notifications/markAllAsRead" var="markAllAsRead" />
+
+			<liferay-ui:icon
+				iconCssClass="icon-remove"
+				label="<%= true %>"
+				message="Mark all as read"
+				url="<%= markAllAsRead %>"
+			/>
+		</c:if>
 	</liferay-frontend:management-bar-buttons>
 
 	<liferay-frontend:management-bar-filters>
@@ -217,3 +235,18 @@ navigationURL.setParameter(SearchContainer.DEFAULT_CUR_PARAM, "0");
 		return notice;
 	}
 </aui:script>
+
+<%!
+private void _resetUserNoticationEventsCount(long userId) {
+	PortalPreferences portalPreferences =
+		PortletPreferencesFactoryUtil.getPortalPreferences(userId, true);
+
+	portalPreferences.setValue(
+		UserNotificationEvent.class.getName(),
+		"useLegacyUserNotificationEventsCount", "false");
+
+	portalPreferences.setValue(
+		UserNotificationEvent.class.getName(),
+		"userNotificationEventsCount", "0");
+}
+%>
