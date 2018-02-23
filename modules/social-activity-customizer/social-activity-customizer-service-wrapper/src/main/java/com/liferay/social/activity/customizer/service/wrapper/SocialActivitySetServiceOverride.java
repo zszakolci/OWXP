@@ -38,7 +38,7 @@ public class SocialActivitySetServiceOverride
 	}
 
 	@Override
-	public List<SocialActivitySet> getUserActivitySets(
+	public List<SocialActivitySet> getUserViewableActivitySets(
 		long userId, int start, int end) {
 
 		long classNameId = _classNameLocalService.getClassNameId(
