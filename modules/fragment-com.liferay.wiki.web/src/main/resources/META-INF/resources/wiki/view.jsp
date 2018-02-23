@@ -14,6 +14,12 @@
  */
 --%>
 
+<%@ page import="com.liferay.portal.kernel.util.DateUtil" %><%@
+page import="com.liferay.portal.kernel.util.OrderByComparator" %><%@
+page import="com.liferay.portal.kernel.workflow.WorkflowConstants" %><%@
+page import="com.liferay.wiki.model.WikiPage" %><%@
+page import="com.liferay.wiki.service.WikiPageLocalServiceUtil" %>
+
 <%@ include file="/wiki/init.jsp" %>
 
 <liferay-util:dynamic-include key="com.liferay.wiki.web#/wiki/view.jsp#pre" />
@@ -42,7 +48,8 @@ if (wikiPage != null) {
 	parentTitle = wikiPage.getParentTitle();
 }
 
-List<WikiPage> childPages = wikiPage.getViewableChildPages();
+long childPagesCount = WikiPageLocalServiceUtil.getChildrenCount(wikiPage.getNodeId(), true, wikiPage.getTitle());
+List<WikiPage> childPages = WikiPageLocalServiceUtil.getChildren(wikiPage.getNodeId(), true, wikiPage.getTitle(), WorkflowConstants.STATUS_APPROVED, 0, 15, new PagemodifiedDateComparator());
 
 int attachmentsFileEntriesCount = 0;
 
@@ -502,7 +509,7 @@ List<Task> availableTasks = TaskHandlerUtil.getAvailableFlags(wikiPage.getPageId
 
 		<c:if test="<%= !childPages.isEmpty() %>">
 			<h4 class="text-default">
-				<liferay-ui:message arguments="<%= childPages.size() %>" key="child-pages-x" translateArguments="<%= false %>" />
+				<liferay-ui:message arguments="<%= childPagesCount %>" key="child-pages-x" translateArguments="<%= false %>" />
 			</h4>
 
 			<div>
@@ -624,3 +631,58 @@ List<Task> availableTasks = TaskHandlerUtil.getAvailableFlags(wikiPage.getPageId
 		);
 	</aui:script>
 </c:if>
+
+<%!
+private static class PagemodifiedDateComparator extends OrderByComparator<WikiPage> {
+
+	public static final String ORDER_BY_ASC = "WikiPage.modifiedDate ASC";
+
+	public static final String ORDER_BY_DESC = "WikiPage.modifiedDate DESC";
+
+	public static final String[] ORDER_BY_FIELDS = {"modifiedDate"};
+
+	public PagemodifiedDateComparator() {
+		this(false);
+	}
+
+	public PagemodifiedDateComparator(boolean ascending) {
+		_ascending = ascending;
+	}
+
+	@Override
+	public int compare(WikiPage page1, WikiPage page2) {
+		int value = DateUtil.compareTo(
+			page1.getModifiedDate(), page2.getModifiedDate());
+
+		if (_ascending) {
+			return value;
+		}
+		else {
+			return -value;
+		}
+	}
+
+	@Override
+	public String getOrderBy() {
+		if (_ascending) {
+			return ORDER_BY_ASC;
+		}
+		else {
+			return ORDER_BY_DESC;
+		}
+	}
+
+	@Override
+	public String[] getOrderByFields() {
+		return ORDER_BY_FIELDS;
+	}
+
+	@Override
+	public boolean isAscending() {
+		return _ascending;
+	}
+
+	private final boolean _ascending;
+
+}
+%>
