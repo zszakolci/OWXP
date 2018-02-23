@@ -65,7 +65,7 @@ public class CustomSocialActivitySetFinderImpl
 			qPos.add(classNameId);
 
 			return (List<SocialActivitySet>)QueryUtil.list(
-				q, getDialect(), begin, end);
+				q, getDialect(), QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 		}
 		catch (Exception e) {
 			try {
