@@ -261,7 +261,7 @@ public class CustomWikiActivityInterpreter
 		Object[] titleArguments = getTitleArguments(
 			null, activity, link, entryTitle, serviceContext);
 
-		String titlePattern = "{0}\t{1}";
+		String titlePattern = "<h5><strong>{0}\t{1}</strong></h5>";
 
 		return serviceContext.translate(titlePattern, titleArguments);
 	}
@@ -457,6 +457,18 @@ public class CustomWikiActivityInterpreter
 		_wikiPageResourceLocalService = wikiPageResourceLocalService;
 	}
 
+	protected String wrapTagLink(String link, String text) {
+		StringBundler sb = new StringBundler(5);
+
+		sb.append("<a class=\"badge badge-default badge-sm\" href=\"");
+		sb.append(link);
+		sb.append("\">");
+		sb.append(text);
+		sb.append("</a>");
+
+		return sb.toString();
+	}
+
 	private String _getActivityText(SocialActivity activity) {
 		int activityType = activity.getType();
 
@@ -504,25 +516,29 @@ public class CustomWikiActivityInterpreter
 				tagRow = tagRow.concat(StringPool.SPACE);
 			}
 
-			tagRow = tagRow.concat(wrapLink(url, tag.getName()));
+			tagRow = tagRow.concat(wrapTagLink(url, tag.getName()));
 		}
 
-		StringBundler sb = new StringBundler(15);
+		StringBundler sb = new StringBundler(19);
 
-		sb.append("<h5 class=\"text-default\">");
+		sb.append("<h6 class=\"text-default\">");
 		sb.append("<p style=\"text-align:left;\">");
 		sb.append(dateString);
+		sb.append("</h6>");
+		sb.append("<h6 class=\"text-default\">");
 		sb.append("<span style=\"float:right;\">");
 		sb.append(String.valueOf(viewCount));
 		sb.append(" views");
 		sb.append("</span>");
-		sb.append("</h5>");
 		sb.append("</p>");
-		sb.append("<h6>");
+		sb.append("</h6>");
+		sb.append("<h6 class=\"text-default\">");
 		sb.append(StringUtil.shorten(summary, 200));
 		sb.append("</h6>");
-		sb.append("<h6>");
+		sb.append("<h6 class=\"text-default\">");
+		sb.append("<span class=\"taglib-asset-tags-summary\">");
 		sb.append(tagRow);
+		sb.append("</span>");
 		sb.append("</h6>");
 
 		return sb.toString();
