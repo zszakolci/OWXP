@@ -64,7 +64,7 @@
 				continue;
 			}
 
-			FeedEntryHolder entryHolder = new FeedEntryHolder(activityFeedEntry.getTitle() + "<br />" + activityFeedEntry.getBody());
+			FeedEntryHolder entryHolder = new FeedEntryHolder(activityFeedEntry.getTitle() + activityFeedEntry.getBody());
 
 			feedEntries.add(entryHolder);
 		}
