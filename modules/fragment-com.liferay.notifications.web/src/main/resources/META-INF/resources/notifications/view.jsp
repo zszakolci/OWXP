@@ -22,6 +22,8 @@ page import="com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil" %>
 page import="com.liferay.portal.kernel.service.UserNotificationEventLocalServiceUtil" %>
 
 <%
+_resetUserNoticationEventsCount(themeDisplay.getUserId());
+
 int archivedUserNotificationEventsCount = UserNotificationEventLocalServiceUtil.getArchivedUserNotificationEventsCount(themeDisplay.getUserId(), UserNotificationDeliveryConstants.TYPE_WEBSITE, false, false);
 
 String navigation = ParamUtil.getString(request, "navigation", "all");
