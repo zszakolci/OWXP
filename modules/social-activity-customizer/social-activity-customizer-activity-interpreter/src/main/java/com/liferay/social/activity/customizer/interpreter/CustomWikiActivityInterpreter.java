@@ -213,19 +213,23 @@ public class CustomWikiActivityInterpreter
 
 		// Excerpt
 
-		AssetRendererFactory<?> assetRendererFactory =
-			AssetRendererFactoryRegistryUtil.getAssetRendererFactoryByClassName(
-				WikiPage.class.getName());
+		String summary = StringPool.BLANK;
 
-		AssetRenderer<?> assetRenderer = null;
+		try {
+			AssetRendererFactory<?> assetRendererFactory =
+				AssetRendererFactoryRegistryUtil.
+					getAssetRendererFactoryByClassName(
+						WikiPage.class.getName());
 
-		if (assetRendererFactory != null) {
-			assetRenderer = assetRendererFactory.getAssetRenderer(
-				activity.getClassPK());
+			AssetRenderer<?> assetRenderer =
+				assetRendererFactory.getAssetRenderer(activity.getClassPK());
+
+			summary = assetRenderer.getSearchSummary(
+				serviceContext.getLocale());
 		}
-
-		String summary = assetRenderer.getSearchSummary(
-			serviceContext.getLocale());
+		catch (Exception e) {
+			_log.error("Cannot create summary", e);
+		}
 
 		// Tags
 
