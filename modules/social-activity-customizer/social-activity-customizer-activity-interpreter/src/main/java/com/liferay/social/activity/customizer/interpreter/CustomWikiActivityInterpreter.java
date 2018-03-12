@@ -45,6 +45,7 @@ import com.liferay.portal.kernel.util.ResourceBundleLoaderUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.URLCodec;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.social.kernel.model.BaseSocialActivityInterpreter;
 import com.liferay.social.kernel.model.SocialActivity;
@@ -177,7 +178,7 @@ public class CustomWikiActivityInterpreter
 				sb.append("&nodeId=");
 				sb.append(pageResource.getNodeId());
 				sb.append("&title=");
-				sb.append(_http.encodeURL(pageResource.getTitle()));
+				sb.append(URLCodec.encodeURL(pageResource.getTitle()));
 				sb.append("&fileName=");
 				sb.append(fileEntryTitle);
 
