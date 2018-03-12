@@ -202,15 +202,12 @@ public class CustomWikiActivityInterpreter
 
 		// View count
 
-		String className = WikiPage.class.getName();
-
-		long classPK = activity.getClassPK();
-
 		WikiPageResource pageResource =
-			_wikiPageResourceLocalService.getWikiPageResource(classPK);
+			_wikiPageResourceLocalService.getWikiPageResource(
+				activity.getClassPK());
 
 		AssetEntry assetEntry = _assetEntryLocalService.fetchEntry(
-			className, pageResource.getPrimaryKey());
+			WikiPage.class.getName(), pageResource.getPrimaryKey());
 
 		int viewCount = assetEntry.getViewCount();
 
@@ -218,12 +215,13 @@ public class CustomWikiActivityInterpreter
 
 		AssetRendererFactory<?> assetRendererFactory =
 			AssetRendererFactoryRegistryUtil.getAssetRendererFactoryByClassName(
-				className);
+				WikiPage.class.getName());
 
 		AssetRenderer<?> assetRenderer = null;
 
 		if (assetRendererFactory != null) {
-			assetRenderer = assetRendererFactory.getAssetRenderer(classPK);
+			assetRenderer = assetRendererFactory.getAssetRenderer(
+				activity.getClassPK());
 		}
 
 		String summary = assetRenderer.getSearchSummary(
