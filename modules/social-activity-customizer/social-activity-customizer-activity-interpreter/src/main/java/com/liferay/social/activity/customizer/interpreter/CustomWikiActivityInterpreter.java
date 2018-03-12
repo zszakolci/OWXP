@@ -26,7 +26,6 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
-import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portletfilerepository.PortletFileRepositoryUtil;
 import com.liferay.portal.kernel.repository.model.FileEntry;
@@ -39,7 +38,6 @@ import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.AggregateResourceBundleLoader;
 import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.ResourceBundleLoader;
 import com.liferay.portal.kernel.util.ResourceBundleLoaderUtil;
@@ -236,8 +234,7 @@ public class CustomWikiActivityInterpreter
 		List<AssetTag> tags = assetEntry.getTags();
 
 		return _getFormattedBody(
-			createDate, viewCount, summary, tags, activity.getUserId(),
-			serviceContext);
+			createDate, viewCount, summary, tags, serviceContext);
 	}
 
 	@Override
@@ -502,7 +499,7 @@ public class CustomWikiActivityInterpreter
 
 	private String _getFormattedBody(
 			Date date, int viewCount, String summary, List<AssetTag> tags,
-			long userId, ServiceContext serviceContext)
+			ServiceContext serviceContext)
 		throws PortalException {
 
 		DateFormat df = DateFormat.getDateTimeInstance(
@@ -513,7 +510,8 @@ public class CustomWikiActivityInterpreter
 		String tagRow = StringPool.BLANK;
 
 		for (AssetTag tag : tags) {
-			String url = _getTagSearchUrl(tag, userId, serviceContext);
+			String url =
+				"https://grow.liferay.com/share/-/wiki/tag/" + tag.getName();
 
 			if (Validator.isNotNull(tagRow)) {
 				tagRow = tagRow.concat(StringPool.SPACE);
@@ -543,49 +541,6 @@ public class CustomWikiActivityInterpreter
 		sb.append(tagRow);
 		sb.append("</span>");
 		sb.append("</h6>");
-
-		return sb.toString();
-	}
-
-	private String _getTagSearchUrl(
-			AssetTag tag, long userId, ServiceContext serviceContext)
-		throws PortalException {
-
-		User user = _userLocalService.getUser(userId);
-
-		String tagName = tag.getName();
-
-		StringBundler sb = new StringBundler(22);
-
-		sb.append(serviceContext.getPortalURL());
-		sb.append(serviceContext.getCurrentURL());
-		sb.append(
-			"?p_p_id=com_liferay_portal_search_web_portlet_SearchPortlet");
-		sb.append("&p_p_lifecycle=0");
-		sb.append("&p_p_state=maximized");
-		sb.append("&p_p_mode=view");
-		sb.append(
-			"&_com_liferay_portal_search_web_portlet_SearchPortlet_mvcPath=");
-		sb.append("%2Fsearch.jsp");
-		sb.append(
-			"&_com_liferay_portal_search_web_portlet_SearchPortlet_cur=1");
-		sb.append(
-			"&_com_liferay_portal_search_web_portlet_SearchPortlet_keywords=");
-		sb.append(tagName);
-		sb.append("&_com_liferay_portal_search_web_portlet_SearchPortlet");
-		sb.append("_assetTagNames=");
-		sb.append(tagName);
-		sb.append("&_com_liferay_portal_search_web_portlet_SearchPortlet");
-		sb.append("_entryClassName=");
-		sb.append(WikiPage.class.getName());
-		sb.append(
-			"&_com_liferay_portal_search_web_portlet_SearchPortlet_userName=");
-		sb.append(HtmlUtil.escape(StringUtil.toLowerCase(user.getFullName())));
-		sb.append(
-			"&_com_liferay_portal_search_web_portlet_SearchPortlet_groupId=0");
-		sb.append(
-			"&_com_liferay_portal_search_web_portlet_SearchPortlet_scope=");
-		sb.append("everything");
 
 		return sb.toString();
 	}
