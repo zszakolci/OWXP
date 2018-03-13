@@ -28,7 +28,7 @@
 <liferay-ui:social-activities
 	activitySets="<%= socialActivitiesDisplayContext.getSocialActivitySets() %>"
 	feedDisplayStyle="<%= socialActivitiesDisplayContext.getRSSDisplayStyle() %>"
-	feedEnabled="<%= socialActivitiesDisplayContext.isRSSEnabled() %>"
+	feedEnabled="<%= false %>"
 	feedResourceURL="<%= socialActivitiesDisplayContext.getRSSResourceURL() %>"
 	feedTitle="<%= socialActivitiesDisplayContext.getTaglibFeedTitle() %>"
 	feedType="<%= socialActivitiesDisplayContext.getRSSFeedType() %>"
