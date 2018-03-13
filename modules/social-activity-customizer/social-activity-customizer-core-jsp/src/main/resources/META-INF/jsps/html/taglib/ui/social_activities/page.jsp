@@ -85,16 +85,16 @@
 
 	<c:if test="<%= !scopeGroup.isUser() %>">
 
-	<%
-	for (SocialActivityDescriptor activityDescriptor : activityDescriptors) {
-		SocialActivityFeedEntry activityFeedEntry = activityDescriptor.interpret(selector, serviceContext);
+		<%
+		for (SocialActivityDescriptor activityDescriptor : activityDescriptors) {
+			SocialActivityFeedEntry activityFeedEntry = activityDescriptor.interpret(selector, serviceContext);
 
-		if (activityFeedEntry == null) {
-			continue;
-		}
+			if (activityFeedEntry == null) {
+				continue;
+			}
 
-		int curDaysBetween = DateUtil.getDaysBetween(new Date(activityDescriptor.getCreateDate()), now, timeZone);
-	%>
+			int curDaysBetween = DateUtil.getDaysBetween(new Date(activityDescriptor.getCreateDate()), now, timeZone);
+		%>
 
 		<c:if test="<%= curDaysBetween > daysBetween %>">
 
@@ -149,21 +149,21 @@
 			</div>
 		</li>
 
-	<%
-		if (!hasActivities) {
-			hasActivities = true;
+		<%
+			if (!hasActivities) {
+				hasActivities = true;
+			}
 		}
-	}
-	%>
+		%>
 
-	<c:choose>
-		<c:when test="<%= hasActivities %>">
-			</ul>
-		</c:when>
-		<c:otherwise>
-			<liferay-ui:message key="there-are-no-recent-activities" />
-		</c:otherwise>
-	</c:choose>
+		<c:choose>
+			<c:when test="<%= hasActivities %>">
+				</ul>
+			</c:when>
+			<c:otherwise>
+				<liferay-ui:message key="there-are-no-recent-activities" />
+			</c:otherwise>
+		</c:choose>
 	</c:if>
 </div>
 
