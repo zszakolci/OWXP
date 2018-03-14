@@ -22,6 +22,13 @@ import aQute.bnd.annotation.ProviderType;
  */
 @ProviderType
 public interface CustomSocialActivitySetFinder {
+	public int countByU_C(long userId, long classNameId);
+
+	public int countByU_C_T(long userId, long classNameId, long[] types);
+
 	public java.util.List<com.liferay.social.kernel.model.SocialActivitySet> findByU_C(
 		long userId, long classNameId, int begin, int end);
+
+	public java.util.List<com.liferay.social.kernel.model.SocialActivitySet> findByU_C_T(
+		long userId, long classNameId, long[] types, int begin, int end);
 }

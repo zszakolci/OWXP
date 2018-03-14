@@ -21,10 +21,12 @@ import com.liferay.portal.kernel.dao.orm.SQLQuery;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.social.activity.customizer.CustomFinderHelperUtil;
 import com.liferay.social.activity.customizer.service.persistence.CustomSocialActivitySetFinder;
 import com.liferay.social.kernel.model.SocialActivitySet;
 
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -34,8 +36,118 @@ public class CustomSocialActivitySetFinderImpl
 	extends CustomSocialActivitySetFinderBaseImpl
 	implements CustomSocialActivitySetFinder {
 
+	public static final String COUNT_BY_USERID_CLASSNAMEID =
+		CustomSocialActivitySetFinder.class.getName() + ".countByU_C";
+
+	public static final String COUNT_BY_USERID_CLASSNAMEID_TYPE =
+		CustomSocialActivitySetFinder.class.getName() + ".countByU_C_T";
+
 	public static final String FIND_BY_USERID_CLASSNAMEID =
 		CustomSocialActivitySetFinder.class.getName() + ".findByU_C";
+
+	public static final String FIND_BY_USERID_CLASSNAMEID_TYPE =
+		CustomSocialActivitySetFinder.class.getName() + ".findByU_C_T";
+
+	public int countByU_C(long userId, long classNameId) {
+		Session session = null;
+
+		try {
+			session = CustomFinderHelperUtil.openPortalSession();
+
+			String sql = CustomSQLUtil.get(
+				CustomSocialActivitySetFinderImpl.class,
+				COUNT_BY_USERID_CLASSNAMEID);
+
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
+
+			q.setCacheable(false);
+			q.addEntity(
+				"SocialActivitySet",
+				CustomFinderHelperUtil.getImplClass(
+					"com.liferay.portlet.social.model.impl." +
+						"SocialActivitySetImpl",
+					PortalClassLoaderUtil.getClassLoader()));
+
+			QueryPos qPos = QueryPos.getInstance(q);
+
+			qPos.add(userId);
+			qPos.add(classNameId);
+
+			Iterator<Long> itr = q.iterate();
+
+			if (itr.hasNext()) {
+				Long count = itr.next();
+
+				if (count != null) {
+					return count.intValue();
+				}
+			}
+		}
+		catch (Exception e) {
+			try {
+				throw new SystemException(e);
+			}
+			catch (SystemException se) {
+				se.printStackTrace();
+			}
+		}
+		finally {
+			closeSession(session);
+		}
+
+		return 0;
+	}
+
+	public int countByU_C_T(long userId, long classNameId, long[] types) {
+		Session session = null;
+
+		try {
+			session = CustomFinderHelperUtil.openPortalSession();
+
+			String sql = CustomSQLUtil.get(
+				CustomSocialActivitySetFinderImpl.class,
+				COUNT_BY_USERID_CLASSNAMEID_TYPE);
+
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
+
+			q.setCacheable(false);
+			q.addEntity(
+				"SocialActivitySet",
+				CustomFinderHelperUtil.getImplClass(
+					"com.liferay.portlet.social.model.impl." +
+						"SocialActivitySetImpl",
+					PortalClassLoaderUtil.getClassLoader()));
+
+			QueryPos qPos = QueryPos.getInstance(q);
+
+			qPos.add(userId);
+			qPos.add(classNameId);
+			qPos.add(StringUtil.merge(types));
+
+			Iterator<Long> itr = q.iterate();
+
+			if (itr.hasNext()) {
+				Long count = itr.next();
+
+				if (count != null) {
+					return count.intValue();
+				}
+			}
+		}
+		catch (Exception e) {
+			try {
+				throw new SystemException(e);
+			}
+			catch (SystemException se) {
+				se.printStackTrace();
+			}
+		}
+		finally {
+			closeSession(session);
+		}
+
+		return 0;
+	}
 
 	public List<SocialActivitySet> findByU_C(
 		long userId, long classNameId, int begin, int end) {
@@ -63,6 +175,52 @@ public class CustomSocialActivitySetFinderImpl
 
 			qPos.add(userId);
 			qPos.add(classNameId);
+
+			return (List<SocialActivitySet>)QueryUtil.list(
+				q, getDialect(), QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+		}
+		catch (Exception e) {
+			try {
+				throw new SystemException(e);
+			}
+			catch (SystemException se) {
+				se.printStackTrace();
+			}
+		}
+		finally {
+			closeSession(session);
+		}
+
+		return null;
+	}
+
+	public List<SocialActivitySet> findByU_C_T(
+		long userId, long classNameId, long[] types, int begin, int end) {
+
+		Session session = null;
+
+		try {
+			session = CustomFinderHelperUtil.openPortalSession();
+
+			String sql = CustomSQLUtil.get(
+				CustomSocialActivitySetFinderImpl.class,
+				FIND_BY_USERID_CLASSNAMEID_TYPE);
+
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
+
+			q.setCacheable(false);
+			q.addEntity(
+				"SocialActivitySet",
+				CustomFinderHelperUtil.getImplClass(
+					"com.liferay.portlet.social.model.impl." +
+						"SocialActivitySetImpl",
+					PortalClassLoaderUtil.getClassLoader()));
+
+			QueryPos qPos = QueryPos.getInstance(q);
+
+			qPos.add(userId);
+			qPos.add(classNameId);
+			qPos.add(StringUtil.merge(types));
 
 			return (List<SocialActivitySet>)QueryUtil.list(
 				q, getDialect(), QueryUtil.ALL_POS, QueryUtil.ALL_POS);
