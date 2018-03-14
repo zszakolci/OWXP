@@ -14,6 +14,7 @@
 
 package com.liferay.grow.wiki.helper.service;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
@@ -21,6 +22,8 @@ import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.kernel.util.HtmlUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.wiki.model.WikiPage;
 import com.liferay.wiki.service.WikiPageLocalService;
 import com.liferay.wiki.util.comparator.PageVersionComparator;
@@ -38,6 +41,15 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(immediate = true, service = WikiHelper.class)
 public class WikiHelperService implements WikiHelper {
+
+	@Override
+	public String getParentWikiPage(long nodeId, String title)
+		throws PortalException {
+
+		WikiPage wikiPage = _wikiPageLocalService.getPage(nodeId, title);
+
+		return getWikiPageJSONObject(wikiPage.getParentPage()).toString();
+	}
 
 	public String getWikiPageContributors(long nodeId, String title)
 		throws PortalException {
@@ -91,6 +103,24 @@ public class WikiHelperService implements WikiHelper {
 		userJSONObject.put("userSreenName", user.getScreenName());
 
 		return userJSONObject;
+	}
+
+	protected JSONObject getWikiPageJSONObject(WikiPage wikiPage) {
+		JSONObject wikiPageJSONObject = JSONFactoryUtil.createJSONObject();
+
+		String title = StringPool.BLANK;
+		String extract = StringPool.BLANK;
+
+		if (wikiPage != null) {
+			title = wikiPage.getTitle();
+			extract = StringUtil.shorten(
+				HtmlUtil.extractText(wikiPage.getContent()), 200);
+		}
+
+		wikiPageJSONObject.put("extract", extract);
+		wikiPageJSONObject.put("title", title);
+
+		return wikiPageJSONObject;
 	}
 
 	@Reference(unbind = "-")
