@@ -46,7 +46,7 @@ import org.osgi.service.component.annotations.Reference;
 public class WikiHelperServiceImpl implements WikiHelperService {
 
 	@Override
-	public String getChildWikiPages(long nodeId, String title)
+	public JSONObject getChildWikiPages(long nodeId, String title)
 		throws PortalException {
 
 		JSONObject childWikiPagesJSONObject =
@@ -72,19 +72,19 @@ public class WikiHelperServiceImpl implements WikiHelperService {
 
 		childWikiPagesJSONObject.put("childPages", childPagesJSONArray);
 
-		return childWikiPagesJSONObject.toString();
+		return childWikiPagesJSONObject;
 	}
 
 	@Override
-	public String getParentWikiPage(long nodeId, String title)
+	public JSONObject getParentWikiPage(long nodeId, String title)
 		throws PortalException {
 
 		WikiPage wikiPage = _wikiPageLocalService.getPage(nodeId, title);
 
-		return getWikiPageJSONObject(wikiPage.getParentPage()).toString();
+		return getWikiPageJSONObject(wikiPage.getParentPage());
 	}
 
-	public String getWikiPageContributors(long nodeId, String title)
+	public JSONObject getWikiPageContributors(long nodeId, String title)
 		throws PortalException {
 
 		JSONObject contributorsJSONObject = JSONFactoryUtil.createJSONObject();
@@ -122,7 +122,7 @@ public class WikiHelperServiceImpl implements WikiHelperService {
 
 		contributorsJSONObject.put("contributors", editorsJSONArray);
 
-		return contributorsJSONObject.toString();
+		return contributorsJSONObject;
 	}
 
 	protected JSONObject getUserNameDateJSONObject(long userId, Date date)

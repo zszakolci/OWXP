@@ -15,19 +15,20 @@
 package com.liferay.grow.wiki.helper.service;
 
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.json.JSONObject;
 
 /**
  * @author Tamas Molnar
  */
 public interface WikiHelperService {
 
-	public String getChildWikiPages(long nodeId, String title)
+	public JSONObject getChildWikiPages(long nodeId, String title)
 		throws PortalException;
 
-	public String getParentWikiPage(long nodeId, String title)
+	public JSONObject getParentWikiPage(long nodeId, String title)
 		throws PortalException;
 
-	public String getWikiPageContributors(long nodeId, String title)
+	public JSONObject getWikiPageContributors(long nodeId, String title)
 		throws PortalException;
 
 }
