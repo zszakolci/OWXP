@@ -22,8 +22,11 @@ import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.HtmlUtil;
+import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.wiki.model.WikiPage;
 import com.liferay.wiki.service.WikiPageLocalService;
 import com.liferay.wiki.util.comparator.PageVersionComparator;
@@ -41,6 +44,36 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(immediate = true, service = WikiHelper.class)
 public class WikiHelperService implements WikiHelper {
+
+	@Override
+	public String getChildWikiPages(long nodeId, String title)
+		throws PortalException {
+
+		JSONObject childWikiPagesJSONObject =
+			JSONFactoryUtil.createJSONObject();
+
+		WikiPage wikiPage = _wikiPageLocalService.getPage(nodeId, title);
+
+		long childPagesCount = _wikiPageLocalService.getChildrenCount(
+			wikiPage.getNodeId(), true, wikiPage.getTitle());
+
+		childWikiPagesJSONObject.put("childPagesCount", childPagesCount);
+
+		List<WikiPage> childPages = _wikiPageLocalService.getChildren(
+			wikiPage.getNodeId(), true, wikiPage.getTitle(),
+			WorkflowConstants.STATUS_APPROVED, 0, 15,
+			new PagemodifiedDateComparator());
+
+		JSONArray editorsJSONArray = JSONFactoryUtil.createJSONArray();
+
+		for (WikiPage childPage : childPages) {
+			editorsJSONArray.put(getWikiPageJSONObject(childPage));
+		}
+
+		childWikiPagesJSONObject.put("childPages", childWikiPagesJSONObject);
+
+		return childWikiPagesJSONObject.toString();
+	}
 
 	@Override
 	public String getParentWikiPage(long nodeId, String title)
@@ -137,5 +170,59 @@ public class WikiHelperService implements WikiHelper {
 
 	private UserLocalService _userLocalService;
 	private WikiPageLocalService _wikiPageLocalService;
+
+	private static class PagemodifiedDateComparator
+		extends OrderByComparator<WikiPage> {
+
+		public static final String ORDER_BY_ASC = "WikiPage.modifiedDate ASC";
+
+		public static final String ORDER_BY_DESC = "WikiPage.modifiedDate DESC";
+
+		public static final String[] ORDER_BY_FIELDS = {"modifiedDate"};
+
+		public PagemodifiedDateComparator() {
+			this(false);
+		}
+
+		public PagemodifiedDateComparator(boolean ascending) {
+			_ascending = ascending;
+		}
+
+		@Override
+		public int compare(WikiPage page1, WikiPage page2) {
+			int value = DateUtil.compareTo(
+				page1.getModifiedDate(), page2.getModifiedDate());
+
+			if (_ascending) {
+				return value;
+			}
+			else {
+				return -value;
+			}
+		}
+
+		@Override
+		public String getOrderBy() {
+			if (_ascending) {
+				return ORDER_BY_ASC;
+			}
+			else {
+				return ORDER_BY_DESC;
+			}
+		}
+
+		@Override
+		public String[] getOrderByFields() {
+			return ORDER_BY_FIELDS;
+		}
+
+		@Override
+		public boolean isAscending() {
+			return _ascending;
+		}
+
+		private final boolean _ascending;
+
+	}
 
 }

@@ -21,6 +21,9 @@ import com.liferay.portal.kernel.exception.PortalException;
  */
 public interface WikiHelper {
 
+	public String getChildWikiPages(long nodeId, String title)
+		throws PortalException;
+
 	public String getParentWikiPage(long nodeId, String title)
 		throws PortalException;
 
