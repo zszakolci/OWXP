@@ -18,7 +18,7 @@ User subscribeToUser = UserLocalServiceUtil.getUser(layout.getUserId());
 					<liferay-ui:icon
 						iconCssClass="icon-remove-sign"
 						label="<%= true %>"
-						message="unsubscribe"
+						message='<%= "Unfollow " + subscribeToUser.getFirstName() %>'
 						url="<%= subscribeURL %>"
 					/>
 				</c:when>
@@ -26,7 +26,7 @@ User subscribeToUser = UserLocalServiceUtil.getUser(layout.getUserId());
 					<liferay-ui:icon
 						iconCssClass="icon-ok-sign"
 						label="<%= true %>"
-						message="subscribe"
+						message='<%= "Follow " + subscribeToUser.getFirstName() %>'
 						url="<%= subscribeURL %>"
 					/>
 				</c:otherwise>
