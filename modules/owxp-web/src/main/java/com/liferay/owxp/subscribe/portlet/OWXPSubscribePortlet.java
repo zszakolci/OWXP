@@ -18,7 +18,7 @@ import com.liferay.owxp.subscribe.constants.OWXPSubscribePortletKeys;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
-import com.liferay.portal.kernel.service.SubscriptionLocalServiceUtil;
+import com.liferay.portal.kernel.service.SubscriptionLocalService;
 import com.liferay.portal.kernel.util.GetterUtil;
 
 import javax.portlet.ActionRequest;
@@ -26,6 +26,11 @@ import javax.portlet.ActionResponse;
 import javax.portlet.Portlet;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
+/**
+ * @author Tamas Molnar
+ */
 @Component(
 	immediate = true,
 	property = {
@@ -40,9 +45,6 @@ import org.osgi.service.component.annotations.Component;
 	},
 	service = Portlet.class
 )
-/**
- * @author Tamas Molnar
- */
 public class OWXPSubscribePortlet extends MVCPortlet {
 
 	public void subscribe(
@@ -56,17 +58,26 @@ public class OWXPSubscribePortlet extends MVCPortlet {
 		long subscribeToId = GetterUtil.getLong(
 			actionRequest.getParameter("subscribeToId"));
 
-		if (SubscriptionLocalServiceUtil.isSubscribed(
+		if (_subscriptionLocalService.isSubscribed(
 				companyId, subscriberId, User.class.getName(), subscribeToId)) {
 
-			SubscriptionLocalServiceUtil.deleteSubscription(
+			_subscriptionLocalService.deleteSubscription(
 				subscriberId, User.class.getName(), subscribeToId);
 		}
 		else {
-			SubscriptionLocalServiceUtil.addSubscription(
+			_subscriptionLocalService.addSubscription(
 				subscriberId, 0, User.class.getName(), subscribeToId,
 				"instant");
 		}
 	}
+
+	@Reference(unbind = "-")
+	protected void setSubscriptionLocalService(
+		SubscriptionLocalService subscriptionLocalService) {
+
+		_subscriptionLocalService = subscriptionLocalService;
+	}
+
+	private SubscriptionLocalService _subscriptionLocalService;
 
 }
