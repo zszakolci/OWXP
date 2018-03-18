@@ -33,6 +33,7 @@ import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import com.liferay.social.activity.customizer.model.CustomSocialActivitySet;
+import com.liferay.social.kernel.model.SocialActivitySet;
 
 import java.io.Serializable;
 
@@ -151,6 +152,9 @@ public interface CustomSocialActivitySetLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getCustomSocialActivitySetsCount();
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getUserViewableActivitySetsCount(long userId, long[] types);
+
 	/**
 	* Returns the OSGi service identifier.
 	*
@@ -211,6 +215,15 @@ public interface CustomSocialActivitySetLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<CustomSocialActivitySet> getCustomSocialActivitySets(
 		int start, int end);
+
+	/**
+	* NOTE FOR DEVELOPERS:
+	*
+	* Never reference this class directly. Always use {@link CustomSocialActivitySetLocalServiceUtil} to access the custom social activity set local service.
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<SocialActivitySet> getUserViewableActivitySets(long userId,
+		long[] types, int start, int end);
 
 	/**
 	* Returns the number of rows matching the dynamic query.

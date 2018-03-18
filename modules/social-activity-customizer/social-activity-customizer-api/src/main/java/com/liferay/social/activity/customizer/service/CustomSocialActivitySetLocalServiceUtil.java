@@ -152,6 +152,10 @@ public class CustomSocialActivitySetLocalServiceUtil {
 		return getService().getCustomSocialActivitySetsCount();
 	}
 
+	public static int getUserViewableActivitySetsCount(long userId, long[] types) {
+		return getService().getUserViewableActivitySetsCount(userId, types);
+	}
+
 	/**
 	* Returns the OSGi service identifier.
 	*
@@ -225,6 +229,17 @@ public class CustomSocialActivitySetLocalServiceUtil {
 	public static java.util.List<com.liferay.social.activity.customizer.model.CustomSocialActivitySet> getCustomSocialActivitySets(
 		int start, int end) {
 		return getService().getCustomSocialActivitySets(start, end);
+	}
+
+	/**
+	* NOTE FOR DEVELOPERS:
+	*
+	* Never reference this class directly. Always use {@link CustomSocialActivitySetLocalServiceUtil} to access the custom social activity set local service.
+	*/
+	public static java.util.List<com.liferay.social.kernel.model.SocialActivitySet> getUserViewableActivitySets(
+		long userId, long[] types, int start, int end) {
+		return getService()
+				   .getUserViewableActivitySets(userId, types, start, end);
 	}
 
 	/**
