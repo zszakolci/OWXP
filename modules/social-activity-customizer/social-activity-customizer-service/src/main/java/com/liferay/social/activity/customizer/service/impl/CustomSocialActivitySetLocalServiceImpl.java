@@ -14,7 +14,14 @@
 
 package com.liferay.social.activity.customizer.service.impl;
 
+import com.liferay.portal.kernel.bean.BeanReference;
+import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.social.activity.customizer.service.base.CustomSocialActivitySetLocalServiceBaseImpl;
+import com.liferay.social.activity.customizer.service.persistence.CustomSocialActivitySetFinder;
+import com.liferay.social.kernel.model.SocialActivitySet;
+import com.liferay.wiki.model.WikiPage;
+
+import java.util.List;
 
 /**
  * The implementation of the custom social activity set local service.
@@ -38,4 +45,31 @@ public class CustomSocialActivitySetLocalServiceImpl
 	 *
 	 * Never reference this class directly. Always use {@link com.liferay.social.activity.customizer.service.CustomSocialActivitySetLocalServiceUtil} to access the custom social activity set local service.
 	 */
+
+	@Override
+	public List<SocialActivitySet> getUserViewableActivitySets(
+		long userId, long[] types, int start, int end) {
+
+		long classNameId = _classNameLocalService.getClassNameId(
+			WikiPage.class);
+
+		return _customSocialActivitySetFinder.findByU_C_T(
+			userId, classNameId, types, start, end);
+	}
+
+	@Override
+	public int getUserViewableActivitySetsCount(long userId, long[] types) {
+		long classNameId = _classNameLocalService.getClassNameId(
+			WikiPage.class);
+
+		return _customSocialActivitySetFinder.countByU_C_T(
+			userId, classNameId, types);
+	}
+
+	@BeanReference(type = ClassNameLocalService.class)
+	private ClassNameLocalService _classNameLocalService;
+
+	@BeanReference(type = CustomSocialActivitySetFinder.class)
+	private CustomSocialActivitySetFinder _customSocialActivitySetFinder;
+
 }
