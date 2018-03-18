@@ -57,6 +57,17 @@
 	<c:if test="<%= scopeGroup.isUser() %>">
 
 		<%
+		String activityType = ParamUtil.getString(request, "activityType");
+		%>
+
+		<aui:select id="user-activity-selector" label="Activity type to display:" name="user-activity-selector" onChange="filterByActivityType();">
+			<aui:option label="All" selected='<%= (activityType.equals(StringPool.BLANK)) || (activityType.equals("ALL")) %>' value="ALL" />
+			<aui:option label="Commented" selected='<%= activityType.equals("COMMENTED") %>' value="COMMENTED" />
+			<aui:option label="Created" selected='<%= activityType.equals("CREATED") %>' value="CREATED" />
+			<aui:option label="Updated" selected='<%= activityType.equals("UPDATED") %>' value="UPDATED" />
+		</aui:select>
+
+		<%
 		for (SocialActivityDescriptor activityDescriptor : activityDescriptors) {
 			SocialActivityFeedEntry activityFeedEntry = activityDescriptor.interpret(selector, serviceContext);
 
@@ -181,3 +192,13 @@ private class FeedEntryHolder {
 
 }
 %>
+
+<aui:script use="aui-base">
+	window.filterByActivityType = function() {
+		var uri = '<portlet:renderURL />';
+
+		var location = Liferay.Util.addParams('<portlet:namespace />activityType=' + A.one('#<portlet:namespace />user-activity-selector').get('value'), uri);
+
+		window.location.href = location;
+	};
+</aui:script>

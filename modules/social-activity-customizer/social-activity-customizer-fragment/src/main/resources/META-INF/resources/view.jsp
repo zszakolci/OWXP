@@ -16,6 +16,46 @@
 
 <%@ include file="/init.jsp" %>
 
+<%
+ServiceContext serviceContext = ServiceContextFactory.getInstance(request);
+
+Group scopeGroup = serviceContext.getScopeGroup();
+
+if (scopeGroup.isUser()) {
+	CustomSocialActivitiesQueryHelper customSocialActivitiesQueryHelper = (CustomSocialActivitiesQueryHelper)request.getAttribute(SocialActivitiesWebKeys.SOCIAL_ACTIVITIES_QUERY_HELPER);
+
+	customSocialActivitiesQueryHelper.setTypes(null);
+
+	socialActivitiesDisplayContext = new DefaultSocialActivitiesDisplayContext(socialActivitiesRequestHelper, customSocialActivitiesQueryHelper);
+
+	String activityType = ParamUtil.getString(request, "activityType");
+
+	if (!activityType.equals(StringPool.BLANK) && !activityType.equals("ALL")) {
+		long[] types = null;
+
+		switch (activityType) {
+			case "CREATED":
+				types = new long[] {WikiActivityKeys.ADD_PAGE};
+				break;
+			case "COMMENTED":
+				types = new long[] {WikiActivityKeys.ADD_COMMENT,
+					SocialActivityConstants.TYPE_ADD_COMMENT};
+				break;
+			case "UPDATED":
+				types = new long[] {WikiActivityKeys.UPDATE_PAGE,
+					SocialActivityConstants.TYPE_MOVE_TO_TRASH,
+					SocialActivityConstants.TYPE_RESTORE_FROM_TRASH,
+					SocialActivityConstants.TYPE_MOVE_ATTACHMENT_TO_TRASH,
+					SocialActivityConstants.TYPE_RESTORE_ATTACHMENT_FROM_TRASH,
+					SocialActivityConstants.TYPE_ADD_ATTACHMENT};
+				break;
+		}
+
+		customSocialActivitiesQueryHelper.setTypes(types);
+	}
+}
+%>
+
 <c:if test="<%= socialActivitiesDisplayContext.isTabsVisible() %>">
 	<liferay-ui:tabs
 		names="<%= socialActivitiesDisplayContext.getTabsNames() %>"
