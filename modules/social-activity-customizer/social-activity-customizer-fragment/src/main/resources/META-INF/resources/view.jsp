@@ -74,3 +74,16 @@ if (scopeGroup.isUser()) {
 	feedType="<%= socialActivitiesDisplayContext.getRSSFeedType() %>"
 	feedURLMessage="<%= socialActivitiesDisplayContext.getTaglibFeedTitle() %>"
 />
+
+<c:if test="<%= !scopeGroup.isUser() %>">
+	<c:if test="<%= socialActivitiesDisplayContext.isSeeMoreControlVisible() %>">
+		<div class="social-activities-see-more">
+			<aui:a
+				cssClass="btn btn-default"
+				href="<%= socialActivitiesDisplayContext.getPaginationURL() %>"
+			>
+				<liferay-ui:message key="see-more" />
+			</aui:a>
+		</div>
+	</c:if>
+</c:if>
