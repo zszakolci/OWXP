@@ -142,15 +142,11 @@ public class WikiHelperServiceImpl implements WikiHelperService {
 		JSONObject wikiPageJSONObject = JSONFactoryUtil.createJSONObject();
 
 		String title = StringPool.BLANK;
-		String extract = StringPool.BLANK;
 
 		if (wikiPage != null) {
 			title = wikiPage.getTitle();
-			extract = StringUtil.shorten(
-				HtmlUtil.extractText(wikiPage.getContent()), 200);
 		}
 
-		wikiPageJSONObject.put("extract", extract);
 		wikiPageJSONObject.put("title", title);
 
 		return wikiPageJSONObject;
