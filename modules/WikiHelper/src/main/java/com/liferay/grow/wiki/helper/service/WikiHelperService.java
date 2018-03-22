@@ -14,6 +14,8 @@
 
 package com.liferay.grow.wiki.helper.service;
 
+import java.util.Map;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONObject;
 
@@ -23,6 +25,9 @@ import com.liferay.portal.kernel.json.JSONObject;
 public interface WikiHelperService {
 
 	public JSONObject getChildWikiPages(long nodeId, String title)
+		throws PortalException;
+
+	public Map<String, String> getLinkedPages(long nodeId, String title)
 		throws PortalException;
 
 	public JSONObject getParentWikiPage(long nodeId, String title)

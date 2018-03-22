@@ -14,6 +14,17 @@
 
 package com.liferay.grow.wiki.helper.service.impl;
 
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
+
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
 import com.liferay.grow.wiki.helper.comparator.PageModifiedDateComparator;
 import com.liferay.grow.wiki.helper.service.WikiHelperService;
 import com.liferay.petra.string.StringPool;
@@ -24,20 +35,12 @@ import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.UserLocalService;
-import com.liferay.portal.kernel.util.HtmlUtil;
+import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.wiki.model.WikiPage;
 import com.liferay.wiki.service.WikiPageLocalService;
 import com.liferay.wiki.util.comparator.PageVersionComparator;
-
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Tamas Molnar
@@ -73,6 +76,17 @@ public class WikiHelperServiceImpl implements WikiHelperService {
 		childWikiPagesJSONObject.put("childPages", childPagesJSONArray);
 
 		return childWikiPagesJSONObject;
+	}
+
+	@Override
+	public Map<String, String> getLinkedPages(long nodeId, String title)
+		throws PortalException {
+
+		WikiPage wikiPage = _wikiPageLocalService.getPage(nodeId, title);
+
+		Map<String, String> linkedPages = fillLinkedPages(wikiPage);
+
+		return linkedPages;
 	}
 
 	@Override
@@ -125,6 +139,26 @@ public class WikiHelperServiceImpl implements WikiHelperService {
 		return contributorsJSONObject;
 	}
 
+	protected Map<String, String> fillLinkedPages(WikiPage wikiPage) 
+		throws PortalException {
+
+		Map<String, String> linkedPages = new TreeMap<String, String>();
+
+		String content = wikiPage.getContent();
+
+		if (wikiPage.getFormat().equals("creole")) {
+			_addLinksCreole(content, linkedPages);
+		}
+		else if (wikiPage.getFormat().equals("html")) {
+			_addLinksHTML(content, linkedPages);
+		}
+		else if (wikiPage.getFormat().equals("markdown")) {
+			_addLinksMarkdown(content, linkedPages);
+		}
+
+		return linkedPages;
+	}
+
 	protected JSONObject getUserNameDateJSONObject(long userId, Date date)
 		throws PortalException {
 
@@ -164,6 +198,79 @@ public class WikiHelperServiceImpl implements WikiHelperService {
 
 		_wikiPageLocalService = wikiPageLocalService;
 	}
+
+	private void _addLink(String link, Map<String, String> linkedPages) {
+		if (!link.contains(_GROW_URL + _PUBLIC_PAGE)) {
+			String title = link.substring(link.lastIndexOf('/') + 1);
+
+			title = title.replace('+', CharPool.SPACE);
+
+			if (title.contains("#section")) {
+				title = title.substring(0, title.indexOf("#section"));
+			}
+
+			linkedPages.put(title, link);
+		}
+	}
+
+	private void _addLinksCreole(
+		String content, Map<String, String> linkedPages) {
+
+		while (content.indexOf(_GROW_URL) > 0) {
+			content = content.substring(content.indexOf(_GROW_URL));
+
+			String link = content.substring(0, content.indexOf("]]"));
+
+			if (link.contains("|")) {
+				link = link.substring(0, link.indexOf("|"));
+			}
+
+			_addLink(link, linkedPages);
+
+			content = content.substring(content.indexOf("]]") + 2);
+		}
+	}
+
+	private void _addLinksHTML(
+		String content, Map<String, String> linkedPages) {
+
+		while (content.indexOf(_GROW_URL) > 0) {
+			content = content.substring(content.indexOf(_GROW_URL));
+
+			String link = content.substring(0, content.indexOf("\">"));
+
+			_addLink(link, linkedPages);
+
+			content = content.substring(content.indexOf("</a>") + 4);
+		}
+	}
+
+	private void _addLinksMarkdown(
+		String content, Map<String, String> linkedPages) {
+
+		content = content.replace(CharPool.NEW_LINE, CharPool.SPACE).replace(
+			CharPool.CLOSE_BRACKET, CharPool.SPACE);
+
+		String[] contentElements = StringUtil.split(content, CharPool.SPACE);
+
+		for (String element : contentElements) {
+			if (element.contains(_GROW_URL)) {
+				if (element.startsWith("(")) {
+					element = element.substring(1);
+				}
+
+				if (element.endsWith(")")) {
+					element = element.substring(0, element.length() - 1);
+				}
+
+				_addLink(element, linkedPages);
+			}
+		}
+	}
+
+	private static final String _GROW_URL = "https://grow.liferay.com/";
+
+	private static final String _PUBLIC_PAGE = "web";
 
 	private UserLocalService _userLocalService;
 	private WikiPageLocalService _wikiPageLocalService;
