@@ -41,7 +41,6 @@ if (scopeGroup.isUser()) {
 				break;
 			case "COMMENTED":
 				types = new long[] {
-					WikiActivityKeys.ADD_COMMENT,
 					SocialActivityConstants.TYPE_ADD_COMMENT
 				};
 				break;
