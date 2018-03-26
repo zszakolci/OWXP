@@ -532,60 +532,62 @@ List<Task> availableTasks = TaskHandlerUtil.getAvailableFlags(wikiPage.getPageId
 		var iconContainer = A.one('#iconContainer');
 		var triggerAnim = A.one('#myPopoverAnim');
 
-		var popoverAnim = new A.Popover(
-			{
-				align: {
-					node: triggerAnim,
-					points:[A.WidgetPositionAlign.LC, A.WidgetPositionAlign.RC]
-				},
-				bodyContent: iconContainer.html(),
-				cssClass: 'task-flagging',
-				position: 'right',
-				visible: false,
-				zIndex: 1
-			}
-		).render();
-
-		$('.sidenav-toggler').on('click', function() {
-			popoverAnim.set('visible', false);
-		});
-
-		$(window).scroll(function() {
-			popoverAnim.set('visible', false);
-		});
-
-		triggerAnim.on('click',function() {
-			popoverAnim.set('visible', !popoverAnim.get('visible'));
-		});
-
-		A.one('body').delegate(
-			'click',
-			function(event) {
-				var currentTarget = event.currentTarget;
-
-				Liferay.Service(
-					'/candidate.candidateentry/add-candidate-entry',
-					{
-						taskId: currentTarget.getData()['taskid'],
-						groupId: <%= scopeGroupId %>,
-						wikiPageId: <%= wikiPage.getPageId() %>,
-						userId: <%= themeDisplay.getUserId() %>
+		if (triggerAnim) {
+			var popoverAnim = new A.Popover(
+				{
+					align: {
+						node: triggerAnim,
+						points:[A.WidgetPositionAlign.LC, A.WidgetPositionAlign.RC]
 					},
-					function(response) {
-						if (response.candidateEntryId) {
-							currentTarget.hide();
+					bodyContent: iconContainer.html(),
+					cssClass: 'task-flagging',
+					position: 'right',
+					visible: false,
+					zIndex: 1
+				}
+			).render();
 
-							var tasks = triggerAnim.all('.maintainance-task');
+			$('.sidenav-toggler').on('click', function() {
+				popoverAnim.set('visible', false);
+			});
 
-							if (!tasks.size()) {
-								A.one('.task-flagging').hide();
-								triggerAnim.attr('disabled', true);
+			$(window).scroll(function() {
+				popoverAnim.set('visible', false);
+			});
+
+			triggerAnim.on('click',function() {
+				popoverAnim.set('visible', !popoverAnim.get('visible'));
+			});
+
+			A.one('body').delegate(
+				'click',
+				function(event) {
+					var currentTarget = event.currentTarget;
+
+					Liferay.Service(
+						'/candidate.candidateentry/add-candidate-entry',
+						{
+							taskId: currentTarget.getData()['taskid'],
+							groupId: <%= scopeGroupId %>,
+							wikiPageId: <%= wikiPage.getPageId() %>,
+							userId: <%= themeDisplay.getUserId() %>
+						},
+						function(response) {
+							if (response.candidateEntryId) {
+								currentTarget.hide();
+	
+								var tasks = triggerAnim.all('.maintainance-task');
+	
+								if (!tasks.size()) {
+									A.one('.task-flagging').hide();
+									triggerAnim.attr('disabled', true);
+								}
 							}
 						}
-					}
-				);
-			},
-			'.task-flagging .maintainance-task a'
-		);
+					);
+				},
+				'.task-flagging .maintainance-task a'
+			);
+		}
 	</aui:script>
 </c:if>
