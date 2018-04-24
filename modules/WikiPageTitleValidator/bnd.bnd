@@ -1,0 +1,3 @@
+Bundle-Name: GrowWikiPageTitleValidator
+Bundle-SymbolicName: com.liferay.grow.wiki.GrowWikiPageTitleValidator
+Bundle-Version: 1.0.0
