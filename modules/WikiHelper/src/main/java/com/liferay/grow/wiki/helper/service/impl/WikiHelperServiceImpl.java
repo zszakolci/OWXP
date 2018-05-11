@@ -134,6 +134,7 @@ public class WikiHelperServiceImpl implements WikiHelperService {
 
 		userJSONObject.put("date", date);
 		userJSONObject.put("userScreenName", user.getScreenName());
+		userJSONObject.put("userFullName", user.getFullName());
 
 		return userJSONObject;
 	}
