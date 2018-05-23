@@ -27,7 +27,7 @@ public interface WikiHelperService {
 	public JSONObject getChildWikiPages(long nodeId, String title)
 		throws PortalException;
 
-	public Map<String, String> getLinkedPages(long nodeId, String title)
+	public JSONObject getLinkedPages(long nodeId, String title)
 		throws PortalException;
 
 	public JSONObject getParentWikiPage(long nodeId, String title)

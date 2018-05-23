@@ -14,6 +14,7 @@
 
 package com.liferay.grow.wiki.helper.service.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -33,6 +34,8 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.CharPool;
@@ -80,14 +83,45 @@ public class WikiHelperServiceImpl implements WikiHelperService {
 	}
 
 	@Override
-	public Map<String, String> getLinkedPages(long nodeId, String title)
+	public JSONObject getLinkedPages(
+			long nodeId, String title)
 		throws PortalException {
 
-		WikiPage wikiPage = _wikiPageLocalService.getPage(nodeId, title);
+		WikiPage wikiPage = _wikiPageLocalService.getPage(
+			nodeId, title);
 
 		Map<String, String> linkedPages = fillLinkedPages(wikiPage);
 
-		return linkedPages;
+		List<WikiPage> linkedWikiPages = new ArrayList<>();
+
+		for (String linkedWikiPageTitle : linkedPages.keySet()) {
+			WikiPage linkedWikiPage = _wikiPageLocalService.fetchPage(
+				nodeId, linkedWikiPageTitle);
+
+			if (linkedWikiPage != null) {
+				linkedWikiPages.add(linkedWikiPage);
+			}
+			else {
+				if (_log.isWarnEnabled()) {
+					_log.warn("No linked WikiPage exists with title " + title);
+				}
+			}
+		}
+
+		JSONObject linkedWikiPagesJSONObject =
+			JSONFactoryUtil.createJSONObject();
+
+		linkedWikiPagesJSONObject.put("linkedPagesCount", linkedWikiPages);
+
+		JSONArray linkedPagesJSONArray = JSONFactoryUtil.createJSONArray();
+
+		for (WikiPage linkedPage : linkedWikiPages) {
+			linkedPagesJSONArray.put(getWikiPageJSONObject(linkedPage));
+		}
+
+		linkedWikiPagesJSONObject.put("childPages", linkedPagesJSONArray);
+
+		return linkedWikiPagesJSONObject;
 	}
 
 	@Override
@@ -278,4 +312,6 @@ public class WikiHelperServiceImpl implements WikiHelperService {
 	private UserLocalService _userLocalService;
 	private WikiPageLocalService _wikiPageLocalService;
 
+	private static final Log _log = LogFactoryUtil.getLog(
+		WikiHelperServiceImpl.class);
 }
