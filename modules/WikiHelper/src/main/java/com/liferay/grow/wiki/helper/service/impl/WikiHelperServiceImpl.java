@@ -38,6 +38,7 @@ import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
+import com.liferay.wiki.escape.WikiEscapeUtil;
 import com.liferay.wiki.model.WikiPage;
 import com.liferay.wiki.service.WikiPageLocalService;
 import com.liferay.wiki.util.comparator.PageVersionComparator;
@@ -208,6 +209,8 @@ public class WikiHelperServiceImpl implements WikiHelperService {
 			if (title.contains("#section")) {
 				title = title.substring(0, title.indexOf("#section"));
 			}
+
+			title = WikiEscapeUtil.unescapeName(title);
 
 			linkedPages.put(title, link);
 		}
