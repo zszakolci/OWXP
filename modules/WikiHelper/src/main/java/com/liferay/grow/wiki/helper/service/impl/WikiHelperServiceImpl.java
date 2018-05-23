@@ -147,27 +147,39 @@ public class WikiHelperServiceImpl implements WikiHelperService {
 
 		long authorUserId = firstWikiPage.getStatusByUserId();
 
-		contributorsJSONObject.put(
-			"author",
-			getUserNameDateJSONObject(
-				authorUserId, firstWikiPage.getStatusDate()));
-
 		Map<Long, Date> contributorsMap = new HashMap<>();
+		Map<Long, Long> contributorsCountMap = new HashMap<>();
 
 		for (WikiPage wikiPage : wikiPages) {
-			if (wikiPage.getStatusByUserId() == authorUserId) {
+			long userId = wikiPage.getStatusByUserId();
+
+			long count = 1;
+
+			if (contributorsCountMap.get(userId) != null) {
+				count = contributorsCountMap.get(userId) + 1;
+			}
+
+			contributorsCountMap.put(userId, count);
+
+			if (userId == authorUserId) {
 				continue;
 			}
 
-			contributorsMap.put(
-				wikiPage.getStatusByUserId(), wikiPage.getStatusDate());
+			contributorsMap.put(userId, wikiPage.getStatusDate());
 		}
+
+		contributorsJSONObject.put(
+			"author",
+			getUserNameDateJSONObject(
+				authorUserId, firstWikiPage.getStatusDate(),
+				contributorsCountMap));
 
 		JSONArray editorsJSONArray = JSONFactoryUtil.createJSONArray();
 
 		for (Map.Entry<Long, Date> entry : contributorsMap.entrySet()) {
 			editorsJSONArray.put(
-				getUserNameDateJSONObject(entry.getKey(), entry.getValue()));
+				getUserNameDateJSONObject(
+					entry.getKey(), entry.getValue(), contributorsCountMap));
 		}
 
 		contributorsJSONObject.put("contributors", editorsJSONArray);
@@ -195,13 +207,15 @@ public class WikiHelperServiceImpl implements WikiHelperService {
 		return linkedPages;
 	}
 
-	protected JSONObject getUserNameDateJSONObject(long userId, Date date)
+	protected JSONObject getUserNameDateJSONObject(
+			long userId, Date date, Map<Long, Long> contributorsCountMap)
 		throws PortalException {
 
 		JSONObject userJSONObject = JSONFactoryUtil.createJSONObject();
 
 		User user = _userLocalService.getUser(userId);
 
+		userJSONObject.put("count", contributorsCountMap.get(userId));
 		userJSONObject.put("date", date);
 		userJSONObject.put("userFullName", user.getFullName());
 		userJSONObject.put("userScreenName", user.getScreenName());
