@@ -14,18 +14,6 @@
 
 package com.liferay.grow.wiki.helper.service.impl;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
-import java.util.TreeSet;
-
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-
 import com.liferay.grow.wiki.helper.comparator.PageModifiedDateComparator;
 import com.liferay.grow.wiki.helper.service.WikiHelperService;
 import com.liferay.petra.string.StringPool;
@@ -45,6 +33,16 @@ import com.liferay.wiki.escape.WikiEscapeUtil;
 import com.liferay.wiki.model.WikiPage;
 import com.liferay.wiki.service.WikiPageLocalService;
 import com.liferay.wiki.util.comparator.PageVersionComparator;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Tamas Molnar
@@ -83,12 +81,10 @@ public class WikiHelperServiceImpl implements WikiHelperService {
 	}
 
 	@Override
-	public JSONObject getLinkedPages(
-			long nodeId, String title)
+	public JSONObject getLinkedPages(long nodeId, String title)
 		throws PortalException {
 
-		WikiPage wikiPage = _wikiPageLocalService.getPage(
-			nodeId, title);
+		WikiPage wikiPage = _wikiPageLocalService.getPage(nodeId, title);
 
 		Map<String, String> linkedPages = fillLinkedPages(wikiPage);
 
@@ -174,10 +170,10 @@ public class WikiHelperServiceImpl implements WikiHelperService {
 		return contributorsJSONObject;
 	}
 
-	protected Map<String, String> fillLinkedPages(WikiPage wikiPage) 
+	protected Map<String, String> fillLinkedPages(WikiPage wikiPage)
 		throws PortalException {
 
-		Map<String, String> linkedPages = new TreeMap<String, String>();
+		Map<String, String> linkedPages = new TreeMap<>();
 
 		String content = wikiPage.getContent();
 
@@ -202,8 +198,8 @@ public class WikiHelperServiceImpl implements WikiHelperService {
 		User user = _userLocalService.getUser(userId);
 
 		userJSONObject.put("date", date);
-		userJSONObject.put("userScreenName", user.getScreenName());
 		userJSONObject.put("userFullName", user.getFullName());
+		userJSONObject.put("userScreenName", user.getScreenName());
 
 		return userJSONObject;
 	}
@@ -309,9 +305,10 @@ public class WikiHelperServiceImpl implements WikiHelperService {
 
 	private static final String _PUBLIC_PAGE = "web";
 
+	private static final Log _log = LogFactoryUtil.getLog(
+		WikiHelperServiceImpl.class);
+
 	private UserLocalService _userLocalService;
 	private WikiPageLocalService _wikiPageLocalService;
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		WikiHelperServiceImpl.class);
 }

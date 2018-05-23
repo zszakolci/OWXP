@@ -14,8 +14,6 @@
 
 package com.liferay.grow.wiki.helper.service;
 
-import java.util.Map;
-
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONObject;
 
