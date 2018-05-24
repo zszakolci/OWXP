@@ -145,7 +145,7 @@ public class WikiHelperServiceImpl implements WikiHelperService {
 
 		WikiPage firstWikiPage = wikiPages.get(0);
 
-		long authorUserId = firstWikiPage.getStatusByUserId();
+		long creatorUserId = firstWikiPage.getStatusByUserId();
 
 		Map<Long, Date> contributorsMap = new HashMap<>();
 		Map<Long, Long> contributorsCountMap = new HashMap<>();
@@ -161,7 +161,7 @@ public class WikiHelperServiceImpl implements WikiHelperService {
 
 			contributorsCountMap.put(userId, count);
 
-			if (userId == authorUserId) {
+			if (userId == creatorUserId) {
 				continue;
 			}
 
@@ -169,9 +169,9 @@ public class WikiHelperServiceImpl implements WikiHelperService {
 		}
 
 		contributorsJSONObject.put(
-			"author",
+			"creator",
 			getUserNameDateJSONObject(
-				authorUserId, firstWikiPage.getStatusDate(),
+				creatorUserId, firstWikiPage.getStatusDate(),
 				contributorsCountMap));
 
 		JSONArray editorsJSONArray = JSONFactoryUtil.createJSONArray();
