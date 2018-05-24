@@ -107,9 +107,6 @@ public class WikiHelperServiceImpl implements WikiHelperService {
 		JSONObject linkedWikiPagesJSONObject =
 			JSONFactoryUtil.createJSONObject();
 
-		linkedWikiPagesJSONObject.put(
-			"linkedPagesCount", linkedWikiPages.size());
-
 		JSONArray linkedPagesJSONArray = JSONFactoryUtil.createJSONArray();
 
 		for (WikiPage linkedPage : linkedWikiPages) {
