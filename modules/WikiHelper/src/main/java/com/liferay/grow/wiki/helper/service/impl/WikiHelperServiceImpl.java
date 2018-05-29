@@ -66,7 +66,7 @@ public class WikiHelperServiceImpl implements WikiHelperService {
 
 		List<WikiPage> childPages = _wikiPageLocalService.getChildren(
 			wikiPage.getNodeId(), true, wikiPage.getTitle(),
-			WorkflowConstants.STATUS_APPROVED, 0, 15,
+			WorkflowConstants.STATUS_APPROVED, 0, 60,
 			new PageModifiedDateComparator());
 
 		JSONArray childPagesJSONArray = JSONFactoryUtil.createJSONArray();
@@ -112,7 +112,7 @@ public class WikiHelperServiceImpl implements WikiHelperService {
 		for (WikiPage linkedPage : linkedWikiPages) {
 			linkedPagesJSONArray.put(getWikiPageJSONObject(linkedPage));
 
-			if (linkedWikiPages.size() == 10) {
+			if (linkedWikiPages.size() == 60) {
 				break;
 			}
 		}
