@@ -19,8 +19,6 @@
 <%
 String portletNamespace = PortalUtil.getPortletNamespace(LinkedPagesPortletKeys.LINKED_PAGES);
 
-LinkedPagesView linkedPagesView = new LinkedPagesView(themeDisplay);
-
 WikiPage wikiPage = linkedPagesView.getWikiPage();
 
 List<Task> availableTasks = new ArrayList<Task>();
@@ -40,36 +38,6 @@ if (wikiPage != null) {
 			<div class="sidebar-body"></div>
 
 			<div id="linkedPages">
-				<h4 class="header">Linked Pages</h4>
-				<c:choose>
-					<c:when test="<%= linkedPagesView.getLinkedPages().isEmpty() %>">
-						<div class="content">
-							No Wiki page is available
-						</div>
-					</c:when>
-					<c:otherwise>
-						<div class="content">
-							<ul class="nav">
-
-								<%
-								for (PageLink pageLink : linkedPagesView.getLinkedPages()) {
-								%>
-
-									<li class="">
-										<a href="<%= pageLink.getPageLink() %>" style="color:#6a708b;">
-											<%= pageLink.getPageTitle() %>
-										</a>
-									</li>
-
-								<%
-								}
-								%>
-
-							</ul>
-						</div>
-					</c:otherwise>
-				</c:choose>
-
 				<h4 class="header">Votings</h4>
 
 				<c:choose>
