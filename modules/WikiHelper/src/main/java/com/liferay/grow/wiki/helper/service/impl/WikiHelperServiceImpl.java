@@ -35,6 +35,7 @@ import com.liferay.wiki.service.WikiPageLocalService;
 import com.liferay.wiki.util.comparator.PageVersionComparator;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -134,49 +135,51 @@ public class WikiHelperServiceImpl implements WikiHelperService {
 	public JSONObject getWikiPageContributors(long nodeId, String title)
 		throws PortalException {
 
-		JSONObject contributorsJSONObject = JSONFactoryUtil.createJSONObject();
+		Map<Long, Contributor> contributorsMap = new HashMap<>();
 
 		List<WikiPage> wikiPages = _wikiPageLocalService.getPages(
 			nodeId, title, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
 			new PageVersionComparator(true));
 
-		WikiPage firstWikiPage = wikiPages.get(0);
-
-		long creatorUserId = firstWikiPage.getStatusByUserId();
-
-		Map<Long, Date> contributorsMap = new HashMap<>();
-		Map<Long, Long> contributorsCountMap = new HashMap<>();
-
 		for (WikiPage wikiPage : wikiPages) {
 			long userId = wikiPage.getStatusByUserId();
 
-			long count = 1;
+			Contributor contributor = null;
 
-			if (contributorsCountMap.get(userId) != null) {
-				count = contributorsCountMap.get(userId) + 1;
+			if (contributorsMap.containsKey(userId)) {
+				contributor = contributorsMap.get(userId);
+
+				contributor.count++;
 			}
+			else {
+				contributor = new Contributor(userId);
 
-			contributorsCountMap.put(userId, count);
-
-			if (userId == creatorUserId) {
-				continue;
+				contributorsMap.put(userId, contributor);
 			}
-
-			contributorsMap.put(userId, wikiPage.getStatusDate());
 		}
 
+		JSONObject contributorsJSONObject = JSONFactoryUtil.createJSONObject();
+
+		WikiPage firstWikiPage = wikiPages.get(0);
+
+		Contributor creator = contributorsMap.remove(
+			firstWikiPage.getStatusByUserId());
+
+		creator.modifiedDate = firstWikiPage.getStatusDate();
+
 		contributorsJSONObject.put(
-			"creator",
-			getUserNameDateJSONObject(
-				creatorUserId, firstWikiPage.getStatusDate(),
-				contributorsCountMap));
+			"creator", getContributorJSONObject(creator));
+
+		List<Contributor> contributors = new ArrayList<>(
+			contributorsMap.values());
+
+		contributors.sort(
+			Comparator.comparing(Contributor::getCount).reversed());
 
 		JSONArray editorsJSONArray = JSONFactoryUtil.createJSONArray();
 
-		for (Map.Entry<Long, Date> entry : contributorsMap.entrySet()) {
-			editorsJSONArray.put(
-				getUserNameDateJSONObject(
-					entry.getKey(), entry.getValue(), contributorsCountMap));
+		for (Contributor contributor : contributors) {
+			editorsJSONArray.put(getContributorJSONObject(contributor));
 		}
 
 		contributorsJSONObject.put("contributors", editorsJSONArray);
@@ -204,18 +207,19 @@ public class WikiHelperServiceImpl implements WikiHelperService {
 		return linkedPages;
 	}
 
-	protected JSONObject getUserNameDateJSONObject(
-			long userId, Date date, Map<Long, Long> contributorsCountMap)
+	protected JSONObject getContributorJSONObject(Contributor contributor)
 		throws PortalException {
 
 		JSONObject userJSONObject = JSONFactoryUtil.createJSONObject();
 
-		User user = _userLocalService.getUser(userId);
+		userJSONObject.put("count", contributor.count);
 
-		userJSONObject.put("count", contributorsCountMap.get(userId));
-		userJSONObject.put("date", date);
-		userJSONObject.put("userFullName", user.getFullName());
-		userJSONObject.put("userScreenName", user.getScreenName());
+		if (contributor.modifiedDate != null) {
+			userJSONObject.put("date", contributor.modifiedDate);
+		}
+
+		userJSONObject.put("userFullName", contributor.userFullName);
+		userJSONObject.put("userScreenName", contributor.userScreenName);
 
 		return userJSONObject;
 	}
@@ -326,5 +330,26 @@ public class WikiHelperServiceImpl implements WikiHelperService {
 
 	private UserLocalService _userLocalService;
 	private WikiPageLocalService _wikiPageLocalService;
+
+	private class Contributor {
+
+		public Contributor(long userId) throws PortalException {
+			User user = _userLocalService.getUser(userId);
+
+			count = 1;
+			userFullName = user.getFullName();
+			userScreenName = user.getScreenName();
+		}
+
+		public long getCount() {
+			return count;
+		}
+
+		public long count;
+		public Date modifiedDate;
+		public String userFullName;
+		public String userScreenName;
+
+	}
 
 }
