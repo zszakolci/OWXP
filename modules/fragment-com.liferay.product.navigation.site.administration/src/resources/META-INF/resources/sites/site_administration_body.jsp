@@ -76,14 +76,6 @@ SiteAdministrationPanelCategoryDisplayContext siteAdministrationPanelCategoryDis
 
 				</div>
 			</c:if>
-
-			<c:if test="<%= siteAdministrationPanelCategoryDisplayContext.isDisplaySiteLink() %>">
-				<aui:a
-					cssClass="goto-link list-group-heading"
-					href="<%= siteAdministrationPanelCategoryDisplayContext.getGroupURL() %>"
-					label="go-to-site"
-				/>
-			</c:if>
 		</div>
 	</div>
 
