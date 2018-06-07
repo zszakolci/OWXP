@@ -1,0 +1,4 @@
+Bundle-Name: fragment-com.liferay.product.navigation.site.administration
+Bundle-SymbolicName: fragment.com.liferay.product.navigation.site.administration
+Bundle-Version: 1.0.0
+Fragment-Host: com.liferay.product.navigation.site.administration;bundle-version="2.0.2"
