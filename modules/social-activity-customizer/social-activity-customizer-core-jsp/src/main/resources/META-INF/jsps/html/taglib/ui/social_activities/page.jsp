@@ -16,6 +16,14 @@
 
 <%@ include file="/html/taglib/ui/social_activities/init.jsp" %>
 
+<%
+Integer delta = ParamUtil.getInteger(request, "delta");
+
+if (delta == null) {
+	delta = 10;
+}
+%>
+
 <div class="taglib-social-activities">
 	<c:if test="<%= feedEnabled && !activityDescriptors.isEmpty() %>">
 		<div class="clearfix">
@@ -87,7 +95,7 @@
 			<liferay-portlet:param name="activityType" value="<%= activityType %>" />
 		</liferay-portlet:renderURL>
 
-		<liferay-ui:search-container delta="10" emptyResultsMessage="there-are-no-recent-activities" total="<%= feedEntries.size() %>" iteratorURL="<%= iteratorURL %>">
+		<liferay-ui:search-container delta="<%= delta %>" emptyResultsMessage="there-are-no-recent-activities" total="<%= feedEntries.size() %>" iteratorURL="<%= iteratorURL %>">
 			<liferay-ui:search-container-results results="<%= ListUtil.subList(feedEntries, searchContainer.getStart(), searchContainer.getEnd()) %>" />
 
 			<liferay-ui:search-container-row className="FeedEntryHolder" keyProperty="feedEntryText" modelVar="enrty">
@@ -201,8 +209,9 @@ private class FeedEntryHolder {
 	window.filterByActivityType = function() {
 		var uri = '<portlet:renderURL />';
 
-		var location = Liferay.Util.addParams('<portlet:namespace />activityType=' + A.one('#<portlet:namespace />user-activity-selector').get('value'), uri);
+		uri = Liferay.Util.addParams('<portlet:namespace />activityType=' + A.one('#<portlet:namespace />user-activity-selector').get('value'), uri);
+		uri = Liferay.Util.addParams('<portlet:namespace />delta=<%= delta %>', uri);
 
-		window.location.href = location;
+		window.location.href = uri;
 	};
 </aui:script>
