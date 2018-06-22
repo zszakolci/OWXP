@@ -58,25 +58,30 @@ public class WikiHelperServiceImpl implements WikiHelperService {
 		JSONObject childWikiPagesJSONObject =
 			JSONFactoryUtil.createJSONObject();
 
-		WikiPage wikiPage = _wikiPageLocalService.getPage(nodeId, title);
+		try {
+			WikiPage wikiPage = _wikiPageLocalService.getPage(nodeId, title);
 
-		long childPagesCount = _wikiPageLocalService.getChildrenCount(
-			wikiPage.getNodeId(), true, wikiPage.getTitle());
+			long childPagesCount = _wikiPageLocalService.getChildrenCount(
+				wikiPage.getNodeId(), true, wikiPage.getTitle());
 
-		childWikiPagesJSONObject.put("childPagesCount", childPagesCount);
+			childWikiPagesJSONObject.put("childPagesCount", childPagesCount);
 
-		List<WikiPage> childPages = _wikiPageLocalService.getChildren(
-			wikiPage.getNodeId(), true, wikiPage.getTitle(),
-			WorkflowConstants.STATUS_APPROVED, 0, 60,
-			new PageModifiedDateComparator());
+			List<WikiPage> childPages = _wikiPageLocalService.getChildren(
+				wikiPage.getNodeId(), true, wikiPage.getTitle(),
+				WorkflowConstants.STATUS_APPROVED, 0, 60,
+				new PageModifiedDateComparator());
 
-		JSONArray childPagesJSONArray = JSONFactoryUtil.createJSONArray();
+			JSONArray childPagesJSONArray = JSONFactoryUtil.createJSONArray();
 
-		for (WikiPage childPage : childPages) {
-			childPagesJSONArray.put(getWikiPageJSONObject(childPage));
+			for (WikiPage childPage : childPages) {
+				childPagesJSONArray.put(getWikiPageJSONObject(childPage));
+			}
+
+			childWikiPagesJSONObject.put("childPages", childPagesJSONArray);
 		}
-
-		childWikiPagesJSONObject.put("childPages", childPagesJSONArray);
+		catch (Exception e) {
+			_log.error("Cannot create childWikiPagesJSONObject ", e);
+		}
 
 		return childWikiPagesJSONObject;
 	}
@@ -85,40 +90,49 @@ public class WikiHelperServiceImpl implements WikiHelperService {
 	public JSONObject getLinkedPages(long nodeId, String title)
 		throws PortalException {
 
-		WikiPage wikiPage = _wikiPageLocalService.getPage(nodeId, title);
-
-		Map<String, String> linkedPages = fillLinkedPages(wikiPage);
-
-		List<WikiPage> linkedWikiPages = new ArrayList<>();
-
-		for (String linkedWikiPageTitle : linkedPages.keySet()) {
-			WikiPage linkedWikiPage = _wikiPageLocalService.fetchPage(
-				nodeId, linkedWikiPageTitle);
-
-			if (linkedWikiPage != null) {
-				linkedWikiPages.add(linkedWikiPage);
-			}
-			else {
-				if (_log.isWarnEnabled()) {
-					_log.warn("No linked WikiPage exists with title " + title);
-				}
-			}
-		}
-
 		JSONObject linkedWikiPagesJSONObject =
 			JSONFactoryUtil.createJSONObject();
 
-		JSONArray linkedPagesJSONArray = JSONFactoryUtil.createJSONArray();
+		try {
+			WikiPage wikiPage = _wikiPageLocalService.getPage(nodeId, title);
 
-		for (WikiPage linkedPage : linkedWikiPages) {
-			linkedPagesJSONArray.put(getWikiPageJSONObject(linkedPage));
+			Map<String, String> linkedPages = fillLinkedPages(wikiPage);
 
-			if (linkedWikiPages.size() == 60) {
-				break;
+			List<WikiPage> linkedWikiPages = new ArrayList<>();
+
+			for (String linkedWikiPageTitle : linkedPages.keySet()) {
+				WikiPage linkedWikiPage = _wikiPageLocalService.fetchPage(
+					nodeId, linkedWikiPageTitle);
+
+				if (linkedWikiPage != null) {
+					linkedWikiPages.add(linkedWikiPage);
+				}
+				else {
+					if (_log.isWarnEnabled()) {
+						_log.warn(
+							"No linked WikiPage exists with title " + title);
+					}
+				}
 			}
-		}
 
-		linkedWikiPagesJSONObject.put("linkedPages", linkedPagesJSONArray);
+			JSONArray linkedPagesJSONArray = JSONFactoryUtil.createJSONArray();
+
+			for (WikiPage linkedPage : linkedWikiPages) {
+				linkedPagesJSONArray.put(getWikiPageJSONObject(linkedPage));
+
+				if (linkedWikiPages.size() == 60) {
+					break;
+				}
+			}
+
+			linkedWikiPagesJSONObject.put("linkedPages", linkedPagesJSONArray);
+		}
+		catch (Exception e) {
+			linkedWikiPagesJSONObject.put(
+				"linkedPages", JSONFactoryUtil.createJSONArray());
+
+			_log.error("Cannot create linkedWikiPagesJSONObject ", e);
+		}
 
 		return linkedWikiPagesJSONObject;
 	}
@@ -127,69 +141,81 @@ public class WikiHelperServiceImpl implements WikiHelperService {
 	public JSONObject getParentWikiPage(long nodeId, String title)
 		throws PortalException {
 
-		WikiPage wikiPage = _wikiPageLocalService.getPage(nodeId, title);
+		try {
+			WikiPage wikiPage = _wikiPageLocalService.getPage(nodeId, title);
 
-		return getWikiPageJSONObject(wikiPage.getParentPage());
+			return getWikiPageJSONObject(wikiPage.getParentPage());
+		}
+		catch (Exception e) {
+			_log.error("Cannot create ParentWikiPageJSONObject ", e);
+
+			return JSONFactoryUtil.createJSONObject();
+		}
 	}
 
 	public JSONObject getWikiPageContributors(long nodeId, String title)
 		throws PortalException {
 
-		Map<Long, Contributor> contributorsMap = new HashMap<>();
-
-		List<WikiPage> wikiPages = _wikiPageLocalService.getPages(
-			nodeId, title, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-			new PageVersionComparator(true));
-
-		for (WikiPage wikiPage : wikiPages) {
-			long userId = wikiPage.getStatusByUserId();
-
-			try {
-				_userLocalService.getUser(userId);
-			}
-			catch (Exception e) {
-				continue;
-			}
-
-			Contributor contributor = null;
-
-			if (contributorsMap.containsKey(userId)) {
-				contributor = contributorsMap.get(userId);
-
-				contributor.count++;
-			}
-			else {
-				contributor = new Contributor(userId);
-
-				contributorsMap.put(userId, contributor);
-			}
-		}
-
 		JSONObject contributorsJSONObject = JSONFactoryUtil.createJSONObject();
 
-		WikiPage firstWikiPage = wikiPages.get(0);
+		try {
+			Map<Long, Contributor> contributorsMap = new HashMap<>();
 
-		Contributor creator = contributorsMap.remove(
-			firstWikiPage.getStatusByUserId());
+			List<WikiPage> wikiPages = _wikiPageLocalService.getPages(
+				nodeId, title, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+				new PageVersionComparator(true));
 
-		creator.modifiedDate = firstWikiPage.getStatusDate();
+			for (WikiPage wikiPage : wikiPages) {
+				long userId = wikiPage.getStatusByUserId();
 
-		contributorsJSONObject.put(
-			"creator", getContributorJSONObject(creator));
+				try {
+					_userLocalService.getUser(userId);
+				}
+				catch (Exception e) {
+					continue;
+				}
 
-		List<Contributor> contributors = new ArrayList<>(
-			contributorsMap.values());
+				Contributor contributor = null;
 
-		contributors.sort(
-			Comparator.comparing(Contributor::getCount).reversed());
+				if (contributorsMap.containsKey(userId)) {
+					contributor = contributorsMap.get(userId);
 
-		JSONArray editorsJSONArray = JSONFactoryUtil.createJSONArray();
+					contributor.count++;
+				}
+				else {
+					contributor = new Contributor(userId);
 
-		for (Contributor contributor : contributors) {
-			editorsJSONArray.put(getContributorJSONObject(contributor));
+					contributorsMap.put(userId, contributor);
+				}
+			}
+
+			WikiPage firstWikiPage = wikiPages.get(0);
+
+			Contributor creator = contributorsMap.remove(
+				firstWikiPage.getStatusByUserId());
+
+			creator.modifiedDate = firstWikiPage.getStatusDate();
+
+			contributorsJSONObject.put(
+				"creator", getContributorJSONObject(creator));
+
+			List<Contributor> contributors = new ArrayList<>(
+				contributorsMap.values());
+
+			contributors.sort(
+				Comparator.comparing(Contributor::getCount).reversed());
+
+			JSONArray editorsJSONArray = JSONFactoryUtil.createJSONArray();
+
+			for (Contributor contributor : contributors) {
+				editorsJSONArray.put(getContributorJSONObject(contributor));
+			}
+
+			contributorsJSONObject.put("contributors", editorsJSONArray);
 		}
-
-		contributorsJSONObject.put("contributors", editorsJSONArray);
+		catch (Exception e) {
+			_log.error("Cannot create contributorsJSONObject ", e);
+		}
 
 		return contributorsJSONObject;
 	}
