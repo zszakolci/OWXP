@@ -144,6 +144,13 @@ public class WikiHelperServiceImpl implements WikiHelperService {
 		for (WikiPage wikiPage : wikiPages) {
 			long userId = wikiPage.getStatusByUserId();
 
+			try {
+				_userLocalService.getUser(userId);
+			}
+			catch (Exception e) {
+				continue;
+			}
+
 			Contributor contributor = null;
 
 			if (contributorsMap.containsKey(userId)) {
