@@ -58,30 +58,31 @@ public class WikiHelperServiceImpl implements WikiHelperService {
 		JSONObject childWikiPagesJSONObject =
 			JSONFactoryUtil.createJSONObject();
 
+		JSONArray childPagesJSONArray = JSONFactoryUtil.createJSONArray();
+
+		long childPagesCount = 0;
+
 		try {
 			WikiPage wikiPage = _wikiPageLocalService.getPage(nodeId, title);
 
-			long childPagesCount = _wikiPageLocalService.getChildrenCount(
+			childPagesCount = _wikiPageLocalService.getChildrenCount(
 				wikiPage.getNodeId(), true, wikiPage.getTitle());
-
-			childWikiPagesJSONObject.put("childPagesCount", childPagesCount);
 
 			List<WikiPage> childPages = _wikiPageLocalService.getChildren(
 				wikiPage.getNodeId(), true, wikiPage.getTitle(),
 				WorkflowConstants.STATUS_APPROVED, 0, 60,
 				new PageModifiedDateComparator());
 
-			JSONArray childPagesJSONArray = JSONFactoryUtil.createJSONArray();
-
 			for (WikiPage childPage : childPages) {
 				childPagesJSONArray.put(getWikiPageJSONObject(childPage));
 			}
-
-			childWikiPagesJSONObject.put("childPages", childPagesJSONArray);
 		}
 		catch (Exception e) {
 			_log.error("Cannot create childWikiPagesJSONObject ", e);
 		}
+
+		childWikiPagesJSONObject.put("childPages", childPagesJSONArray);
+		childWikiPagesJSONObject.put("childPagesCount", childPagesCount);
 
 		return childWikiPagesJSONObject;
 	}
@@ -92,6 +93,8 @@ public class WikiHelperServiceImpl implements WikiHelperService {
 
 		JSONObject linkedWikiPagesJSONObject =
 			JSONFactoryUtil.createJSONObject();
+
+		JSONArray linkedPagesJSONArray = JSONFactoryUtil.createJSONArray();
 
 		try {
 			WikiPage wikiPage = _wikiPageLocalService.getPage(nodeId, title);
@@ -115,8 +118,6 @@ public class WikiHelperServiceImpl implements WikiHelperService {
 				}
 			}
 
-			JSONArray linkedPagesJSONArray = JSONFactoryUtil.createJSONArray();
-
 			for (WikiPage linkedPage : linkedWikiPages) {
 				linkedPagesJSONArray.put(getWikiPageJSONObject(linkedPage));
 
@@ -124,15 +125,12 @@ public class WikiHelperServiceImpl implements WikiHelperService {
 					break;
 				}
 			}
-
-			linkedWikiPagesJSONObject.put("linkedPages", linkedPagesJSONArray);
 		}
 		catch (Exception e) {
-			linkedWikiPagesJSONObject.put(
-				"linkedPages", JSONFactoryUtil.createJSONArray());
-
 			_log.error("Cannot create linkedWikiPagesJSONObject ", e);
 		}
+
+		linkedWikiPagesJSONObject.put("linkedPages", linkedPagesJSONArray);
 
 		return linkedWikiPagesJSONObject;
 	}
@@ -141,22 +139,17 @@ public class WikiHelperServiceImpl implements WikiHelperService {
 	public JSONObject getParentWikiPage(long nodeId, String title)
 		throws PortalException {
 
-		try {
-			WikiPage wikiPage = _wikiPageLocalService.getPage(nodeId, title);
+		WikiPage wikiPage = _wikiPageLocalService.getPage(nodeId, title);
 
-			return getWikiPageJSONObject(wikiPage.getParentPage());
-		}
-		catch (Exception e) {
-			_log.error("Cannot create ParentWikiPageJSONObject ", e);
-
-			return JSONFactoryUtil.createJSONObject();
-		}
+		return getWikiPageJSONObject(wikiPage.getParentPage());
 	}
 
 	public JSONObject getWikiPageContributors(long nodeId, String title)
 		throws PortalException {
 
 		JSONObject contributorsJSONObject = JSONFactoryUtil.createJSONObject();
+		JSONArray editorsJSONArray = JSONFactoryUtil.createJSONArray();
+		JSONObject creatorJSONObject = JSONFactoryUtil.createJSONObject();
 
 		try {
 			Map<Long, Contributor> contributorsMap = new HashMap<>();
@@ -196,8 +189,7 @@ public class WikiHelperServiceImpl implements WikiHelperService {
 
 			creator.modifiedDate = firstWikiPage.getStatusDate();
 
-			contributorsJSONObject.put(
-				"creator", getContributorJSONObject(creator));
+			creatorJSONObject = getContributorJSONObject(creator);
 
 			List<Contributor> contributors = new ArrayList<>(
 				contributorsMap.values());
@@ -205,17 +197,16 @@ public class WikiHelperServiceImpl implements WikiHelperService {
 			contributors.sort(
 				Comparator.comparing(Contributor::getCount).reversed());
 
-			JSONArray editorsJSONArray = JSONFactoryUtil.createJSONArray();
-
 			for (Contributor contributor : contributors) {
 				editorsJSONArray.put(getContributorJSONObject(contributor));
 			}
-
-			contributorsJSONObject.put("contributors", editorsJSONArray);
 		}
 		catch (Exception e) {
 			_log.error("Cannot create contributorsJSONObject ", e);
 		}
+
+		contributorsJSONObject.put("contributors", editorsJSONArray);
+		contributorsJSONObject.put("creator", creatorJSONObject);
 
 		return contributorsJSONObject;
 	}
@@ -245,14 +236,12 @@ public class WikiHelperServiceImpl implements WikiHelperService {
 
 		JSONObject userJSONObject = JSONFactoryUtil.createJSONObject();
 
-		userJSONObject.put("count", contributor.count);
-
-		if (contributor.modifiedDate != null) {
+		if (contributor != null) {
+			userJSONObject.put("count", contributor.count);
 			userJSONObject.put("date", contributor.modifiedDate);
+			userJSONObject.put("userFullName", contributor.userFullName);
+			userJSONObject.put("userScreenName", contributor.userScreenName);
 		}
-
-		userJSONObject.put("userFullName", contributor.userFullName);
-		userJSONObject.put("userScreenName", contributor.userScreenName);
 
 		return userJSONObject;
 	}
