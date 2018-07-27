@@ -1,5 +1,0 @@
-import com.liferay.portal.template.ServiceLocator;
-
-layoutHelperServiceImpl = ServiceLocator.getInstance().findService("com.liferay.grow.layout.helper.service.LayoutHelperService");
-
-layoutHelperServiceImpl.updateProfilePages();
