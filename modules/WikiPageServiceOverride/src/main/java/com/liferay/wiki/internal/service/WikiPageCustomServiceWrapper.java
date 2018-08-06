@@ -15,6 +15,7 @@
 package com.liferay.wiki.internal.service;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 import com.liferay.exportimport.kernel.lar.ExportImportThreadLocal;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -29,7 +30,7 @@ import com.liferay.wiki.service.WikiPageLocalServiceWrapper;
  * @author Norbert Kocsis
  * @author Tamas Molnar
  */
-@Component(immediate = true, service = ServiceWrapper.class)
+@Component(immediate = false, service = ServiceWrapper.class)
 public class WikiPageCustomServiceWrapper extends WikiPageLocalServiceWrapper {
 
 	public WikiPageCustomServiceWrapper() {
@@ -77,4 +78,13 @@ public class WikiPageCustomServiceWrapper extends WikiPageLocalServiceWrapper {
 		return page;
 	}
 
+	@Reference(unbind = "-")
+	protected void setWikiPageLocalService(
+		WikiPageLocalService wikiPageLocalService) {
+
+		_wikiPageLocalService = wikiPageLocalService;
+	}
+
+	private WikiPageLocalService _wikiPageLocalService;
+	
 }
