@@ -31,6 +31,7 @@ import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
+import com.liferay.wiki.engine.WikiEngineRenderer;
 import com.liferay.wiki.model.WikiPage;
 import com.liferay.wiki.service.WikiPageLocalService;
 import com.liferay.wiki.service.WikiPageLocalServiceWrapper;
@@ -119,12 +120,15 @@ public class WikiPageCustomServiceWrapper extends WikiPageLocalServiceWrapper {
 				"contentURL", workflowContext.get("url"));
 		}
 
+		String pageContent = _wikiEngineRenderer.convert(
+			page, null, null, null);
+
 		MentionsGroupServiceConfiguration mentionsGroupServiceConfiguration =
 			_configurationProvider.getCompanyConfiguration(
 				MentionsGroupServiceConfiguration.class, page.getCompanyId());
 
 		_mentionsNotifier.notify(
-			userId, page.getGroupId(), page.getTitle(), page.getContent(),
+			page.getUserId(), page.getGroupId(), page.getTitle(), pageContent,
 			WikiPage.class.getName(), page.getPageId(),
 			mentionsGroupServiceConfiguration.assetEntryMentionEmailSubject(),
 			mentionsGroupServiceConfiguration.assetEntryMentionEmailBody(),
@@ -152,9 +156,17 @@ public class WikiPageCustomServiceWrapper extends WikiPageLocalServiceWrapper {
 		_wikiPageLocalService = wikiPageLocalService;
 	}
 
+	@Reference(unbind = "-")
+	protected void setWikiEngineRenderer(
+		WikiEngineRenderer wikiEngineRenderer) {
+
+		_wikiEngineRenderer = wikiEngineRenderer;
+	}
+
+
 	private ConfigurationProvider _configurationProvider;
 	private MentionsNotifier _mentionsNotifier;
-
 	private WikiPageLocalService _wikiPageLocalService;
+	private WikiEngineRenderer _wikiEngineRenderer;
 	
 }
