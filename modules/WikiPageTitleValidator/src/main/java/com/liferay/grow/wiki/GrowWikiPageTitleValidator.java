@@ -14,8 +14,8 @@
 
 package com.liferay.grow.wiki;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.model.ModelHintsUtil;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.wiki.exception.PageTitleException;
 import com.liferay.wiki.model.WikiPage;
