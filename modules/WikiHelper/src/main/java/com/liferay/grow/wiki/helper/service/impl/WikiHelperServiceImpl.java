@@ -78,7 +78,10 @@ public class WikiHelperServiceImpl implements WikiHelperService {
 			}
 		}
 		catch (Exception e) {
-			_log.error("Cannot create childWikiPagesJSONObject ", e);
+			_log.error(
+				"Cannot create childWikiPagesJSONObject for wiki page " + 
+					title,
+				e);
 		}
 
 		childWikiPagesJSONObject.put("childPages", childPagesJSONArray);
@@ -127,7 +130,10 @@ public class WikiHelperServiceImpl implements WikiHelperService {
 			}
 		}
 		catch (Exception e) {
-			_log.error("Cannot create linkedWikiPagesJSONObject ", e);
+			_log.error(
+				"Cannot create linkedWikiPagesJSONObject for wiki page " +
+					title,
+				e);
 		}
 
 		linkedWikiPagesJSONObject.put("linkedPages", linkedPagesJSONArray);
@@ -202,7 +208,10 @@ public class WikiHelperServiceImpl implements WikiHelperService {
 			}
 		}
 		catch (Exception e) {
-			_log.error("Cannot create contributorsJSONObject ", e);
+			_log.error(
+				"Cannot create contributorsJSONObject for wiki page " +
+					title,
+				e);
 		}
 
 		contributorsJSONObject.put("contributors", editorsJSONArray);
