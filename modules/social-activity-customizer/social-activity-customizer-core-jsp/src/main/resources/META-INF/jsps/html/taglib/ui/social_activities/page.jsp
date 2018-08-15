@@ -17,9 +17,9 @@
 <%@ include file="/html/taglib/ui/social_activities/init.jsp" %>
 
 <%
-Integer delta = ParamUtil.getInteger(request, "delta");
+int delta = ParamUtil.getInteger(request, "delta");
 
-if (delta == null) {
+if (delta == 0) {
 	delta = 10;
 }
 %>
