@@ -27,6 +27,8 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.CharPool;
+import com.liferay.portal.kernel.util.HtmlUtil;
+import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.wiki.escape.WikiEscapeUtil;
 import com.liferay.wiki.model.WikiPage;
@@ -112,6 +114,11 @@ public class WikiHelperServiceImpl implements WikiHelperService {
 			for (String linkedWikiPageTitle : linkedPages.keySet()) {
 				WikiPage linkedWikiPage = _wikiPageLocalService.fetchPage(
 					nodeId, linkedWikiPageTitle);
+
+				if (linkedWikiPage == null) {
+					linkedWikiPage = _wikiPageLocalService.fetchPage(
+						nodeId, HttpUtil.decodeURL(linkedWikiPageTitle));
+				}
 
 				if (linkedWikiPage != null) {
 					linkedWikiPages.add(linkedWikiPage);
@@ -230,6 +237,8 @@ public class WikiHelperServiceImpl implements WikiHelperService {
 
 		String content = wikiPage.getContent();
 
+		String format = wikiPage.getFormat();
+
 		LinkExtractor linkExtractor =
 			LinkExtractor.builder().linkTypes(EnumSet.of(LinkType.URL)).build();
 
@@ -240,6 +249,13 @@ public class WikiHelperServiceImpl implements WikiHelperService {
 				link.getBeginIndex(), link.getEndIndex());
 
 			if (linkString.contains(_GROW_URL)) {
+				if (format.equals(_FORMAT_CREOLE)) {
+					if (linkString.contains("|")) {
+						linkString = linkString.substring(
+							0, linkString.indexOf("|"));
+					}
+				}
+
 				_addLink(linkString, linkedPages);
 			}
 		}
@@ -307,6 +323,8 @@ public class WikiHelperServiceImpl implements WikiHelperService {
 	private static final String _GROW_URL = "https://grow.liferay.com/";
 
 	private static final String _PUBLIC_PAGE = "web";
+
+	private static final String _FORMAT_CREOLE = "creole";
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		WikiHelperServiceImpl.class);
