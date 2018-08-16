@@ -130,6 +130,7 @@ if (portletTitleBasedNavigation) {
 		<aui:input name="title" type="hidden" value="<%= title %>" />
 		<aui:input name="parentTitle" type="hidden" value="<%= parentTitle %>" />
 		<aui:input name="workflowAction" type="hidden" value="<%= WorkflowConstants.ACTION_SAVE_DRAFT %>" />
+		<aui:input name="minorEdit" type="hidden" />
 
 		<c:if test="<%= wikiPage != null %>">
 			<aui:input name="version" type="hidden" value="<%= wikiPage.getVersion() %>" />
@@ -316,9 +317,6 @@ if (portletTitleBasedNavigation) {
 							</c:otherwise>
 						</c:choose>
 
-						<c:if test="<%= (wikiPage != null) && !wikiPage.isNew() %>">
-							<aui:input label="this-is-a-minor-edit" name="minorEdit" />
-						</c:if>
 					</aui:fieldset>
 
 					<c:if test="<%= wikiPage != null %>">
@@ -373,6 +371,8 @@ if (portletTitleBasedNavigation) {
 
 				<aui:button-row>
 					<aui:button cssClass="btn-lg" disabled="<%= pending %>" name="publishButton" onClick='<%= renderResponse.getNamespace() + "publishPage();" %>' primary="<%= true %>" value="<%= publishButtonLabel %>" />
+
+					<aui:button cssClass="btn-lg" name="publishWithoutNotificationButton" onClick='<%= renderResponse.getNamespace() + "publishPageWithoutNotification();" %>' primary="<%= false %>" value="Publish without notifying subscribers" />
 
 					<aui:button cssClass="btn-lg" name="saveButton" primary="<%= false %>" type="submit" value="<%= saveButtonLabel %>" />
 
@@ -431,6 +431,18 @@ if (portletTitleBasedNavigation) {
 		var form = AUI.$(document.<portlet:namespace />fm);
 
 		form.fm('workflowAction').val('<%= WorkflowConstants.ACTION_PUBLISH %>');
+
+		form.fm('minorEdit').val('<%= false %>');
+
+		<portlet:namespace />savePage();
+	}
+
+	function <portlet:namespace />publishPageWithoutNotification() {
+		var form = AUI.$(document.<portlet:namespace />fm);
+
+		form.fm('workflowAction').val('<%= WorkflowConstants.ACTION_PUBLISH %>');
+		
+		form.fm('minorEdit').val('<%= true %>');
 
 		<portlet:namespace />savePage();
 	}
