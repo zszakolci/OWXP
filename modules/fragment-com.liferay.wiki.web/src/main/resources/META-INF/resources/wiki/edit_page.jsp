@@ -372,7 +372,9 @@ if (portletTitleBasedNavigation) {
 				<aui:button-row>
 					<aui:button cssClass="btn-lg" disabled="<%= pending %>" name="publishButton" onClick='<%= renderResponse.getNamespace() + "publishPage();" %>' primary="<%= true %>" value="<%= publishButtonLabel %>" />
 
-					<aui:button cssClass="btn-lg" name="publishWithoutNotificationButton" onClick='<%= renderResponse.getNamespace() + "publishPageWithoutNotification();" %>' primary="<%= false %>" value="Publish without notifying subscribers" />
+					<c:if test="<%= (wikiPage != null) && !wikiPage.isNew() %>">
+						<aui:button cssClass="btn-lg" name="publishWithoutNotificationButton" onClick='<%= renderResponse.getNamespace() + "publishPageWithoutNotification();" %>' primary="<%= false %>" value="Publish without notifying subscribers" />
+					</c:if>
 
 					<aui:button cssClass="btn-lg" name="saveButton" primary="<%= false %>" type="submit" value="<%= saveButtonLabel %>" />
 
