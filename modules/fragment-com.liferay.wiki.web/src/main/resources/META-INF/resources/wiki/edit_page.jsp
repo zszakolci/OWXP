@@ -356,12 +356,6 @@ if (portletTitleBasedNavigation) {
 				</c:if>
 
 				<%
-				String saveButtonLabel = "save";
-
-				if ((wikiPage == null) || wikiPage.isDraft() || wikiPage.isApproved()) {
-					saveButtonLabel = "save-as-draft";
-				}
-
 				String publishButtonLabel = "publish";
 
 				if (WorkflowDefinitionLinkLocalServiceUtil.hasWorkflowDefinitionLink(themeDisplay.getCompanyId(), scopeGroupId, WikiPage.class.getName())) {
@@ -375,8 +369,6 @@ if (portletTitleBasedNavigation) {
 					<c:if test="<%= (wikiPage != null) && !wikiPage.isNew() %>">
 						<aui:button cssClass="btn-lg" name="publishWithoutNotificationButton" onClick='<%= renderResponse.getNamespace() + "publishPageWithoutNotification();" %>' primary="<%= false %>" value="Publish without notifying subscribers" />
 					</c:if>
-
-					<aui:button cssClass="btn-lg" name="saveButton" primary="<%= false %>" type="submit" value="<%= saveButtonLabel %>" />
 
 					<aui:button cssClass="btn-lg" href="<%= redirect %>" type="cancel" />
 				</aui:button-row>
