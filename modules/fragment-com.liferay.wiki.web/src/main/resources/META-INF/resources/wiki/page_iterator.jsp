@@ -106,7 +106,7 @@ headerNames.add("user");
 headerNames.add("date");
 
 if (navigation.equals("history") || navigation.equals("recent-changes")) {
-	headerNames.add("summary");
+	headerNames.add("Summary of the change");
 }
 
 if (navigation.equals("all-pages") || navigation.equals("categorized-pages") || navigation.equals("draft-pages") || navigation.equals("history") || navigation.equals("orphan-pages") || navigation.equals("recent-changes") || navigation.equals("tagged-pages")) {
