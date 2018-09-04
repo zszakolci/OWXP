@@ -89,6 +89,9 @@ public class MarkdownEngine extends BaseInputEditorWikiEngine {
 				TocExtension.create())
 		);
 
+		// Use 2 dashes to be compatible with StackEdit
+		options.set(TablesExtension.MIN_SEPARATOR_DASHES, 2);
+
 		// uncomment to convert soft-breaks to hard breaks
 		options.set(HtmlRenderer.SOFT_BREAK, "<br />\n");
 
