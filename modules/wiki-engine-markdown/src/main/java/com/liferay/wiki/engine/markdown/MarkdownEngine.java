@@ -30,11 +30,22 @@ import com.liferay.wiki.configuration.WikiGroupServiceConfiguration;
 import com.liferay.wiki.constants.WikiPortletKeys;
 import com.liferay.wiki.engine.WikiEngine;
 import com.liferay.wiki.engine.input.editor.common.BaseInputEditorWikiEngine;
-import com.liferay.wiki.engine.markdown.pegdown.ast.LiferayPegDownProcessor;
 import com.liferay.wiki.exception.PageContentException;
 import com.liferay.wiki.model.WikiPage;
 import com.liferay.wiki.service.WikiNodeLocalService;
+import com.vladsch.flexmark.ast.Node;
+import com.vladsch.flexmark.ext.gfm.issues.GfmIssuesExtension;
+import com.vladsch.flexmark.ext.gfm.strikethrough.StrikethroughExtension;
+import com.vladsch.flexmark.ext.gfm.tasklist.TaskListExtension;
+import com.vladsch.flexmark.ext.gfm.users.GfmUsersExtension;
+import com.vladsch.flexmark.ext.gitlab.GitLabExtension;
+import com.vladsch.flexmark.ext.tables.TablesExtension;
+import com.vladsch.flexmark.ext.toc.TocExtension;
+import com.vladsch.flexmark.html.HtmlRenderer;
+import com.vladsch.flexmark.parser.Parser;
+import com.vladsch.flexmark.util.options.MutableDataSet;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -53,11 +64,6 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
-import org.parboiled.Parboiled;
-
-import org.pegdown.Extensions;
-import org.pegdown.LiferayParser;
-import org.pegdown.LinkRenderer;
 
 /**
  * @author Norbert Kocsis
@@ -71,8 +77,28 @@ public class MarkdownEngine extends BaseInputEditorWikiEngine {
 			String attachmentURLPrefix)
 		throws PageContentException {
 
-		return _liferayPegDownProcessor.get().markdownToHtml(
-			page.getContent(), new LinkRenderer());
+		MutableDataSet options = new MutableDataSet();
+
+		// uncomment to set optional extensions
+		options.set(
+			Parser.EXTENSIONS,
+			Arrays.asList(
+				GitLabExtension.create(), GfmIssuesExtension.create(),
+				GfmUsersExtension.create(), StrikethroughExtension.create(),
+				TablesExtension.create(), TaskListExtension.create(),
+				TocExtension.create())
+		);
+
+		// uncomment to convert soft-breaks to hard breaks
+		options.set(HtmlRenderer.SOFT_BREAK, "<br />\n");
+
+		Parser parser = Parser.builder(options).build();
+		HtmlRenderer renderer = HtmlRenderer.builder(options).build();
+
+		// You can re-use parser and renderer instances
+		Node document = parser.parse(page.getContent());
+
+		return  renderer.render(document);
 	}
 
 	@Override
@@ -170,26 +196,6 @@ public class MarkdownEngine extends BaseInputEditorWikiEngine {
 		return null;
 	}
 
-	@Activate
-	protected void activate() {
-		_liferayPegDownProcessor = new ThreadLocal<LiferayPegDownProcessor>() {
-
-			@Override
-			protected LiferayPegDownProcessor initialValue() {
-				LiferayParser liferayParser = Parboiled.createParser(
-					LiferayParser.class,
-					Extensions.ALL & ~Extensions.HARDWRAPS);
-
-				return new LiferayPegDownProcessor(liferayParser);
-			}
-
-		};
-	}
-
-	@Deactivate
-	protected void deactivate() {
-		_liferayPegDownProcessor = null;
-	}
 
 	@Override
 	protected ServletContext getHelpPageServletContext() {
@@ -235,10 +241,6 @@ public class MarkdownEngine extends BaseInputEditorWikiEngine {
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(MarkdownEngine.class);
-
-	private static ThreadLocal<LiferayPegDownProcessor>
-		_liferayPegDownProcessor;
-
 	private String _friendlyURLMapping;
 	private ResourceBundleLoader _resourceBundleLoader;
 	private Router _router;
