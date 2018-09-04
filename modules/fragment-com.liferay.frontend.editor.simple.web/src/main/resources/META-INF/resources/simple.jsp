@@ -47,13 +47,13 @@ if (resizable) {
 %>
 
 <liferay-util:buffer var="editor">
-	<table bgcolor="#FFFFFF" cellpadding="0" cellspacing="0" height="100%" width="100%">
-		<tr>
-			<td bgcolor="#FFFFFF" height="100%">
-				<textarea class="lfr-editor-textarea" id="<%= HtmlUtil.escapeAttribute(name) %>" name="<%= HtmlUtil.escapeAttribute(name) %>" style="resize:<%= resizable ? "vertical" : "none" %>"><%= (contents != null) ? HtmlUtil.escape(contents) : StringPool.BLANK %></textarea>
-			</td>
-		</tr>
-	</table>
+	<blockquote class=".main-content">
+		<textarea class="lfr-editor-textarea" id="<%= HtmlUtil.escapeAttribute(name) %>" name="<%= HtmlUtil.escapeAttribute(name) %>" style="resize:<%= resizable ? "vertical" : "none" %>"><%= (contents != null) ? HtmlUtil.escape(contents) : StringPool.BLANK %></textarea>
+
+		<div class="stackedit-button-wrapper">
+			<a id="stackEdit" href="javascript:void(0);"> <img src="/o/grow-theme/images/stackedit.svg"> Edit with StackEdit</a>
+		</div>
+	</blockquote>
 </liferay-util:buffer>
 
 <%
@@ -62,7 +62,31 @@ String containerId = HtmlUtil.escapeAttribute(name) + "Container";
 name = HtmlUtil.escapeJS(name);
 %>
 
+<script src="https://unpkg.com/stackedit-js@1.0.7/docs/lib/stackedit.min.js"></script>
+
 <aui:script use="<%= modules %>">
+
+	const el = document.querySelector('textarea');
+	const stackedit = new Stackedit();
+
+	var a = document.getElementById("stackEdit");
+	a.onclick = function() {
+
+		// Open the iframe
+		stackedit.openFile({
+			content: {
+			text: el.value // and the Markdown content.
+			}
+		});
+
+		return false;
+	}
+
+	// Listen to StackEdit events and apply the changes to the textarea.
+	stackedit.on('fileChange', (file) => {
+	  el.value = file.content.text;
+	});
+
 	var onInputHandle;
 
 	var onInput = function(event) {
