@@ -166,11 +166,11 @@ public class WikiQuicklinkPortlet extends MVCPortlet {
 	};
 
 	private static final String[] REPLACE_WITH = {
-		"a", "e", "i", "u", "u", "u", "o", "o", "o", "AMPERSAND", "APOSTROPHE",
-		"AT", "CLOSE_BRACKET", "<CLOSE_PARENTHESIS>", "<COLON>", "<COMMA>",
-		"<DOLLAR>", "<EQUAL>", "<EXCLAMATION>", "<OPEN_BRACKET>",
-		"<OPEN_PARENTHESIS>", "<POUND>", "<QUESTION>", "<SEMICOLON>",
-		"<SLASH>", "<STAR>","<PLUS>","+"
+		"a", "e", "i", "u", "u", "u", "o", "o", "o", "<AMPERSAND>",
+		"<APOSTROPHE>","<AT>", "<CLOSE_BRACKET>", "<CLOSE_PARENTHESIS>",
+		"<COLON>", "<COMMA>","<DOLLAR>", "<EQUAL>", "<EXCLAMATION>",
+		"<OPEN_BRACKET>", "<OPEN_PARENTHESIS>", "<POUND>", "<QUESTION>",
+		"<SEMICOLON>","<SLASH>", "<STAR>","<PLUS>","+"
 	};
 
 	private WikiPageLocalService _wikiPageLocalService;
