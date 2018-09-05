@@ -64,6 +64,7 @@ import net.htmlparser.jericho.StartTag;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -210,6 +211,12 @@ public class MarkdownEngine extends BaseInputEditorWikiEngine {
 			}
 
 		};
+	}
+
+	@Deactivate
+	protected void deactivate() {
+		_parserThreadLocal = null;
+		_rendererThreadLocal = null;
 	}
 
 	@Override
