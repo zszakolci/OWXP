@@ -34,6 +34,7 @@ import com.liferay.wiki.exception.PageContentException;
 import com.liferay.wiki.model.WikiPage;
 import com.liferay.wiki.service.WikiNodeLocalService;
 import com.vladsch.flexmark.ast.Node;
+import com.vladsch.flexmark.ext.emoji.EmojiExtension;
 import com.vladsch.flexmark.ext.gfm.issues.GfmIssuesExtension;
 import com.vladsch.flexmark.ext.gfm.strikethrough.StrikethroughExtension;
 import com.vladsch.flexmark.ext.gfm.tasklist.TaskListExtension;
@@ -83,11 +84,13 @@ public class MarkdownEngine extends BaseInputEditorWikiEngine {
 		options.set(
 			Parser.EXTENSIONS,
 			Arrays.asList(
-				GitLabExtension.create(), GfmIssuesExtension.create(),
-				GfmUsersExtension.create(), StrikethroughExtension.create(),
-				TablesExtension.create(), TaskListExtension.create(),
-				TocExtension.create())
+				EmojiExtension.create(),GitLabExtension.create(),
+				GfmIssuesExtension.create(), GfmUsersExtension.create(),
+				StrikethroughExtension.create(), TablesExtension.create(),
+				TaskListExtension.create(), TocExtension.create())
 		);
+
+		options.set(EmojiExtension.ROOT_IMAGE_PATH, "/o/grow-theme/images/emojis/");
 
 		// Use 2 dashes to be compatible with StackEdit
 		options.set(TablesExtension.MIN_SEPARATOR_DASHES, 2);
