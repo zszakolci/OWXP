@@ -45,6 +45,7 @@ import com.vladsch.flexmark.ext.tables.TablesExtension;
 import com.vladsch.flexmark.ext.toc.TocExtension;
 import com.vladsch.flexmark.html.HtmlRenderer;
 import com.vladsch.flexmark.parser.Parser;
+import com.vladsch.flexmark.parser.Parser.Builder;
 import com.vladsch.flexmark.util.options.MutableDataSet;
 
 import java.util.Arrays;
@@ -61,6 +62,7 @@ import javax.servlet.http.HttpServletRequest;
 import net.htmlparser.jericho.Source;
 import net.htmlparser.jericho.StartTag;
 
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -76,33 +78,8 @@ public class MarkdownEngine extends BaseInputEditorWikiEngine {
 			String attachmentURLPrefix)
 		throws PageContentException {
 
-		MutableDataSet options = new MutableDataSet();
-
-		// uncomment to set optional extensions
-
-		options.set(
-			Parser.EXTENSIONS,
-			Arrays.asList(
-				EmojiExtension.create(), GitLabExtension.create(),
-				GfmIssuesExtension.create(), GfmUsersExtension.create(),
-				StrikethroughExtension.create(), TablesExtension.create(),
-				TaskListExtension.create(), TocExtension.create()));
-
-		options.set(
-			EmojiExtension.ROOT_IMAGE_PATH, "/o/grow-theme/images/emojis/");
-
-		// Use 2 dashes to be compatible with StackEdit
-
-		options.set(TablesExtension.MIN_SEPARATOR_DASHES, 2);
-
-		// uncomment to convert soft-breaks to hard breaks
-
-		options.set(HtmlRenderer.SOFT_BREAK, "<br />\n");
-
-		Parser parser = Parser.builder(options).build();
-		HtmlRenderer renderer = HtmlRenderer.builder(options).build();
-
-		// You can re-use parser and renderer instances
+		Parser parser = _parserThreadLocal.get();
+		HtmlRenderer renderer = _rendererThreadLocal.get();
 
 		Node document = parser.parse(page.getContent());
 
@@ -204,6 +181,37 @@ public class MarkdownEngine extends BaseInputEditorWikiEngine {
 		return null;
 	}
 
+	@Activate
+	protected void activate() {
+		_parserThreadLocal = new ThreadLocal<Parser>() {
+
+			@Override
+			protected Parser initialValue() {
+				MutableDataSet options = _getOptions();
+
+				Builder builder = Parser.builder(options);
+
+				return builder.build();
+			}
+
+		};
+
+		_rendererThreadLocal = new ThreadLocal<HtmlRenderer>() {
+
+			@Override
+			protected HtmlRenderer initialValue() {
+				MutableDataSet options = _getOptions();
+
+				HtmlRenderer.Builder builder = HtmlRenderer.builder(options);
+
+				HtmlRenderer renderer = builder.build();
+
+				return renderer;
+			}
+
+		};
+	}
+
 	@Override
 	protected ServletContext getHelpPageServletContext() {
 		return null;
@@ -247,9 +255,38 @@ public class MarkdownEngine extends BaseInputEditorWikiEngine {
 		_wikiNodeLocalService = wikiNodeLocalService;
 	}
 
+	private MutableDataSet _getOptions() {
+		MutableDataSet options = new MutableDataSet();
+
+		// uncomment to set optional extensions
+
+		options.set(
+			Parser.EXTENSIONS,
+			Arrays.asList(
+				EmojiExtension.create(), GitLabExtension.create(),
+				GfmIssuesExtension.create(), GfmUsersExtension.create(),
+				StrikethroughExtension.create(), TablesExtension.create(),
+				TaskListExtension.create(), TocExtension.create()));
+
+		options.set(
+			EmojiExtension.ROOT_IMAGE_PATH, "/o/grow-theme/images/emojis/");
+
+		// Use 2 dashes to be compatible with StackEdit
+
+		options.set(TablesExtension.MIN_SEPARATOR_DASHES, 2);
+
+		// uncomment to convert soft-breaks to hard breaks
+
+		options.set(HtmlRenderer.SOFT_BREAK, "<br />\n");
+
+		return options;
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(MarkdownEngine.class);
 
 	private String _friendlyURLMapping;
+	private ThreadLocal<Parser> _parserThreadLocal;
+	private ThreadLocal<HtmlRenderer> _rendererThreadLocal;
 	private ResourceBundleLoader _resourceBundleLoader;
 	private Router _router;
 	private WikiGroupServiceConfiguration _wikiGroupServiceConfiguration;
