@@ -75,7 +75,12 @@ name = HtmlUtil.escapeJS(name);
 		// Open the iframe
 		stackedit.openFile({
 			content: {
-			text: el.value // and the Markdown content.
+				text: el.value // and the Markdown content.
+			},
+			properties: {
+				extensions: {
+					preset: 'gfm'
+				}
 			}
 		});
 
