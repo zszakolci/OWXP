@@ -33,6 +33,7 @@ import com.liferay.wiki.engine.input.editor.common.BaseInputEditorWikiEngine;
 import com.liferay.wiki.exception.PageContentException;
 import com.liferay.wiki.model.WikiPage;
 import com.liferay.wiki.service.WikiNodeLocalService;
+
 import com.vladsch.flexmark.ast.Node;
 import com.vladsch.flexmark.ext.emoji.EmojiExtension;
 import com.vladsch.flexmark.ext.gfm.issues.GfmIssuesExtension;
@@ -60,11 +61,8 @@ import javax.servlet.http.HttpServletRequest;
 import net.htmlparser.jericho.Source;
 import net.htmlparser.jericho.StartTag;
 
-import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
-
 
 /**
  * @author Norbert Kocsis
@@ -81,30 +79,34 @@ public class MarkdownEngine extends BaseInputEditorWikiEngine {
 		MutableDataSet options = new MutableDataSet();
 
 		// uncomment to set optional extensions
+
 		options.set(
 			Parser.EXTENSIONS,
 			Arrays.asList(
-				EmojiExtension.create(),GitLabExtension.create(),
+				EmojiExtension.create(), GitLabExtension.create(),
 				GfmIssuesExtension.create(), GfmUsersExtension.create(),
 				StrikethroughExtension.create(), TablesExtension.create(),
-				TaskListExtension.create(), TocExtension.create())
-		);
+				TaskListExtension.create(), TocExtension.create()));
 
-		options.set(EmojiExtension.ROOT_IMAGE_PATH, "/o/grow-theme/images/emojis/");
+		options.set(
+			EmojiExtension.ROOT_IMAGE_PATH, "/o/grow-theme/images/emojis/");
 
 		// Use 2 dashes to be compatible with StackEdit
+
 		options.set(TablesExtension.MIN_SEPARATOR_DASHES, 2);
 
 		// uncomment to convert soft-breaks to hard breaks
+
 		options.set(HtmlRenderer.SOFT_BREAK, "<br />\n");
 
 		Parser parser = Parser.builder(options).build();
 		HtmlRenderer renderer = HtmlRenderer.builder(options).build();
 
 		// You can re-use parser and renderer instances
+
 		Node document = parser.parse(page.getContent());
 
-		return  renderer.render(document);
+		return renderer.render(document);
 	}
 
 	@Override
@@ -202,7 +204,6 @@ public class MarkdownEngine extends BaseInputEditorWikiEngine {
 		return null;
 	}
 
-
 	@Override
 	protected ServletContext getHelpPageServletContext() {
 		return null;
@@ -247,6 +248,7 @@ public class MarkdownEngine extends BaseInputEditorWikiEngine {
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(MarkdownEngine.class);
+
 	private String _friendlyURLMapping;
 	private ResourceBundleLoader _resourceBundleLoader;
 	private Router _router;
