@@ -66,8 +66,8 @@ name = HtmlUtil.escapeJS(name);
 
 <aui:script use="<%= modules %>">
 
-	const el = document.querySelector('textarea');
-	const stackedit = new Stackedit();
+	var el = document.querySelector('textarea');
+	var stackedit = new Stackedit();
 
 	var a = document.getElementById("stackEdit");
 	a.onclick = function() {
@@ -83,8 +83,8 @@ name = HtmlUtil.escapeJS(name);
 	}
 
 	// Listen to StackEdit events and apply the changes to the textarea.
-	stackedit.on('fileChange', (file) => {
-	  el.value = file.content.text;
+	stackedit.on('fileChange', function (file) {
+		el.value = file.content.text;
 	});
 
 	var onInputHandle;
