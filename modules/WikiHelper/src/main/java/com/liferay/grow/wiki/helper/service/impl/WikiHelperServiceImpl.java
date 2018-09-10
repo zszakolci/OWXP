@@ -240,7 +240,8 @@ public class WikiHelperServiceImpl implements WikiHelperService {
 		String format = wikiPage.getFormat();
 
 		LinkExtractor linkExtractor =
-			LinkExtractor.builder().linkTypes(EnumSet.of(LinkType.URL)).build();
+			LinkExtractor.builder().linkTypes(
+				EnumSet.of(LinkType.URL, LinkType.WWW)).build();
 
 		Iterable<LinkSpan> links = linkExtractor.extractLinks(content);
 
