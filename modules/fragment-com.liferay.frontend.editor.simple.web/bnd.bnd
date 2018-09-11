@@ -1,4 +1,0 @@
-Bundle-Name: fragment-com.liferay.frontend.editor.simple.web
-Bundle-SymbolicName: fragment.com.liferay.frontend.editor.simple.web
-Bundle-Version: 1.0.0
-Fragment-Host: com.liferay.frontend.editor.simple.web;bundle-version="1.0.0"
