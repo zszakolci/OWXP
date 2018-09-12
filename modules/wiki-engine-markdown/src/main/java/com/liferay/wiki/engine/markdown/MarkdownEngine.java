@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.wiki.engine.BaseWikiEngine;
 import com.liferay.wiki.engine.WikiEngine;
 import com.liferay.wiki.exception.PageContentException;
+import com.liferay.wiki.model.WikiNode;
 import com.liferay.wiki.model.WikiPage;
 
 import com.vladsch.flexmark.ast.Node;
@@ -36,6 +37,8 @@ import com.vladsch.flexmark.parser.Parser;
 import com.vladsch.flexmark.parser.Parser.Builder;
 import com.vladsch.flexmark.util.options.MutableDataSet;
 
+import java.io.IOException;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -43,6 +46,9 @@ import java.util.Map;
 import javax.portlet.PortletURL;
 
 import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
 import org.osgi.service.component.annotations.Activate;
@@ -101,6 +107,17 @@ public class MarkdownEngine extends BaseWikiEngine {
 	@Override
 	public String getToolbarSet() {
 		return null;
+	}
+
+	@Override
+	public void renderEditPage(
+			ServletRequest servletRequest, ServletResponse servletResponse,
+			WikiNode node, WikiPage page)
+		throws IOException, ServletException {
+
+		servletRequest.setAttribute("markdown", "true");
+
+		super.renderEditPage(servletRequest, servletResponse, node, page);
 	}
 
 	@Activate
