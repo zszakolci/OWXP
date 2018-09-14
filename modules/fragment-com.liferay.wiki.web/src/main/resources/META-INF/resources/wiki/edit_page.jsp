@@ -140,6 +140,7 @@ if (portletTitleBasedNavigation) {
 		<aui:input name="title" type="hidden" value="<%= title %>" />
 		<aui:input name="parentTitle" type="hidden" value="<%= parentTitle %>" />
 		<aui:input name="workflowAction" type="hidden" value="<%= WorkflowConstants.ACTION_SAVE_DRAFT %>" />
+		<aui:input name="minorEdit" type="hidden" />
 
 		<c:if test="<%= wikiPage != null %>">
 			<aui:input name="version" type="hidden" value="<%= wikiPage.getVersion() %>" />
@@ -327,10 +328,6 @@ if (portletTitleBasedNavigation) {
 								<aui:input name="format" type="hidden" value="<%= selectedFormat %>" />
 							</c:otherwise>
 						</c:choose>
-
-						<c:if test="<%= (wikiPage != null) && !wikiPage.isNew() %>">
-							<aui:input label="this-is-a-minor-edit" name="minorEdit" />
-						</c:if>
 					</aui:fieldset>
 
 					<c:if test="<%= wikiPage != null %>">
@@ -372,12 +369,6 @@ if (portletTitleBasedNavigation) {
 				</c:if>
 
 				<%
-				String saveButtonLabel = "save";
-
-				if ((wikiPage == null) || wikiPage.isDraft() || wikiPage.isApproved()) {
-					saveButtonLabel = "save-as-draft";
-				}
-
 				String publishButtonLabel = "publish";
 
 				if (WorkflowDefinitionLinkLocalServiceUtil.hasWorkflowDefinitionLink(themeDisplay.getCompanyId(), scopeGroupId, WikiPage.class.getName())) {
@@ -388,7 +379,9 @@ if (portletTitleBasedNavigation) {
 				<aui:button-row>
 					<aui:button disabled="<%= pending %>" name="publishButton" primary="<%= true %>" value="<%= publishButtonLabel %>" />
 
-					<aui:button name="saveButton" primary="<%= false %>" type="submit" value="<%= saveButtonLabel %>" />
+					<c:if test="<%= (wikiPage != null) && !wikiPage.isNew() %>">
+						<aui:button disabled="<%= pending %>" name="publishButtonWithoutNotification" onClick='<%= renderResponse.getNamespace() + "publishPageWithoutNotification();" %>' primary="<%= false %>" value="Publish without notifying subscribers" />
+					</c:if>
 
 					<aui:button href="<%= redirect %>" type="cancel" />
 				</aui:button-row>
@@ -396,6 +389,38 @@ if (portletTitleBasedNavigation) {
 		</c:choose>
 	</aui:form>
 </div>
+
+<aui:script>
+	function <portlet:namespace />publishPageWithoutNotification() {
+		var form = AUI.$(document.<portlet:namespace />fm);
+
+		form.fm('workflowAction').val('<%= WorkflowConstants.ACTION_PUBLISH %>');
+
+		form.fm('minorEdit').val('<%= true %>');
+
+		<portlet:namespace />savePage();
+	}
+
+	function <portlet:namespace />savePage() {
+		var form = AUI.$(document.<portlet:namespace />fm);
+
+		form.fm('<%= Constants.CMD %>').val('<%= ((wikiPage == null) || wikiPage.isNew()) ? Constants.ADD : Constants.UPDATE %>');
+
+		var titleEditor = window.<portlet:namespace />titleEditor;
+
+		if (titleEditor) {
+			form.fm('title').val(titleEditor.getText());
+		}
+
+		var contentEditor = window.<portlet:namespace />contentEditor;
+
+		if (contentEditor) {
+			form.fm('content').val(contentEditor.getHTML());
+		}
+
+		submitForm(form);
+	}
+</aui:script>
 
 <aui:script require="wiki-web/wiki/js/WikiPortlet.es">
 	new wikiWebWikiJsWikiPortletEs.default(
