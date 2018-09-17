@@ -194,7 +194,7 @@ public class MarkdownEngine extends BaseWikiEngine {
 
 		// Use 2 dashes to be compatible with StackEdit
 
-		options.set(TablesExtension.MIN_SEPARATOR_DASHES, 2);
+		options.set(TablesExtension.MIN_SEPARATOR_DASHES, 1);
 
 		// uncomment to convert soft-breaks to hard breaks
 
