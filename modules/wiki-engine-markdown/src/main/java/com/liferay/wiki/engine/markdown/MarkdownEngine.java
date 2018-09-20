@@ -36,6 +36,7 @@ import com.vladsch.flexmark.ext.toc.TocExtension;
 import com.vladsch.flexmark.html.HtmlRenderer;
 import com.vladsch.flexmark.parser.Parser;
 import com.vladsch.flexmark.parser.Parser.Builder;
+import com.vladsch.flexmark.superscript.SuperscriptExtension;
 import com.vladsch.flexmark.util.options.MutableDataSet;
 
 import java.io.IOException;
@@ -187,8 +188,9 @@ public class MarkdownEngine extends BaseWikiEngine {
 				AutolinkExtension.create(), EmojiExtension.create(),
 				FootnoteExtension.create(), GitLabExtension.create(),
 				GfmIssuesExtension.create(), GfmUsersExtension.create(),
-				StrikethroughExtension.create(), TablesExtension.create(),
-				TaskListExtension.create(), TocExtension.create()));
+				StrikethroughExtension.create(), SuperscriptExtension.create(),
+				TablesExtension.create(), TaskListExtension.create(),
+				TocExtension.create()));
 
 		options.set(
 			EmojiExtension.ROOT_IMAGE_PATH, "/o/grow-theme/images/emojis/");

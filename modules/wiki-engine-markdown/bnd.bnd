@@ -11,6 +11,7 @@ Include-Resource:\
 	@lib/flexmark-ext-gfm-tasklist-0.34.24.jar,\
 	@lib/flexmark-ext-gfm-users-0.34.24.jar,\
 	@lib/flexmark-ext-gitlab-0.34.24.jar,\
+	@lib/flexmark-ext-superscript-0.34.24.jar,\
 	@lib/flexmark-ext-tables-0.34.24.jar,\
 	@lib/flexmark-ext-toc-0.34.24.jar,\
 	@lib/flexmark-formatter-0.34.24.jar,\
