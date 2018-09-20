@@ -6,6 +6,7 @@ Include-Resource:\
 	@lib/flexmark-0.34.24.jar,\
 	@lib/flexmark-ext-autolink-0.34.24.jar,\
 	@lib/flexmark-ext-emoji-0.34.24.jar,\
+	@lib/flexmark-ext-footnotes-0.34.24.jar,\
 	@lib/flexmark-ext-gfm-issues-0.34.24.jar,\
 	@lib/flexmark-ext-gfm-strikethrough-0.34.24.jar,\
 	@lib/flexmark-ext-gfm-tasklist-0.34.24.jar,\
