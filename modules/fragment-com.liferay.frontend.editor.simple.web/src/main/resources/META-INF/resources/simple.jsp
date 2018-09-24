@@ -67,7 +67,9 @@ name = HtmlUtil.escapeJS(name);
 <aui:script use="<%= modules %>">
 
 	var el = document.querySelector('textarea');
-	var stackedit = new Stackedit();
+	var stackedit = new Stackedit({
+		url: 'https://stackedit.lfr.io/app'
+	});
 
 	var a = document.getElementById("stackEdit");
 	a.onclick = function() {
