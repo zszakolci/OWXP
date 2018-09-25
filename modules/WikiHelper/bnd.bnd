@@ -1,5 +1,4 @@
 Bundle-Name: Liferay Grow Wiki Helper
 Bundle-SymbolicName: com.liferay.grow.WikiHelper
 Bundle-Version: 1.0.0
-Include-Resource:\
-	@lib/autolink-0.9.0.jar
+Include-Resource: @lib/autolink-0.9.0.jar

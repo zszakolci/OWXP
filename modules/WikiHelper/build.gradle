@@ -1,9 +1,9 @@
 dependencies {
+	compile group: "com.liferay", name: "com.liferay.wiki.service", version: "2.0.0"
+	compile group: "org.nibor.autolink", name: "autolink", version: "0.9.0"
+
 	compileOnly group: "com.liferay", name: "com.liferay.petra.string", version: "2.0.0"
 	compileOnly group: "com.liferay", name: "com.liferay.wiki.api", version: "3.0.0"
-	compile group: "com.liferay", name: "com.liferay.wiki.service", version: "2.0.0"
-	compile 'org.nibor.autolink:autolink:0.9.0'
-
 	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "3.0.0"
 	compileOnly group: "org.osgi", name: "osgi.cmpn", version: "6.0.0"
 }

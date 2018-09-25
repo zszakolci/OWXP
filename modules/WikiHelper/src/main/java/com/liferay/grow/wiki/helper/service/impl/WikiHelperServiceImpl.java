@@ -27,7 +27,6 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.CharPool;
-import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.wiki.escape.WikiEscapeUtil;
@@ -47,6 +46,7 @@ import java.util.TreeMap;
 import org.nibor.autolink.LinkExtractor;
 import org.nibor.autolink.LinkSpan;
 import org.nibor.autolink.LinkType;
+
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -84,7 +84,7 @@ public class WikiHelperServiceImpl implements WikiHelperService {
 		}
 		catch (Exception e) {
 			_log.error(
-				"Cannot create childWikiPagesJSONObject for wiki page " + 
+				"Cannot create childWikiPagesJSONObject for wiki page " +
 					title,
 				e);
 		}
@@ -239,9 +239,8 @@ public class WikiHelperServiceImpl implements WikiHelperService {
 
 		String format = wikiPage.getFormat();
 
-		LinkExtractor linkExtractor =
-			LinkExtractor.builder().linkTypes(
-				EnumSet.of(LinkType.URL, LinkType.WWW)).build();
+		LinkExtractor linkExtractor = LinkExtractor.builder().linkTypes(
+			EnumSet.of(LinkType.URL, LinkType.WWW)).build();
 
 		Iterable<LinkSpan> links = linkExtractor.extractLinks(content);
 
@@ -321,11 +320,11 @@ public class WikiHelperServiceImpl implements WikiHelperService {
 		}
 	}
 
+	private static final String _FORMAT_CREOLE = "creole";
+
 	private static final String _GROW_URL = "https://grow.liferay.com/";
 
 	private static final String _PUBLIC_PAGE = "web";
-
-	private static final String _FORMAT_CREOLE = "creole";
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		WikiHelperServiceImpl.class);
