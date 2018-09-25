@@ -36,7 +36,6 @@ if (followRedirect && (redirectPage != null)) {
 
 String title = wikiPage.getTitle();
 String parentTitle = wikiPage.getParentTitle();
-List<WikiPage> childPages = wikiPage.getViewableChildPages();
 int attachmentsFileEntriesCount = wikiPage.getAttachmentsFileEntriesCount();
 
 boolean preview = false;
@@ -481,51 +480,5 @@ if (portletTitleBasedNavigation) {
 				<liferay-util:dynamic-include key="com.liferay.wiki.web#/wiki/view.jsp#post" />
 			</div>
 		</div>
-
-		<c:if test="<%= Validator.isNotNull(formattedContent) && (followRedirect || (redirectPage == null)) && !childPages.isEmpty() %>">
-			<h4 class="text-default">
-				<liferay-ui:message arguments="<%= childPages.size() %>" key="child-pages-x" translateArguments="<%= false %>" />
-			</h4>
-
-			<div>
-				<ul class="list-group">
-
-					<%
-					for (WikiPage childPage : childPages) {
-					%>
-
-						<li class="list-group-item">
-							<h3>
-
-								<%
-								PortletURL rowURL = PortletURLUtil.clone(viewPageURL, renderResponse);
-
-								rowURL.setParameter("title", childPage.getTitle());
-								%>
-
-								<aui:a href="<%= rowURL.toString() %>"><%= childPage.getTitle() %></aui:a>
-							</h3>
-
-							<%
-							String childPageFormattedContent = null;
-
-							try {
-								childPageFormattedContent = WikiUtil.getFormattedContent(wikiEngineRenderer, renderRequest, renderResponse, childPage, viewPageURL, editPageURL, childPage.getTitle(), false);
-							}
-							catch (Exception e) {
-								childPageFormattedContent = childPage.getContent();
-							}
-							%>
-
-							<p class="text-default"><%= StringUtil.shorten(HtmlUtil.extractText(childPageFormattedContent), 200) %></p>
-						</li>
-
-					<%
-					}
-					%>
-
-				</ul>
-			</div>
-		</c:if>
 	</div>
 </div>
