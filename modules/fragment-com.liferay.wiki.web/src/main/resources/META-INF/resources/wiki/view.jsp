@@ -163,8 +163,6 @@ if (portletTitleBasedNavigation) {
 							</aui:script>
 						</c:otherwise>
 					</c:choose>
-
-					<liferay-util:include page="/wiki/top_links.jsp" servletContext="<%= application %>" />
 				</c:if>
 
 				<c:if test="<%= print %>">
