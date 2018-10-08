@@ -1,0 +1,8 @@
+Bundle-Name: BadgeNotificationPortlet
+Bundle-SymbolicName: com.liferay.grow.gamificaiton.badges.notification
+Bundle-Version: 1.0.0
+Export-Package: \
+	com.liferay.grow.gamificaiton.badges.notification.constants,\
+	com.liferay.grow.gamification.badges.notification.util,\
+	com.liferay.grow.gamification.badges.notification.portlet,\
+	com.liferay.grow.gamification.badges.notification
