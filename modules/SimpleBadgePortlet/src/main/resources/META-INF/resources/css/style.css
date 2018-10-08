@@ -1,0 +1,35 @@
+.badge-danger {
+	float: right;
+	top: -20px;
+	border-radius: 10px;
+	position: relative;
+}
+
+img.badge-image {
+	height: 64px;
+}
+
+.badge-type {
+	top: 20px;
+	position: relative;
+}
+
+.dropdown-toggle::after {
+	display: inline-block;
+	width: 0;
+	height: 0;
+	margin-left: .3em;
+	vertical-align: middle;
+	content: "";
+	border-top: .3em solid;
+	border-right: .3em solid transparent;
+	border-left: .3em solid transparent;
+}
+
+input.flexselect {
+	border-radius: 5px;
+	border: solid 1px #2E5AAC;
+	height: 40px;
+	padding-left: 14px;
+	width: 100%;
+}
