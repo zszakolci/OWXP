@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+
+<beans
+	default-destroy-method="destroy"
+	default-init-method="afterPropertiesSet"
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+>
+	<bean class="com.liferay.grow.gamification.service.impl.BadgeLocalServiceImpl" id="com.liferay.grow.gamification.service.BadgeLocalService" />
+	<bean class="com.liferay.grow.gamification.service.impl.BadgeServiceImpl" id="com.liferay.grow.gamification.service.BadgeService" />
+	<bean class="com.liferay.grow.gamification.service.persistence.impl.BadgePersistenceImpl" id="com.liferay.grow.gamification.service.persistence.BadgePersistence" parent="basePersistence" />
+	<bean class="com.liferay.grow.gamification.service.impl.BadgeTypeLocalServiceImpl" id="com.liferay.grow.gamification.service.BadgeTypeLocalService" />
+	<bean class="com.liferay.grow.gamification.service.impl.BadgeTypeServiceImpl" id="com.liferay.grow.gamification.service.BadgeTypeService" />
+	<bean class="com.liferay.grow.gamification.service.persistence.impl.BadgeTypePersistenceImpl" id="com.liferay.grow.gamification.service.persistence.BadgeTypePersistence" parent="basePersistence" />
+	<bean class="com.liferay.grow.gamification.service.impl.LDateLocalServiceImpl" id="com.liferay.grow.gamification.service.LDateLocalService" />
+	<bean class="com.liferay.grow.gamification.service.impl.LDateServiceImpl" id="com.liferay.grow.gamification.service.LDateService" />
+	<bean class="com.liferay.grow.gamification.service.persistence.impl.LDatePersistenceImpl" id="com.liferay.grow.gamification.service.persistence.LDatePersistence" parent="basePersistence" />
+	<bean class="com.liferay.grow.gamification.service.impl.SubscriberLocalServiceImpl" id="com.liferay.grow.gamification.service.SubscriberLocalService" />
+	<bean class="com.liferay.grow.gamification.service.impl.SubscriberServiceImpl" id="com.liferay.grow.gamification.service.SubscriberService" />
+	<bean class="com.liferay.grow.gamification.service.persistence.impl.SubscriberPersistenceImpl" id="com.liferay.grow.gamification.service.persistence.SubscriberPersistence" parent="basePersistence" />
+</beans>

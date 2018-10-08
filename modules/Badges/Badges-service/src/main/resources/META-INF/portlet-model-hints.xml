@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+
+<model-hints>
+	<model name="com.liferay.grow.gamification.model.Badge">
+		<field name="uuid" type="String" />
+		<field name="badgeId" type="long" />
+		<field name="groupId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="badgeTypeId" type="long" />
+		<field name="toUserId" type="long" />
+		<field name="description" type="String">
+			<hint name="max-length">255</hint>
+		</field>
+		<field name="assignedDateId" type="long" />
+	</model>
+	<model name="com.liferay.grow.gamification.model.BadgeType">
+		<field name="badgeTypeId" type="long" />
+		<field name="groupId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="type" type="String" />
+		<field name="assignableFrom" type="Date" />
+		<field name="assignableTo" type="Date" />
+		<field name="fileEntryId" type="long" />
+	</model>
+	<model name="com.liferay.grow.gamification.model.LDate">
+		<field name="dateId" type="long" />
+		<field name="year" type="int" />
+		<field name="month" type="int" />
+		<field name="monthName" type="String" />
+		<field name="day" type="int" />
+		<field name="dayOfYear" type="int" />
+		<field name="week" type="int" />
+		<field name="weekDay" type="String" />
+		<field name="quarter" type="String" />
+	</model>
+	<model name="com.liferay.grow.gamification.model.Subscriber">
+		<field name="subscriberId" type="long" />
+		<field name="groupId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="subscriberUserId" type="long" />
+		<field name="badgeType" type="long" />
+	</model>
+</model-hints>

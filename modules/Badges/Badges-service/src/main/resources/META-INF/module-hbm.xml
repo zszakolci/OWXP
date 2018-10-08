@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="false" default-lazy="false">
+	<import class="com.liferay.grow.gamification.model.Badge" />
+	<import class="com.liferay.grow.gamification.model.BadgeType" />
+	<import class="com.liferay.grow.gamification.model.LDate" />
+	<import class="com.liferay.grow.gamification.model.Subscriber" />
+	<class name="com.liferay.grow.gamification.model.impl.BadgeImpl" table="gamification_Badge">
+		<id name="badgeId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property column="uuid_" name="uuid" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="groupId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="createDate" type="org.hibernate.type.TimestampType" />
+		<property name="badgeTypeId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="toUserId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="assignedDateId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+	</class>
+	<class name="com.liferay.grow.gamification.model.impl.BadgeTypeImpl" table="gamification_BadgeType">
+		<id name="badgeTypeId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="groupId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="createDate" type="org.hibernate.type.TimestampType" />
+		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
+		<property column="type_" name="type" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="assignableFrom" type="org.hibernate.type.TimestampType" />
+		<property name="assignableTo" type="org.hibernate.type.TimestampType" />
+		<property name="fileEntryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+	</class>
+	<class name="com.liferay.grow.gamification.model.impl.LDateImpl" table="gamification_LDate">
+		<id name="dateId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="year" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+		<property name="month" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+		<property name="monthName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="day" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+		<property name="dayOfYear" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+		<property name="week" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+		<property name="weekDay" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="quarter" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+	</class>
+	<class name="com.liferay.grow.gamification.model.impl.SubscriberImpl" table="gamification_Subscriber">
+		<id name="subscriberId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="groupId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="createDate" type="org.hibernate.type.TimestampType" />
+		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
+		<property name="subscriberUserId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="badgeType" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+	</class>
+</hibernate-mapping>

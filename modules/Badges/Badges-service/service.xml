@@ -1,0 +1,122 @@
+<?xml version="1.0"?>
+<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 7.0.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_7_0_0.dtd">
+
+<service-builder package-path="com.liferay.grow.gamification">
+	<author>Vilmos Papp</author>
+	<namespace>gamification</namespace>
+
+	<entity name="Badge" local-service="true" remote-service="true" uuid="true">
+		<!-- PK fields -->
+
+		<column name="badgeId" type="long" primary="true" />
+
+		<!-- Group instance -->
+
+		<column name="groupId" type="long" />
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="badgeTypeId" type="long" />
+		<column name="toUserId" type="long" />
+		<column name="description" type="String" />
+
+		<!-- Order -->
+        <column name="assignedDateId" type="long"></column>
+
+		<order by="desc">
+			<order-column name="assignedDateId" />
+		</order>
+
+		<!-- Finder methods -->
+
+		<finder name="badgeType" return-type="Collection">
+			<finder-column name="badgeTypeId" />
+		</finder>
+		<finder name="userId" return-type="Collection">
+			<finder-column name="userId" />
+		</finder>
+		<finder name="toUserId" return-type="Collection">
+			<finder-column name="toUserId" />
+		</finder>
+	</entity>
+	<entity name="Subscriber" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+
+		<column name="subscriberId" type="long" primary="true" />
+
+		<!-- Group instance -->
+
+		<column name="groupId" type="long" />
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="subscriberUserId" type="long" />
+		<column name="badgeType" type="long" />
+
+		<finder name="subscriberId" return-type="Collection">
+			<finder-column name="subscriberUserId" />
+		</finder>
+	</entity>
+	<entity name="BadgeType" local-service="true">
+
+		<!-- PK fields -->
+		<column name="badgeTypeId" type="long" primary="true" />
+		<!-- Group instance -->
+
+		<column name="groupId" type="long"></column>
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long"></column>
+		<column name="userId" type="long"></column>
+		<column name="userName" type="String"></column>
+		<column name="createDate" type="Date"></column>
+		<column name="modifiedDate" type="Date"></column>
+        <column name="type" type="String"></column>
+        <column name="assignableFrom" type="Date"></column>
+        <column name="assignableTo" type="Date"></column>
+		<column name="fileEntryId" type="long" />
+		<finder name="availableTo" return-type="Collection">
+			<finder-column name="assignableTo" />
+		</finder>
+        <finder name="badgeTypeId" return-type="com.liferay.grow.gamification.model.BadgeType">
+			<finder-column name="badgeTypeId" />
+		</finder>
+		<finder name="type" return-type="com.liferay.grow.gamification.model.BadgeType">
+			<finder-column name="type" />
+		</finder>
+	</entity>
+    <entity name="LDate" local-service="true">
+        <column name="dateId" type="long" primary="true"></column>
+        <column name="year" type="int"></column>
+        <column name="month" type="int"></column>
+        <column name="monthName" type="String"></column>
+        <column name="day" type="int"></column>
+        <column name="dayOfYear" type="int"></column>
+        <column name="week" type="int"></column>
+        <column name="weekDay" type="String"></column>
+        <column name="quarter" type="String"></column>
+        <finder name="Y_M_D" return-type="com.liferay.grow.gamification.model.LDate">
+			<finder-column name="year" />
+			<finder-column name="month" />
+			<finder-column name="day" />
+		</finder>
+	</entity>
+
+</service-builder>

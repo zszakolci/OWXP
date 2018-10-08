@@ -1,0 +1,9 @@
+Bundle-Name: Badges-api
+Bundle-SymbolicName: com.liferay.grow.gamification.api
+Bundle-Version: 1.0.0
+Export-Package:\
+	com.liferay.grow.gamification.exception,\
+	com.liferay.grow.gamification.model,\
+	com.liferay.grow.gamification.service,\
+	com.liferay.grow.gamification.service.persistence
+-includeresource: META-INF/service.xml=../Badges-service/service.xml
