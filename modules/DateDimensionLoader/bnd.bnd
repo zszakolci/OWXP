@@ -1,0 +1,4 @@
+Bundle-Name: DateDimensionLoader
+Bundle-SymbolicName: com.liferay.grow.gamification.date.loader
+Bundle-Version: 1.0.0
+Export-Package: com.liferay.grow.gamification.date.loader.constants
