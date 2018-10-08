@@ -1,0 +1,4 @@
+Bundle-Name: BadgeTypeEditor
+Bundle-SymbolicName: com.liferay.grow.gamification.badges.editor
+Bundle-Version: 1.0.0
+Export-Package: com.liferay.grow.gamification.badges.editor.constants
