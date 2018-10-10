@@ -48,7 +48,7 @@ public class WikiQuicklinkEditorConfigContributor extends BaseEditorConfigContri
 
 		triggerJSONObject.put(
 			"regExp",
-			"(?:\\strigger|^trigger)([^\\\\\\]\\|:;%<>\\s]+)");
+			"(?:\\strigger|^trigger)([^\\\\\\]\\|:;%<>]+)");
 		triggerJSONObject.put(
 			"resultFilters", "function(query, results) {return results;}");
 		triggerJSONObject.put("resultTextLocator", "pageTitle");
