@@ -34,7 +34,7 @@ if (markdown) {
 	/>
 
 	<div class="stackedit-button-wrapper">
-		<a href="javascript:void(0);" id="stackEdit"> <img src="/o/grow-theme/images/stackedit.svg"> Edit with StackEdit</a>
+		<a href="javascript:void(0);" id="stackEdit"> <img src="/o/grow-theme/images/stackedit.svg">Edit with StackEdit</a>
 	</div>
 </blockquote>
 
