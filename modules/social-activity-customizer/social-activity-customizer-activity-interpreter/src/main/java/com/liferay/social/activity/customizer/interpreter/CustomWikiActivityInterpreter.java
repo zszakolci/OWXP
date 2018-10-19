@@ -31,16 +31,15 @@ import com.liferay.portal.kernel.portletfilerepository.PortletFileRepositoryUtil
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
-import com.liferay.portal.kernel.util.AggregateResourceBundleLoader;
 import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.ResourceBundleLoader;
-import com.liferay.portal.kernel.util.ResourceBundleLoaderUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.URLCodec;
@@ -54,7 +53,6 @@ import com.liferay.wiki.model.WikiPage;
 import com.liferay.wiki.model.WikiPageResource;
 import com.liferay.wiki.service.WikiPageLocalService;
 import com.liferay.wiki.service.WikiPageResourceLocalService;
-import com.liferay.wiki.service.permission.WikiPagePermissionChecker;
 import com.liferay.wiki.social.WikiActivityKeys;
 
 import java.text.DateFormat;
@@ -68,6 +66,8 @@ import javax.portlet.WindowState;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ReferencePolicy;
+import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author Istvan Sajtos
@@ -377,7 +377,7 @@ public class CustomWikiActivityInterpreter
 			String actionId, ServiceContext serviceContext)
 		throws Exception {
 
-		if (!WikiPagePermissionChecker.contains(
+		if (!_wikiPageModelResourcePermission.contains(
 				permissionChecker, activity.getClassPK(), ActionKeys.VIEW)) {
 
 			return false;
@@ -397,7 +397,7 @@ public class CustomWikiActivityInterpreter
 				pageResource.getNodeId(), pageResource.getTitle(), version);
 
 			if (!page.isApproved() &&
-				!WikiPagePermissionChecker.contains(
+				!_wikiPageModelResourcePermission.contains(
 					permissionChecker, activity.getClassPK(),
 					ActionKeys.UPDATE)) {
 
@@ -425,17 +425,6 @@ public class CustomWikiActivityInterpreter
 		LayoutLocalService layoutLocalService) {
 
 		_layoutLocalService = layoutLocalService;
-	}
-
-	@Reference(
-		target = "(bundle.symbolic.name=com.liferay.wiki.web)", unbind = "-"
-	)
-	protected void setResourceBundleLoader(
-		ResourceBundleLoader resourceBundleLoader) {
-
-		_resourceBundleLoader = new AggregateResourceBundleLoader(
-			resourceBundleLoader,
-			ResourceBundleLoaderUtil.getPortalResourceBundleLoader());
 	}
 
 	@Reference(unbind = "-")
@@ -559,9 +548,20 @@ public class CustomWikiActivityInterpreter
 	private Http _http;
 
 	private LayoutLocalService _layoutLocalService;
+
+	@Reference(
+		policy = ReferencePolicy.DYNAMIC,
+		policyOption = ReferencePolicyOption.GREEDY,
+		target = "(bundle.symbolic.name=com.liferay.wiki.web)"
+	)
 	private ResourceBundleLoader _resourceBundleLoader;
+
 	private UserLocalService _userLocalService;
 	private WikiPageLocalService _wikiPageLocalService;
+
+	@Reference(target = "(model.class.name=com.liferay.wiki.model.WikiPage)")
+	private ModelResourcePermission<WikiPage> _wikiPageModelResourcePermission;
+
 	private WikiPageResourceLocalService _wikiPageResourceLocalService;
 
 }

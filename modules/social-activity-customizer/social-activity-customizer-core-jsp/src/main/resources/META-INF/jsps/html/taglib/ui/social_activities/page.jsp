@@ -69,7 +69,7 @@ if (delta == 0) {
 		%>
 
 		<aui:select id="user-activity-selector" label="Activity type to display:" name="user-activity-selector" onChange="filterByActivityType();">
-			<aui:option label="All" selected='<%= (activityType.equals(StringPool.BLANK)) || (activityType.equals("ALL")) %>' value="ALL" />
+			<aui:option label="All" selected='<%= activityType.equals(StringPool.BLANK) || activityType.equals("ALL") %>' value="ALL" />
 			<aui:option label="Commented" selected='<%= activityType.equals("COMMENTED") %>' value="COMMENTED" />
 			<aui:option label="Created" selected='<%= activityType.equals("CREATED") %>' value="CREATED" />
 			<aui:option label="Updated" selected='<%= activityType.equals("UPDATED") %>' value="UPDATED" />

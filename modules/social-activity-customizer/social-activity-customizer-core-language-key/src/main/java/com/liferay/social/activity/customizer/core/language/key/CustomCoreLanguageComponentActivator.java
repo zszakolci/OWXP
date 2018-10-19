@@ -24,7 +24,7 @@ import org.osgi.service.component.annotations.Component;
 /**
  * @author Ugurcan Cetin
  */
-@Component(property = {"language.id=en_US"}, service = ResourceBundle.class)
+@Component(property = "language.id=en_US", service = ResourceBundle.class)
 public class CustomCoreLanguageComponentActivator extends ResourceBundle {
 
 	@Override

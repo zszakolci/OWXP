@@ -45,7 +45,6 @@ public class CustomSocialActivitySetLocalServiceImpl
 	 *
 	 * Never reference this class directly. Always use {@link com.liferay.social.activity.customizer.service.CustomSocialActivitySetLocalServiceUtil} to access the custom social activity set local service.
 	 */
-
 	@Override
 	public List<SocialActivitySet> getUserViewableActivitySets(
 		long userId, long[] types, int start, int end) {

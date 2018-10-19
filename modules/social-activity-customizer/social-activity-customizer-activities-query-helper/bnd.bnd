@@ -1,5 +1,4 @@
 Bundle-Name: Liferay Social Activity Customizer Query Helper
 Bundle-SymbolicName: com.liferay.social.activity.customizer.activities.query.helper
 Bundle-Version: 1.0.0
-
 Export-Package: com.liferay.social.activity.customizer.query.helper
