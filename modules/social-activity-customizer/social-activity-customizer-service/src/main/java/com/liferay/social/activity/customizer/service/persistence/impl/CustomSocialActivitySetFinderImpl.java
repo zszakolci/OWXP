@@ -14,7 +14,10 @@
 
 package com.liferay.social.activity.customizer.service.persistence.impl;
 
-import com.liferay.portal.dao.orm.custom.sql.CustomSQLUtil;
+import java.util.Iterator;
+import java.util.List;
+
+import com.liferay.portal.dao.orm.custom.sql.CustomSQL;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.SQLQuery;
@@ -22,12 +25,10 @@ import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.spring.extender.service.ServiceReference;
 import com.liferay.social.activity.customizer.CustomFinderHelperUtil;
 import com.liferay.social.activity.customizer.service.persistence.CustomSocialActivitySetFinder;
 import com.liferay.social.kernel.model.SocialActivitySet;
-
-import java.util.Iterator;
-import java.util.List;
 
 /**
  * @author Istvan Sajtos
@@ -54,7 +55,7 @@ public class CustomSocialActivitySetFinderImpl
 		try {
 			session = CustomFinderHelperUtil.openPortalSession();
 
-			String sql = CustomSQLUtil.get(
+			String sql = _customSQL.get(
 				CustomSocialActivitySetFinderImpl.class,
 				COUNT_BY_USERID_CLASSNAMEID);
 
@@ -104,7 +105,7 @@ public class CustomSocialActivitySetFinderImpl
 		try {
 			session = CustomFinderHelperUtil.openPortalSession();
 
-			String sql = CustomSQLUtil.get(
+			String sql = _customSQL.get(
 				CustomSocialActivitySetFinderImpl.class,
 				COUNT_BY_USERID_CLASSNAMEID_TYPE);
 
@@ -157,7 +158,7 @@ public class CustomSocialActivitySetFinderImpl
 		try {
 			session = CustomFinderHelperUtil.openPortalSession();
 
-			String sql = CustomSQLUtil.get(
+			String sql = _customSQL.get(
 				CustomSocialActivitySetFinderImpl.class,
 				FIND_BY_USERID_CLASSNAMEID);
 
@@ -202,7 +203,7 @@ public class CustomSocialActivitySetFinderImpl
 		try {
 			session = CustomFinderHelperUtil.openPortalSession();
 
-			String sql = CustomSQLUtil.get(
+			String sql = _customSQL.get(
 				CustomSocialActivitySetFinderImpl.class,
 				FIND_BY_USERID_CLASSNAMEID_TYPE);
 
@@ -239,5 +240,8 @@ public class CustomSocialActivitySetFinderImpl
 
 		return null;
 	}
+
+	@ServiceReference(type = CustomSQL.class)
+	private CustomSQL _customSQL;
 
 }
