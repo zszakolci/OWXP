@@ -14,9 +14,6 @@
 
 package com.liferay.social.activity.customizer.service.persistence.impl;
 
-import java.util.Iterator;
-import java.util.List;
-
 import com.liferay.portal.dao.orm.custom.sql.CustomSQL;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
@@ -29,6 +26,9 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 import com.liferay.social.activity.customizer.CustomFinderHelperUtil;
 import com.liferay.social.activity.customizer.service.persistence.CustomSocialActivitySetFinder;
 import com.liferay.social.kernel.model.SocialActivitySet;
+
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author Istvan Sajtos
