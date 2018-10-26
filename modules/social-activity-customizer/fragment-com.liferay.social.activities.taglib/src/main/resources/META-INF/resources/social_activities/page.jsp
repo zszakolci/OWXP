@@ -14,7 +14,7 @@
  */
 --%>
 
-<%@ include file="/html/taglib/ui/social_activities/init.jsp" %>
+<%@ include file="/social_activities/init.jsp" %>
 
 <%
 int delta = ParamUtil.getInteger(request, "delta");
@@ -28,7 +28,7 @@ if (delta == 0) {
 	<c:if test="<%= feedEnabled && !activityDescriptors.isEmpty() %>">
 		<div class="clearfix">
 			<div class="pull-right">
-				<liferay-ui:rss
+				<liferay-rss:rss
 					delta="<%= feedDelta %>"
 					displayStyle="<%= feedDisplayStyle %>"
 					feedType="<%= feedType %>"
@@ -156,7 +156,9 @@ if (delta == 0) {
 			<div class="card card-horizontal">
 				<div class="card-row card-row-padded">
 					<div class="card-col-field">
-						<liferay-ui:user-portrait userId="<%= activityDescriptor.getUserId() %>" />
+						<liferay-ui:user-portrait
+							userId="<%= activityDescriptor.getUserId() %>"
+						/>
 					</div>
 
 					<div class="card-col-content card-col-gutters">
