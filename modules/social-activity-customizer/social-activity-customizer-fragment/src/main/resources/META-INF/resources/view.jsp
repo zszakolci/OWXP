@@ -70,7 +70,7 @@ if (scopeGroup.isUser()) {
 	/>
 </c:if>
 
-<liferay-ui:social-activities
+<liferay-social-activities:social-activities
 	activitySets="<%= socialActivitiesDisplayContext.getSocialActivitySets() %>"
 	feedDisplayStyle="<%= socialActivitiesDisplayContext.getRSSDisplayStyle() %>"
 	feedEnabled="<%= false %>"
@@ -83,10 +83,7 @@ if (scopeGroup.isUser()) {
 <c:if test="<%= !scopeGroup.isUser() %>">
 	<c:if test="<%= socialActivitiesDisplayContext.isSeeMoreControlVisible() %>">
 		<div class="social-activities-see-more">
-			<aui:a
-				cssClass="btn btn-default"
-				href="<%= socialActivitiesDisplayContext.getPaginationURL() %>"
-			>
+			<aui:a cssClass="btn btn-default" href="<%= socialActivitiesDisplayContext.getPaginationURL() %>">
 				<liferay-ui:message key="see-more" />
 			</aui:a>
 		</div>
