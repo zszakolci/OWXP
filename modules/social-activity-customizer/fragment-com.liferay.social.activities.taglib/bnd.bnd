@@ -1,0 +1,4 @@
+Bundle-Name: fragment-com.liferay.social.activities.taglib
+Bundle-SymbolicName: fragment.com.liferay.social.activities.taglib
+Bundle-Version: 1.0.0
+Fragment-Host: com.liferay.social.activities.taglib;bundle-version="1.0.0"
