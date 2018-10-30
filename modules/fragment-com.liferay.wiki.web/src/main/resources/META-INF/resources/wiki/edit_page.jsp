@@ -213,7 +213,7 @@ if (portletTitleBasedNavigation) {
 							</c:otherwise>
 						</c:choose>
 
-						<div>
+						<div class="html-creole-body">
 
 							<%
 							try {
