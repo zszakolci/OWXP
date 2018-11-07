@@ -23,6 +23,7 @@ import com.liferay.wiki.model.WikiNode;
 import com.liferay.wiki.model.WikiPage;
 
 import com.vladsch.flexmark.ast.Node;
+import com.vladsch.flexmark.ext.anchorlink.AnchorLinkExtension;
 import com.vladsch.flexmark.ext.autolink.AutolinkExtension;
 import com.vladsch.flexmark.ext.emoji.EmojiExtension;
 import com.vladsch.flexmark.ext.footnotes.FootnoteExtension;
@@ -184,11 +185,12 @@ public class MarkdownEngine extends BaseWikiEngine {
 		options.set(
 			Parser.EXTENSIONS,
 			Arrays.asList(
-				AutolinkExtension.create(), EmojiExtension.create(),
-				FootnoteExtension.create(), GitLabExtension.create(),
-				GfmIssuesExtension.create(), StrikethroughExtension.create(),
-				SuperscriptExtension.create(), TablesExtension.create(),
-				TaskListExtension.create(), TocExtension.create()));
+				AnchorLinkExtension.create(), AutolinkExtension.create(),
+				EmojiExtension.create(), FootnoteExtension.create(),
+				GitLabExtension.create(), GfmIssuesExtension.create(),
+				StrikethroughExtension.create(), SuperscriptExtension.create(),
+				TablesExtension.create(), TaskListExtension.create(),
+				TocExtension.create()));
 
 		options.set(
 			EmojiExtension.ROOT_IMAGE_PATH, "/o/grow-theme/images/emojis/");
