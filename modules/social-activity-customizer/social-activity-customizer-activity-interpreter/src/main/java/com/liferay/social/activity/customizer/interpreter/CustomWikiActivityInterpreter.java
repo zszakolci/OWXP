@@ -449,7 +449,7 @@ public class CustomWikiActivityInterpreter
 	protected String wrapTagLink(String link, String text) {
 		StringBundler sb = new StringBundler(5);
 
-		sb.append("<a class=\"badge badge-default badge-sm\" href=\"");
+		sb.append("<a class=\"badge badge-secondary\" href=\"");
 		sb.append(link);
 		sb.append("\">");
 		sb.append(text);
