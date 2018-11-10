@@ -15,34 +15,18 @@ public class BadgeReceivedSubscritpionSender extends SubscriptionSender {
 		super.populateNotificationEventJSONObject(notificationEventJSONObject);
 
 		notificationEventJSONObject.put(BadgeNotificationPortletKeys.BADGE_TYPE, _badgeType);
+		notificationEventJSONObject.put(BadgeNotificationPortletKeys.BADGE_COMMENT, _badgeComment);
 	}
 
-	@Override
-	protected boolean hasPermission(Subscription subscription, String className, long classPK, User user) throws Exception {
-		return true;
-	}
-
-	@Override
-	protected boolean hasPermission(Subscription subscription, User user) throws Exception {
-		return true;
-	}
-
-	@Override
-	protected void sendUserNotification(User user) throws Exception {
-		super.sendUserNotification(user);
-		System.out.println("Send Notification to: " + user.getFullName());
-	}
-	@Override
-	protected void sendNotification(User user) throws Exception {
-//		super.sendNotification(user);
-System.out.println("Send Notification to: " + user.getFullName());
-		sendEmailNotification(user);
-		sendUserNotification(user);
+	public void setBadgeDesctiption(String badgeComment) {
+		_badgeComment = badgeComment;
 	}
 
 	public void setBadgeType(String badgeType) {
-		this._badgeType = badgeType;
+		_badgeType = badgeType;
 	}
 
+	private String _badgeComment;
 	private String _badgeType;
+
 }

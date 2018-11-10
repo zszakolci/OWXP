@@ -12,9 +12,11 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.UserNotificationEvent;
 import com.liferay.portal.kernel.notifications.BaseUserNotificationHandler;
 import com.liferay.portal.kernel.notifications.UserNotificationFeedEntry;
+import com.liferay.portal.kernel.notifications.UserNotificationHandler;
 import com.liferay.portal.kernel.service.PortletLocalServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
@@ -24,7 +26,7 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
 		immediate = true,
 		property = {"javax.portlet.name=" + BadgeNotificationPortletKeys.BadgeNotification},
-		service = BaseUserNotificationHandler.class
+		service = UserNotificationHandler.class
 )
 public class BadgeNotificationHandler extends BaseUserNotificationHandler {
 
@@ -40,13 +42,9 @@ public class BadgeNotificationHandler extends BaseUserNotificationHandler {
 				userNotificationFeedEntry.setPortletId(getPortletId());
 			}
 			else {
-				Portlet portlet = PortletLocalServiceUtil.getPortletById(
-					getPortletId());
-
 				String body = getBody(userNotificationEvent, serviceContext);
 
-				userNotificationFeedEntry = new UserNotificationFeedEntry(
-					false, body, "");
+				userNotificationFeedEntry = new UserNotificationFeedEntry(false, body, "");
 			}
 
 			return userNotificationFeedEntry;
@@ -64,7 +62,7 @@ public class BadgeNotificationHandler extends BaseUserNotificationHandler {
 
 	@Override
 	protected String getBody(UserNotificationEvent userNotificationEvent, ServiceContext serviceContext) throws Exception {
-		String userName = LanguageUtil.get(serviceContext.getLocale(), _UKNOWN_USER_KEY);
+		String userName = _UKNOWN_USER;
 
 		User user = _userLocalService.fetchUser(userNotificationEvent.getUserId());
 
@@ -72,19 +70,22 @@ public class BadgeNotificationHandler extends BaseUserNotificationHandler {
 			userName = user.getFullName();
 		}
 
-		// we'll be stashing the client address in the payload of the event, so let's extract it here.
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
 			userNotificationEvent.getPayload());
 
 		String badgeType = jsonObject.getString(BadgeNotificationPortletKeys.BADGE_TYPE);
 
-		// fetch our strings via the language bundle.
-		String title = LanguageUtil.get(serviceContext.getLocale(), _TITLE_KEY);
+		String reason = jsonObject.getString(BadgeNotificationPortletKeys.BADGE_COMMENT);
 
-		String body = LanguageUtil.format(serviceContext.getLocale(), _BODY_KEY, new Object[] {userName, badgeType});
+		if (Validator.isNull(reason)) {
+			reason = "";
+		}
+		else {
+			reason = " for " + reason;
+		}
 
-		// build the html using our template.
-		String html = StringUtil.replace(_BODY_TEMPLATE, _BODY_REPLACEMENTS, new String[] {badgeType, title, body});
+		String html = StringUtil.replace(
+			_BODY_TEMPLATE, _BODY_REPLACEMENTS, new String[] {badgeType, userName, reason});
 
 		return html;
 	}
@@ -95,12 +96,10 @@ public class BadgeNotificationHandler extends BaseUserNotificationHandler {
 	}
 
 	private UserLocalService _userLocalService;
-	private static final String _TITLE_KEY = "title.badge.received";
-	private static final String _BODY_KEY = "body.badge.received";
-	private static final String _UKNOWN_USER_KEY = "unknown.user";
+	private static final String _UKNOWN_USER = "Anonymous";
 
-	private static final String _BODY_TEMPLATE = "<div class=\"title\">[$TITLE$]</div><div class=\"body\">[$BODY$]</div>";
-	private static final String[] _BODY_REPLACEMENTS = new String[] {"[$BADGE_TPYE$]","[$TITLE$]", "[$BODY$]"};
+	private static final String _BODY_TEMPLATE = "<div class=\"title\">Badge received!</div><div class=\"body\">You just received a [$BADGE_TPYE$] from [$USER$][$REASON$].</div>";
+	private static final String[] _BODY_REPLACEMENTS = new String[] {"[$BADGE_TPYE$]", "[$USER$]", "[$REASON$]"};
 
 	private static final Log _log = LogFactoryUtil.getLog(BadgeNotificationHandler.class);
 
