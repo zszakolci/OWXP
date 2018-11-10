@@ -29,7 +29,7 @@ List<User> users = (List<User>)request.getAttribute("USER_LIST");
 				</button>
 				<div class="dropdown-menu">
 					<%for (BadgeType badgeType : badgeTypes) { 	%>
-						<a class="dropdown-item" href="#" data-toggle="modal" data-target="#simpleBadgeModal" onclick="showSimpleBadgeDialog(<%= badgeType.getBadgeTypeId() %>, '<%= badgeType.getType() %>')"><%= badgeType.getType() %></a>
+						<a class="dropdown-item" href="#" data-toggle="modal" data-target="#simpleBadgeModal" onclick="showSimpleBadgeDialog(<%= badgeType.getBadgeTypeId() %>, '<%= badgeType.getType() %>');"><%= badgeType.getType() %></a>
 					<% } %>
 				</div>
 			</div>
@@ -52,7 +52,7 @@ List<User> users = (List<User>)request.getAttribute("USER_LIST");
 				</div>
 				<div class="modal-body">
 					<div class="form-group">
-						<aui:input name="description" type="textarea" value="" class="form-control" />
+						<aui:input name="description" type="textarea" value="" class="form-control"/>
 					</div>
 				</div>
 				<div class="modal-footer">

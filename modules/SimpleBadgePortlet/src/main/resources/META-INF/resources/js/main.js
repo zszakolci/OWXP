@@ -7,14 +7,17 @@ function addSimpleBadge() {
 	$('#simpleBadgeForm').submit();
 	$("#simpleBadgeModal").modal('hide');
 }
+
 $(document).ready(function() {
 	jQuery(document).ready(function() {
 		$('select.flexselect').flexselect();
 		$('#nameSelect_flexselect').attr("placeholder", "Name of colleague");
+		$('#nameSelect_flexselect').prop('required', true);
+
 		$('#nameSelect_flexselect').focusin(function() {
 			$('#simpleDropdownMenu').prop('disabled', true);
 		});
-		$('#nameSelect_flexselect').focusout(function() {
+		$('#nameSelect_flexselect').keyup(function() {
 			userName = this.value;
 
 			$('#_simplebadge_userName').val(userName);
