@@ -1,4 +1,6 @@
 function addBadgeType() {
-	$('#badgeTypeForm').submit();
-	$("#badgeTypeModal").modal('hide');
+	$.validate({
+		form : '#_badgetypeeditor_badgeForm',
+		modules : 'html5, file',
+	});
 }

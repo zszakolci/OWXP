@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.util.WebKeys;
 
 import java.io.File;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.Locale;
 
 import javax.portlet.ActionRequest;
@@ -45,6 +46,7 @@ import org.osgi.service.component.annotations.Reference;
 		"javax.portlet.init-param.view-template=/view.jsp",
 		"com.liferay.portlet.header-portlet-css=/css/style.css",
 		"com.liferay.portlet.footer-portlet-javascript=/js/main.js",
+		"com.liferay.portlet.footer-portlet-javascript=/js/jquery.form-validator.min.js",
 		"javax.portlet.name=" + BadgeTypeEditorPortletKeys.BadgeTypeEditor,
 		"javax.portlet.display-name=Badge Type Editor",
 		"javax.portlet.resource-bundle=content.Language",
@@ -55,7 +57,6 @@ import org.osgi.service.component.annotations.Reference;
 public class BadgeTypeEditorPortlet extends MVCPortlet {
 
 	public void addBadgeType(ActionRequest actionRequest, ActionResponse actionResponse) {
-
 		String type = actionRequest.getParameter(BadgeTypeEditorPortletKeys.TYPE);
 		String availableFrom = actionRequest.getParameter(BadgeTypeEditorPortletKeys.AVAILABLE_FROM);
 		String availableTo = actionRequest.getParameter(BadgeTypeEditorPortletKeys.AVAILABLE_TO);

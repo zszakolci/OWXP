@@ -78,7 +78,7 @@
 					</div>
 					<div class="modal-body">
 						<div class="form-group">
-							<aui:input name="type" type="input" value="" class="form-control" />
+							<input name="_badgetypeeditor_type" id="_badgetypeeditor_type" type="input" value="" class="form-control" required="required" />
 						</div>
 						<div class="form-group">
 							<aui:input name="availableFrom" type="date" value="" class="form-control" />
@@ -87,7 +87,7 @@
 							<aui:input name="availableTo" type="date" value="" class="form-control" />
 						</div>
 						<div class="form-group">
-							<aui:input name="fileEntry" type="file" value="" class="form-control" />
+							<input name="fileEntry" type="file" value="" class="form-control" required="required"/>
 						</div>
 					</div>
 					<div class="modal-footer">
