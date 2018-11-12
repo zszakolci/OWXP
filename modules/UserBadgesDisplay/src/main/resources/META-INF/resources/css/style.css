@@ -11,6 +11,8 @@ img.badge-image {
 .badge-type {
 	top: 20px;
 	position: relative;
+	font-size: 12px;
+	font-weight: bold;
 }
 .badge-icon {
 	text-align: center;
@@ -25,4 +27,8 @@ img.badge-image {
     border-top: .3em solid;
     border-right: .3em solid transparent;
     border-left: .3em solid transparent;
+}
+
+#portlet_userbadgesdisplay > div > div > div > div.container > div.row > div.col-sm-1 {
+	max-width: 100%;
 }

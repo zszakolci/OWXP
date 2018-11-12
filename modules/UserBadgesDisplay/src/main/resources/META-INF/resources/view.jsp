@@ -2,12 +2,12 @@
 <%@ page import="com.liferay.grow.gamification.badges.model.BadgeAggregator" %>
 <%@ page import="com.liferay.grow.gamification.model.BadgeType" %>
 <%@ page import="com.liferay.portal.kernel.theme.ThemeDisplay" %>
-<%@ page import="com.liferay.grow.gamification.badges.portlet.constants.SimpleBadgePortletKeys"%>
+<%@ page import="com.liferay.grow.gamification.badges.display.constants.UserBadgesDisplayPortletKeys"%>
 <%@ page import="java.util.Iterator" %>
 <%@ page import="java.util.List" %>
 <%
-List<BadgeAggregator> aggregators = (List<BadgeAggregator>)request.getAttribute(SimpleBadgePortletKeys.BADGE_AGGRETAGORS);
-List<BadgeType> badgeTypes = (List<BadgeType>)request.getAttribute(SimpleBadgePortletKeys.BADGE_TYPES);
+List<BadgeAggregator> aggregators = (List<BadgeAggregator>)request.getAttribute(UserBadgesDisplayPortletKeys.BADGE_AGGRETAGORS);
+List<BadgeType> badgeTypes = (List<BadgeType>)request.getAttribute(UserBadgesDisplayPortletKeys.BADGE_TYPES);
 long userId = 0;
 String userName = "";
 %>
@@ -44,8 +44,8 @@ String userName = "";
 
 	<%
 	if (themeDisplay.getScopeGroup().isUser()) {
-		userId = (long)request.getAttribute(SimpleBadgePortletKeys.BADGE_USER_I);
-		userName = (String)request.getAttribute(SimpleBadgePortletKeys.BADGE_USER_NAME);
+		userId = (long)request.getAttribute(UserBadgesDisplayPortletKeys.BADGE_USER_ID);
+		userName = (String)request.getAttribute(UserBadgesDisplayPortletKeys.BADGE_USER_NAME);
 		if (aggregators != null) {
 			for (BadgeAggregator aggregator : aggregators) {
 	%>
@@ -54,7 +54,7 @@ String userName = "";
 		<img class="badge-image" src="<%= aggregator.getImage() %>" />
 			<span class="badge badge-danger"> <%= (aggregator.getCount() > 99) ? "99+" : aggregator.getCount() %></span>
 			</div>
-			<div class="col-sm-2">
+			<div class="col-sm-6">
 			<p class="badge-type"><%= aggregator.getName() %></p>
 			</div>
 		</div>
