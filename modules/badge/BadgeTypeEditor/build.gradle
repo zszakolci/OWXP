@@ -6,6 +6,6 @@ dependencies {
 	compileOnly group: "jstl", name: "jstl", version: "1.2"
 	compileOnly group: "org.osgi", name: "osgi.cmpn", version: "6.0.0"
 	compileOnly group: 'org.hibernate', name: 'hibernate-core', version: '3.6.1.Final'
-	compileOnly project(":modules:Badges:Badges-api")
+	compileOnly project(":modules:badge:Badges:Badges-api")
 	compileOnly group: "com.liferay", name: "com.liferay.application.list.api", version: "2.0.0" 
 }
