@@ -36,7 +36,8 @@ import java.util.List;
  * @see com.liferay.grow.gamification.service.BadgeTypeLocalServiceUtil
  */
 public class BadgeTypeLocalServiceImpl extends BadgeTypeLocalServiceBaseImpl {
-	/*
+
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never reference this class directly. Always use {@link com.liferay.grow.gamification.service.BadgeTypeLocalServiceUtil} to access the badge type local service.
@@ -47,10 +48,14 @@ public class BadgeTypeLocalServiceImpl extends BadgeTypeLocalServiceBaseImpl {
 		Date now = new Date();
 
 		for (BadgeType badgeType : allBadgeTypes) {
-			if ((badgeType.getAssignableTo() == null) || now.before(badgeType.getAssignableTo())) {
+			if ((badgeType.getAssignableTo() == null) ||
+				now.before(badgeType.getAssignableTo())) {
+
 				availableBadgeTypes.add(badgeType);
 			}
 		}
+
 		return availableBadgeTypes;
 	}
+
 }

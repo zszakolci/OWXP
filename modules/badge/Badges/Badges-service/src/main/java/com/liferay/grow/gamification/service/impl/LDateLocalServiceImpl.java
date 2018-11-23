@@ -32,12 +32,16 @@ import com.liferay.grow.gamification.service.base.LDateLocalServiceBaseImpl;
  * @see com.liferay.grow.gamification.service.LDateLocalServiceUtil
  */
 public class LDateLocalServiceImpl extends LDateLocalServiceBaseImpl {
-	/*
+
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never reference this class directly. Always use {@link com.liferay.grow.gamification.service.LDateLocalServiceUtil} to access the l date local service.
 	 */
-	public long getDateId(int year, int month, int day) throws NoSuchLDateException {
+	public long getDateId(int year, int month, int day)
+		throws NoSuchLDateException {
+
 		return lDatePersistence.findByY_M_D(year, month, day).getDateId();
 	}
+
 }

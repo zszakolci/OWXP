@@ -34,7 +34,8 @@ import java.util.List;
  * @see com.liferay.grow.gamification.service.BadgeServiceUtil
  */
 public class BadgeServiceImpl extends BadgeServiceBaseImpl {
-	/*
+
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never reference this class directly. Always use {@link com.liferay.grow.gamification.service.BadgeServiceUtil} to access the badge remote service.
@@ -42,4 +43,5 @@ public class BadgeServiceImpl extends BadgeServiceBaseImpl {
 	public List<Badge> getBadgesOfUser(long userId) {
 		return badgeLocalService.getBadgesOfUser(userId);
 	}
+
 }

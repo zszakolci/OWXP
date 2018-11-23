@@ -16,19 +16,17 @@ import org.osgi.service.component.annotations.Reference;
 	},
 	service = PanelApp.class
 )
-
 public class BadgeTypeEditorControlPanelApp extends BasePanelApp {
+
 	@Override
 	public String getPortletId() {
 		return "badgetypeeditor";	// Same name of the portlet.
 	}
 
 	@Override
-	@Reference(
-		target = "(javax.portlet.name=badgetypeeditor)",
-		unbind = "-"
-	)
+	@Reference(target = "(javax.portlet.name=badgetypeeditor)", unbind = "-")
 	public void setPortlet(Portlet portlet) {
 		super.setPortlet(portlet);
 	}
+
 }

@@ -1,28 +1,28 @@
 .badge-danger {
-    float: right;
-    top: -20px;
-    border-radius: 10px;
-    position: relative;
+border-radius: 10px;
+float: right;
+position: relative;
+top: -20px;
 }
 img.badge-image {
 	height: 64px;
 }
 
 .badge-type {
-	top: 20px;
 	position: relative;
+	top: 20px;
 }
 .badge-icon {
 	text-align: center;
 }
 .dropdown-toggle::after {
-    display: inline-block;
-    width: 0;
-    height: 0;
-    margin-left: .3em;
-    vertical-align: middle;
-    content: "";
-    border-top: .3em solid;
-    border-right: .3em solid transparent;
-    border-left: .3em solid transparent;
+border-left: .3em solid transparent;
+border-right: .3em solid transparent;
+border-top: .3em solid;
+content: "";
+display: inline-block;
+height: 0;
+margin-left: .3em;
+vertical-align: middle;
+width: 0;
 }

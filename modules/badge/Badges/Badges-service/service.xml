@@ -5,10 +5,10 @@
 	<author>Vilmos Papp</author>
 	<namespace>gamification</namespace>
 
-	<entity name="Badge" local-service="true" remote-service="true" uuid="true">
+	<entity local-service="true" name="Badge" remote-service="true" uuid="true">
 		<!-- PK fields -->
 
-		<column name="badgeId" type="long" primary="true" />
+		<column name="badgeId" primary="true" type="long" />
 
 		<!-- Group instance -->
 
@@ -28,7 +28,7 @@
 		<column name="description" type="String" />
 
 		<!-- Order -->
-        <column name="assignedDateId" type="long"></column>
+		<column name="assignedDateId" type="long"></column>
 
 		<order by="desc">
 			<order-column name="assignedDateId" />
@@ -46,11 +46,11 @@
 			<finder-column name="toUserId" />
 		</finder>
 	</entity>
-	<entity name="Subscriber" local-service="true" remote-service="true">
+	<entity local-service="true" name="Subscriber" remote-service="true">
 
 		<!-- PK fields -->
 
-		<column name="subscriberId" type="long" primary="true" />
+		<column name="subscriberId" primary="true" type="long" />
 
 		<!-- Group instance -->
 
@@ -73,10 +73,10 @@
 			<finder-column name="subscriberUserId" />
 		</finder>
 	</entity>
-	<entity name="BadgeType" local-service="true">
+	<entity local-service="true" name="BadgeType">
 
 		<!-- PK fields -->
-		<column name="badgeTypeId" type="long" primary="true" />
+		<column name="badgeTypeId" primary="true" type="long" />
 		<!-- Group instance -->
 
 		<column name="groupId" type="long"></column>
@@ -88,31 +88,31 @@
 		<column name="userName" type="String"></column>
 		<column name="createDate" type="Date"></column>
 		<column name="modifiedDate" type="Date"></column>
-        <column name="type" type="String"></column>
-        <column name="assignableFrom" type="Date"></column>
-        <column name="assignableTo" type="Date"></column>
+		<column name="type" type="String"></column>
+		<column name="assignableFrom" type="Date"></column>
+		<column name="assignableTo" type="Date"></column>
 		<column name="fileEntryId" type="long" />
 		<finder name="availableTo" return-type="Collection">
 			<finder-column name="assignableTo" />
 		</finder>
-        <finder name="badgeTypeId" return-type="com.liferay.grow.gamification.model.BadgeType">
+		<finder name="badgeTypeId" return-type="com.liferay.grow.gamification.model.BadgeType">
 			<finder-column name="badgeTypeId" />
 		</finder>
 		<finder name="type" return-type="com.liferay.grow.gamification.model.BadgeType">
 			<finder-column name="type" />
 		</finder>
 	</entity>
-    <entity name="LDate" local-service="true">
-        <column name="dateId" type="long" primary="true"></column>
-        <column name="year" type="int"></column>
-        <column name="month" type="int"></column>
-        <column name="monthName" type="String"></column>
-        <column name="day" type="int"></column>
-        <column name="dayOfYear" type="int"></column>
-        <column name="week" type="int"></column>
-        <column name="weekDay" type="String"></column>
-        <column name="quarter" type="String"></column>
-        <finder name="Y_M_D" return-type="com.liferay.grow.gamification.model.LDate">
+	<entity local-service="true" name="LDate">
+		<column name="dateId" type="long" primary="true"></column>
+		<column name="year" type="int"></column>
+		<column name="month" type="int"></column>
+		<column name="monthName" type="String"></column>
+		<column name="day" type="int"></column>
+		<column name="dayOfYear" type="int"></column>
+		<column name="week" type="int"></column>
+		<column name="weekDay" type="String"></column>
+		<column name="quarter" type="String"></column>
+		<finder name="Y_M_D" return-type="com.liferay.grow.gamification.model.LDate">
 			<finder-column name="year" />
 			<finder-column name="month" />
 			<finder-column name="day" />

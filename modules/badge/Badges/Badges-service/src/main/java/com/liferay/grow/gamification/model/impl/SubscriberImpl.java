@@ -27,11 +27,13 @@ import aQute.bnd.annotation.ProviderType;
  */
 @ProviderType
 public class SubscriberImpl extends SubscriberBaseImpl {
-	/*
+
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never reference this class directly. All methods that expect a subscriber model instance should use the {@link com.liferay.grow.gamification.model.Subscriber} interface instead.
 	 */
 	public SubscriberImpl() {
 	}
+
 }

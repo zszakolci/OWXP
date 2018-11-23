@@ -14,7 +14,6 @@
 
 package com.liferay.grow.gamification.service.impl;
 
-
 import com.liferay.document.library.kernel.service.DLAppLocalServiceUtil;
 import com.liferay.document.library.kernel.util.DLUtil;
 import com.liferay.grow.gamification.badges.notification.BadgeReceivedSubscritpionSender;
@@ -39,6 +38,7 @@ import com.liferay.portal.kernel.settings.LocalizedValuesMap;
 import com.liferay.portal.kernel.util.StringUtil;
 
 import java.io.UnsupportedEncodingException;
+
 import java.util.List;
 import java.util.Locale;
 
@@ -59,6 +59,7 @@ import javax.mail.internet.InternetAddress;
  * @see com.liferay.grow.gamification.service.BadgeLocalServiceUtil
  */
 public class BadgeLocalServiceImpl extends BadgeLocalServiceBaseImpl {
+
 	@Override
 	public Badge addBadge(Badge badge) {
 		badge = super.addBadge(badge);
@@ -68,13 +69,37 @@ public class BadgeLocalServiceImpl extends BadgeLocalServiceBaseImpl {
 		return badge;
 	}
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never reference this class directly. Always use {@link com.liferay.grow.gamification.service.BadgeLocalServiceUtil} to access the badge local service.
 	 */
 	public List<Badge> getBadgesOfUser(long userId) {
 		return badgePersistence.findBytoUserId(userId);
+	}
+
+	private MailMessage _getMailMessage(Badge badge) throws PortalException {
+		BadgeType badgeType = badgeTypeLocalService.getBadgeType(
+			badge.getBadgeTypeId());
+		MailMessage mailMessage = new MailMessage();
+
+		String content = _BADGE_EMAIL_BODY;
+
+		FileEntry fileEntry = DLAppLocalServiceUtil.getFileEntry(
+			badgeType.getFileEntryId());
+
+		String downloadUrl = DLUtil.getPreviewURL(
+			fileEntry, fileEntry.getFileVersion(), null, "", false, true);
+
+		content = StringUtil.replace(
+			content, "${badgeType}", badgeType.getType());
+		content = StringUtil.replace(content, "${bagdeImageLink}", downloadUrl);
+		content = StringUtil.replace(
+			content, "${colleague}", badge.getUserName());
+
+		mailMessage.setBody(content);
+
+		return mailMessage;
 	}
 
 	private void _notifySubscribers(Badge badge) {
@@ -84,28 +109,34 @@ public class BadgeLocalServiceImpl extends BadgeLocalServiceBaseImpl {
 
 		User fromUser = userLocalService.fetchUser(badge.getUserId());
 
-		String badgeType = badgeTypeLocalService.fetchBadgeType(badge.getBadgeTypeId()).getType();
+		String badgeType = badgeTypeLocalService.fetchBadgeType(
+			badge.getBadgeTypeId()).getType();
+
 		String entryTitle = badgeType + " Badge Received";
 
 		LocalizedValuesMap subjectLocalizedValuesMap = new LocalizedValuesMap();
 		LocalizedValuesMap bodyLocalizedValuesMap = new LocalizedValuesMap();
 
-		subjectLocalizedValuesMap.put(Locale.ENGLISH, "A badge has been received");
+		subjectLocalizedValuesMap.put(
+			Locale.ENGLISH, "A badge has been received");
 		bodyLocalizedValuesMap.put(
 			Locale.ENGLISH, "A " + badgeType + " badge has been received from " + fromUser.getFullName() +
 			".");
 
-		BadgeReceivedSubscritpionSender subscriptionSender = new BadgeReceivedSubscritpionSender();
+		BadgeReceivedSubscritpionSender subscriptionSender =
+			new BadgeReceivedSubscritpionSender();
 
 		subscriptionSender.setBadgeType(badgeType);
 
 		subscriptionSender.setClassPK(0);
-		subscriptionSender.setClassName(BadgeNotificationPortlet.class.getName());
+		subscriptionSender.setClassName(
+			BadgeNotificationPortlet.class.getName());
 		subscriptionSender.setCompanyId(badge.getCompanyId());
 
 		subscriptionSender.setCurrentUserId(badge.getToUserId());
 		subscriptionSender.setEntryTitle(entryTitle);
-		subscriptionSender.setFrom(fromUser.getEmailAddress(), fromUser.getFullName());
+		subscriptionSender.setFrom(
+			fromUser.getEmailAddress(), fromUser.getFullName());
 		subscriptionSender.setHtmlFormat(true);
 
 		subscriptionSender.setMailId("badge_received", 0);
@@ -114,7 +145,8 @@ public class BadgeLocalServiceImpl extends BadgeLocalServiceBaseImpl {
 
 		subscriptionSender.setNotificationType(notificationType);
 		subscriptionSender.setCreatorUserId(badge.getUserId());
-		subscriptionSender.setNotificationType(UserNotificationDefinition.NOTIFICATION_TYPE_ADD_ENTRY);
+		subscriptionSender.setNotificationType(
+			UserNotificationDefinition.NOTIFICATION_TYPE_ADD_ENTRY);
 		String portletId = BadgeNotificationPortletKeys.BadgeNotification;
 
 		subscriptionSender.setPortletId(portletId);
@@ -122,13 +154,16 @@ public class BadgeLocalServiceImpl extends BadgeLocalServiceBaseImpl {
 		subscriptionSender.setReplyToAddress(fromUser.getEmailAddress());
 		subscriptionSender.setServiceContext(new ServiceContext());
 
-		subscriptionSender.addPersistedSubscribers(BadgeNotificationPortlet.class.getName(), 0);
+		subscriptionSender.addPersistedSubscribers(
+			BadgeNotificationPortlet.class.getName(), 0);
 
 		subscriptionSender.flushNotificationsAsync();
 
 		JSONObject payloadJSON = JSONFactoryUtil.createJSONObject();
+
 		payloadJSON.put(BadgeNotificationPortletKeys.BADGE_TYPE, badgeType);
-		payloadJSON.put(BadgeNotificationPortletKeys.BADGE_COMMENT, badge.getDescription());
+		payloadJSON.put(
+			BadgeNotificationPortletKeys.BADGE_COMMENT, badge.getDescription());
 
 		UserNotificationEvent userNotificationEvent =
 			UserNotificationEventLocalServiceUtil.createUserNotificationEvent(
@@ -137,13 +172,16 @@ public class BadgeLocalServiceImpl extends BadgeLocalServiceBaseImpl {
 		userNotificationEvent.setCompanyId(badge.getCompanyId());
 		userNotificationEvent.setDeliverBy(0);
 		userNotificationEvent.setDelivered(true);
-		userNotificationEvent.setDeliveryType(UserNotificationDeliveryConstants.TYPE_WEBSITE);
+		userNotificationEvent.setDeliveryType(
+			UserNotificationDeliveryConstants.TYPE_WEBSITE);
 		userNotificationEvent.setTimestamp(System.currentTimeMillis());
 		userNotificationEvent.setPayload(payloadJSON.toString());
-		userNotificationEvent.setType(BadgeNotificationPortletKeys.BadgeNotification);
+		userNotificationEvent.setType(
+			BadgeNotificationPortletKeys.BadgeNotification);
 		userNotificationEvent.setUserId(badge.getToUserId());
 
-		UserNotificationEventLocalServiceUtil.addUserNotificationEvent(userNotificationEvent);
+		UserNotificationEventLocalServiceUtil.addUserNotificationEvent(
+			userNotificationEvent);
 
 		InternetAddress recipient = null;
 		InternetAddress sender = null;
@@ -153,15 +191,16 @@ public class BadgeLocalServiceImpl extends BadgeLocalServiceBaseImpl {
 
 			User user = userLocalService.getUserById(badge.getToUserId());
 
-			sender = new InternetAddress(_BADGE_EMAIL_SENDER_ADDRESS, _BADGE_EMAIL_SENDER_PERSONAL);
-			recipient = new InternetAddress(user.getEmailAddress(), user.getFullName());
+			sender = new InternetAddress(
+				_BADGE_EMAIL_SENDER_ADDRESS, _BADGE_EMAIL_SENDER_PERSONAL);
+			recipient = new InternetAddress(
+				user.getEmailAddress(), user.getFullName());
 
 			mailMessage.setFrom(sender);
 			mailMessage.setHTMLFormat(true);
 			mailMessage.setSubject(_BADGE_EMAIL_SUBJECT);
 
 			mailMessage.setTo(recipient);
-
 
 			MailServiceUtil.sendEmail(mailMessage);
 		}
@@ -173,28 +212,6 @@ public class BadgeLocalServiceImpl extends BadgeLocalServiceBaseImpl {
 		}
 	}
 
-	private MailMessage _getMailMessage(Badge badge) throws PortalException {
-
-		BadgeType badgeType = badgeTypeLocalService.getBadgeType(badge.getBadgeTypeId());
-		MailMessage mailMessage = new MailMessage();
-
-		String content = _BADGE_EMAIL_BODY;
-
-		FileEntry fileEntry = DLAppLocalServiceUtil.getFileEntry(badgeType.getFileEntryId());
-		String downloadUrl = DLUtil.getPreviewURL(fileEntry, fileEntry.getFileVersion(), null, "", false, true);
-
-		content = StringUtil.replace(content, "${badgeType}", badgeType.getType());
-		content = StringUtil.replace(content, "${bagdeImageLink}", downloadUrl);
-		content = StringUtil.replace(content, "${colleague}", badge.getUserName());
-
-		mailMessage.setBody(content);
-
-		return mailMessage;
-	}
-
-	private static final String _BADGE_EMAIL_SENDER_ADDRESS = "admin@liferay,com";
-	private static final String _BADGE_EMAIL_SENDER_PERSONAL = "GROW Badge Notification";
-	private static final String _BADGE_EMAIL_SUBJECT = "You received a Bagde!";
 	private static final String _BADGE_EMAIL_BODY = "<html><head><meta http-equiv=\"content-type\" " +
 			"content=\"text/html; charset=UTF-8\"><title>You received a Badge!</title></head>" +
 			"<body alink=\"#EE0000\" link=\"#0000EE\" vlink=\"#551A8B\" text=\"#000000\" "+
@@ -204,4 +221,13 @@ public class BadgeLocalServiceImpl extends BadgeLocalServiceBaseImpl {
 			"</tr><tr align=\"center\"><td valign=\"top\"><img src=\"${bagdeImageLink}\"" +
 			"alt=\"Bagde image\" height=\"300\" width=\"300\"></td></tr><tr align=\"center\">" +
 			"<td valign=\"top\">Congratulations!</td></tr></tbody></table></center></body></html>";
+
+	private static final String _BADGE_EMAIL_SENDER_ADDRESS =
+		"admin@liferay,com";
+
+	private static final String _BADGE_EMAIL_SENDER_PERSONAL =
+		"GROW Badge Notification";
+
+	private static final String _BADGE_EMAIL_SUBJECT = "You received a Bagde!";
+
 }

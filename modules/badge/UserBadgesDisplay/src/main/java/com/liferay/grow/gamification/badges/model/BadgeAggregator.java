@@ -38,11 +38,10 @@ public class BadgeAggregator {
 		this._name = name;
 	}
 
-
 	@Override
 	public String toString() {
-		return "BadgeAggregator [_badgeTypeId=" + _badgeTypeId + ", _count=" + _count + ", _image=" + _image
-				+ ", _name=" + _name + "]";
+		return "BadgeAggregator [_badgeTypeId=" + _badgeTypeId + ", _count=" + _count + ", _image=" + _image +
+			", _name=" + _name + "]";
 	}
 
 	private long _badgeTypeId;

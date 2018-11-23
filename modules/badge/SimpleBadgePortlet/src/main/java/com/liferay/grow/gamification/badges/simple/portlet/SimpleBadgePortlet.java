@@ -17,6 +17,7 @@ import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 
 import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -41,15 +42,15 @@ import org.osgi.service.component.annotations.Reference;
 	immediate = true,
 	property = {
 		"com.liferay.portlet.display-category=category.gamification",
-		"javax.portlet.display-name=Simple Badge",
-		"com.liferay.portlet.instanceable=false",
-		"javax.portlet.init-param.template-path=/",
-		"javax.portlet.init-param.view-template=/view.jsp",
-		"com.liferay.portlet.header-portlet-css=/css/style.css",
-		"com.liferay.portlet.header-portlet-css=/css/flexselect.css",
 		"com.liferay.portlet.footer-portlet-javascript=/js/jquery.flexselect.js",
 		"com.liferay.portlet.footer-portlet-javascript=/js/liquidmetal.js",
 		"com.liferay.portlet.footer-portlet-javascript=/js/main.js",
+		"com.liferay.portlet.header-portlet-css=/css/flexselect.css",
+		"com.liferay.portlet.header-portlet-css=/css/style.css",
+		"com.liferay.portlet.instanceable=false",
+		"javax.portlet.display-name=Simple Badge",
+		"javax.portlet.init-param.template-path=/",
+		"javax.portlet.init-param.view-template=/view.jsp",
 		"javax.portlet.name=" + SimpleBadgePortletKeys.SimpleBadge,
 		"javax.portlet.resource-bundle=content.Language",
 		"javax.portlet.security-role-ref=power-user,user"
@@ -58,41 +59,12 @@ import org.osgi.service.component.annotations.Reference;
 )
 public class SimpleBadgePortlet extends MVCPortlet {
 
-	
+	public void addBadge(
+		ActionRequest actionRequest, ActionResponse actionResponse) {
 
-	@Override
-	public void render(RenderRequest renderRequest, RenderResponse renderResponse)
-			throws IOException, PortletException {
-		List<User> usersTmp = _userLocalService.getUsers(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
-
-		OrderByComparator userComparator = 
-			(OrderByComparator) OrderByComparatorFactoryUtil.create("User", "fullName", true);
-
-		List<User> users = new ArrayList<User>();
-		for (User user: usersTmp) {
-			if (user.isActive()) {
-				users.add(user);
-			}
-		}
-
-		Collections.sort(users, userComparator);
-
-		renderRequest.setAttribute(SimpleBadgePortletKeys.USER_LIST, users);
-
-		OrderByComparator badgeTypeComparator = 
-				(OrderByComparator) OrderByComparatorFactoryUtil.create("BadgeType", "type", true);
-
-		List<BadgeType> badgeTypes = new ArrayList(_badgeTypeLocalService.getAvailableBadgeTypes());
-
-		Collections.sort(badgeTypes, badgeTypeComparator);
-		renderRequest.setAttribute(SimpleBadgePortletKeys.BADGE_TYPES, badgeTypes);
-
-		super.render(renderRequest, renderResponse);
-	}
-
-	public void addBadge(ActionRequest actionRequest, ActionResponse actionResponse) {
 		long userId = Long.parseLong(actionRequest.getParameter("userId"));
-		long badgeTypeId = Long.parseLong(actionRequest.getParameter("badgeTypeId"));
+		long badgeTypeId = Long.parseLong(
+			actionRequest.getParameter("badgeTypeId"));
 		long badgeId = _counterLocalService.increment(Badge.class.getName());
 		String description = actionRequest.getParameter("description");
 
@@ -100,6 +72,7 @@ public class SimpleBadgePortlet extends MVCPortlet {
 			User fromUser = (User)actionRequest.getAttribute(WebKeys.USER);
 			User user = _userLocalService.getUser(userId);
 			Badge badge = _badgeLocalService.createBadge(badgeId);
+
 			badge.setUserId(fromUser.getUserId());
 			badge.setAssignedDateId(_getDateId(new Date()));
 			badge.setBadgeTypeId(badgeTypeId);
@@ -114,16 +87,47 @@ public class SimpleBadgePortlet extends MVCPortlet {
 			_badgeLocalService.addBadge(badge);
 
 		} catch (Exception e) {
+
 			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
 	}
 
-	private long _getDateId(Date date) throws NoSuchLDateException {
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(date);
+	@Override
+	public void render(
+			RenderRequest renderRequest, RenderResponse renderResponse)
+		throws IOException, PortletException {
 
-		return _lDateLocalService.getDateId(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DAY_OF_MONTH));
+		List<User> usersTmp = _userLocalService.getUsers(
+			QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+
+		OrderByComparator userComparator =
+			(OrderByComparator)OrderByComparatorFactoryUtil.create("User", "fullName", true);
+
+		List<User> users = new ArrayList<>();
+
+		for (User user : usersTmp) {
+			if (user.isActive()) {
+				users.add(user);
+			}
+		}
+
+		Collections.sort(users, userComparator);
+
+		renderRequest.setAttribute(SimpleBadgePortletKeys.USER_LIST, users);
+
+		OrderByComparator badgeTypeComparator =
+			(OrderByComparator)OrderByComparatorFactoryUtil.create("BadgeType", "type", true);
+
+		List<BadgeType> badgeTypes = new ArrayList(
+			_badgeTypeLocalService.getAvailableBadgeTypes());
+
+		Collections.sort(badgeTypes, badgeTypeComparator);
+		renderRequest.setAttribute(
+			SimpleBadgePortletKeys.BADGE_TYPES, badgeTypes);
+
+		super.render(renderRequest, renderResponse);
 	}
 
 	@Reference(unbind = "-")
@@ -132,12 +136,16 @@ public class SimpleBadgePortlet extends MVCPortlet {
 	}
 
 	@Reference(unbind = "-")
-	protected void setBadgeTypeLocalService(BadgeTypeLocalService badgeTypeLocalService) {
+	protected void setBadgeTypeLocalService(
+		BadgeTypeLocalService badgeTypeLocalService) {
+
 		_badgeTypeLocalService = badgeTypeLocalService;
 	}
 
 	@Reference(unbind = "-")
-	protected void setCounterLocalService(CounterLocalService counterLocalService) {
+	protected void setCounterLocalService(
+		CounterLocalService counterLocalService) {
+
 		_counterLocalService = counterLocalService;
 	}
 
@@ -151,9 +159,20 @@ public class SimpleBadgePortlet extends MVCPortlet {
 		_userLocalService = userLocalService;
 	}
 
+	private long _getDateId(Date date) throws NoSuchLDateException {
+		Calendar cal = Calendar.getInstance();
+
+		cal.setTime(date);
+
+		return _lDateLocalService.getDateId(
+			cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) + 1,
+			cal.get(Calendar.DAY_OF_MONTH));
+	}
+
 	private BadgeLocalService _badgeLocalService;
 	private BadgeTypeLocalService _badgeTypeLocalService;
 	private CounterLocalService _counterLocalService;
 	private LDateLocalService _lDateLocalService;
 	private UserLocalService _userLocalService;
+
 }

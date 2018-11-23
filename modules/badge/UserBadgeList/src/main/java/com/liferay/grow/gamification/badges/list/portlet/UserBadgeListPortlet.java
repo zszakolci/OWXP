@@ -14,6 +14,7 @@ import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 
 import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -35,12 +36,12 @@ import org.osgi.service.component.annotations.Reference;
 	immediate = true,
 	property = {
 		"com.liferay.portlet.display-category=category.gamification",
-		"javax.portlet.display-name=Badge List",
+		"com.liferay.portlet.footer-portlet-javascript=/js/main.js",
+		"com.liferay.portlet.header-portlet-css=/css/style.css",
 		"com.liferay.portlet.instanceable=false",
+		"javax.portlet.display-name=Badge List",
 		"javax.portlet.init-param.template-path=/",
 		"javax.portlet.init-param.view-template=/view.jsp",
-		"com.liferay.portlet.header-portlet-css=/css/style.css",
-		"com.liferay.portlet.footer-portlet-javascript=/js/main.js",
 		"javax.portlet.name=" + UserBadgeListPortletKeys.UserBadgeList,
 		"javax.portlet.resource-bundle=content.Language",
 		"javax.portlet.security-role-ref=power-user,user"
@@ -50,50 +51,63 @@ import org.osgi.service.component.annotations.Reference;
 public class UserBadgeListPortlet extends MVCPortlet {
 
 	@Override
-	public void render(RenderRequest renderRequest, RenderResponse renderResponse)
-			throws IOException, PortletException {
-		ThemeDisplay themeDisplay = (ThemeDisplay)renderRequest.getAttribute(WebKeys.THEME_DISPLAY);
+	public void render(
+			RenderRequest renderRequest, RenderResponse renderResponse)
+		throws IOException, PortletException {
 
-		List<User> usersTmp = _userLocalService.getUsers(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+		ThemeDisplay themeDisplay = (ThemeDisplay)renderRequest.getAttribute(
+			WebKeys.THEME_DISPLAY);
 
-		OrderByComparator userComparator = 
-			(OrderByComparator) OrderByComparatorFactoryUtil.create("User", "fullName", true);
+		List<User> usersTmp = _userLocalService.getUsers(
+			QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 
-		List<User> users = new ArrayList<User>();
-		for (User user: usersTmp) {
+		OrderByComparator userComparator =
+			(OrderByComparator)OrderByComparatorFactoryUtil.create("User", "fullName", true);
+
+		List<User> users = new ArrayList<>();
+
+		for (User user : usersTmp) {
 			if (user.isActive()) {
 				users.add(user);
 			}
 		}
 
 		Collections.sort(users, userComparator);
-		OrderByComparator badgeTypeComparator = 
-				(OrderByComparator) OrderByComparatorFactoryUtil.create("BadgeType", "type", true);
+		OrderByComparator badgeTypeComparator =
+			(OrderByComparator)OrderByComparatorFactoryUtil.create("BadgeType", "type", true);
 
-		List<BadgeType> badgeTypes = new ArrayList(_badgeTypeLocalService.getAvailableBadgeTypes());
+		List<BadgeType> badgeTypes = new ArrayList(
+			_badgeTypeLocalService.getAvailableBadgeTypes());
 
 		Collections.sort(badgeTypes, badgeTypeComparator);
 
-		renderRequest.setAttribute(UserBadgeListPortletKeys.BADGE_TYPES, badgeTypes);
+		renderRequest.setAttribute(
+			UserBadgeListPortletKeys.BADGE_TYPES, badgeTypes);
 		renderRequest.setAttribute(UserBadgeListPortletKeys.USER_LIST, users);
 
 		if (themeDisplay.getScopeGroup().isUser()) {
 			long userId = themeDisplay.getScopeGroup().getClassPK();
 
-			renderRequest.setAttribute(UserBadgeListPortletKeys.BADGE_USER_ID, userId);
+			renderRequest.setAttribute(
+				UserBadgeListPortletKeys.BADGE_USER_ID, userId);
 		}
 
 		super.render(renderRequest, renderResponse);
 	}
 
-	public void selectUser(ActionRequest actionRequest, ActionResponse actionResponse) {
+	public void selectUser(
+		ActionRequest actionRequest, ActionResponse actionResponse) {
+
 		long userId = ParamUtil.get(actionRequest, "userId", 0);
 
-		actionRequest.setAttribute(UserBadgeListPortletKeys.BADGE_USER_ID, userId);
+		actionRequest.setAttribute(
+			UserBadgeListPortletKeys.BADGE_USER_ID, userId);
 	}
 
 	@Reference(unbind = "-")
-	protected void setBadgeTypeLocalService(BadgeTypeLocalService badgeTypeLocalService) {
+	protected void setBadgeTypeLocalService(
+		BadgeTypeLocalService badgeTypeLocalService) {
+
 		_badgeTypeLocalService = badgeTypeLocalService;
 	}
 

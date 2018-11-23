@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 
 import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -47,70 +48,36 @@ import org.osgi.service.component.annotations.Reference;
 	immediate = true,
 	property = {
 		"com.liferay.portlet.display-category=category.gamification",
+		"com.liferay.portlet.footer-portlet-javascript=/js/main.js",
+		"com.liferay.portlet.header-portlet-css=/css/style.css",
 		"com.liferay.portlet.instanceable=false",
+		"javax.portlet.display-name=User Badges Display",
 		"javax.portlet.init-param.template-path=/",
 		"javax.portlet.init-param.view-template=/view.jsp",
-		"com.liferay.portlet.header-portlet-css=/css/style.css",
-		"com.liferay.portlet.footer-portlet-javascript=/js/main.js",
 		"javax.portlet.name=" + UserBadgesDisplayPortletKeys.UserBadgesDisplay,
-		"javax.portlet.display-name=User Badges Display",
 		"javax.portlet.resource-bundle=content.Language",
 		"javax.portlet.security-role-ref=power-user,user"
 	},
 	service = Portlet.class
 )
 public class UserBadgesDisplayPortlet extends MVCPortlet {
-	@Override
-	public void render(RenderRequest renderRequest, RenderResponse renderResponse)
-			throws IOException, PortletException {
 
-		ThemeDisplay themeDisplay = (ThemeDisplay)renderRequest.getAttribute(WebKeys.THEME_DISPLAY);
-		if (themeDisplay.getScopeGroup().isUser()) {
-			long userId = themeDisplay.getScopeGroup().getClassPK();
+	public void addBadge(
+		ActionRequest actionRequest, ActionResponse actionResponse) {
 
-			List<Badge> badges = _badgeLocalService.getBadgesOfUser(userId);
-
-			List<BadgeAggregator> badgeAggregators = new ArrayList<>();
-
-			for (Iterator<Badge> it = badges.iterator(); it.hasNext();) {
-				badgeAggregators = _aggregate(it.next(), badgeAggregators, themeDisplay);
-			}
-
-			OrderByComparator badgeTypeComparator = 
-					(OrderByComparator) OrderByComparatorFactoryUtil.create("BadgeType", "type", true);
-
-			List<BadgeType> badgeTypes = new ArrayList(_badgeTypeLocalService.getAvailableBadgeTypes());
-
-			Collections.sort(badgeTypes, badgeTypeComparator);
-
-			renderRequest.setAttribute(UserBadgesDisplayPortletKeys.BADGE_AGGRETAGORS, badgeAggregators);
-			renderRequest.setAttribute(UserBadgesDisplayPortletKeys.BADGE_TYPES, badgeTypes);
-			renderRequest.setAttribute(UserBadgesDisplayPortletKeys.BADGE_USER_ID, userId);
-
-			try {
-				User user = _userLocalService.getUser(userId);
-
-				renderRequest.setAttribute(UserBadgesDisplayPortletKeys.BADGE_USER_NAME, user.getFullName());
-			}
-			catch (PortalException e) {
-				e.printStackTrace();
-			}
-
-		}
-
-		super.render(renderRequest, renderResponse);
-	}
-
-	public void addBadge(ActionRequest actionRequest, ActionResponse actionResponse) {
 		long userId = Long.parseLong(actionRequest.getParameter("userId"));
-		long badgeTypeId = Long.parseLong(actionRequest.getParameter("badgeTypeId"));
+		long badgeTypeId = Long.parseLong(
+			actionRequest.getParameter("badgeTypeId"));
 		long badgeId = _counterLocalService.increment(Badge.class.getName());
 		String description = actionRequest.getParameter("description");
+
 		System.out.println(description);
+
 		try {
 			User fromUser = (User)actionRequest.getAttribute(WebKeys.USER);
 			User user = _userLocalService.getUser(userId);
 			Badge badge = _badgeLocalService.createBadge(badgeId);
+
 			badge.setUserId(fromUser.getUserId());
 			badge.setAssignedDateId(_getDateId(new Date()));
 			badge.setBadgeTypeId(badgeTypeId);
@@ -124,52 +91,62 @@ public class UserBadgesDisplayPortlet extends MVCPortlet {
 
 			_badgeLocalService.addBadge(badge);
 		} catch (Exception e) {
+
 			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
-		
 	}
 
-	private long _getDateId(Date date) throws NoSuchLDateException {
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(date);
+	@Override
+	public void render(
+			RenderRequest renderRequest, RenderResponse renderResponse)
+		throws IOException, PortletException {
 
-		return _lDateLocalService.getDateId(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DAY_OF_MONTH));
-	}
+		ThemeDisplay themeDisplay = (ThemeDisplay)renderRequest.getAttribute(
+			WebKeys.THEME_DISPLAY);
 
+		if (themeDisplay.getScopeGroup().isUser()) {
+			long userId = themeDisplay.getScopeGroup().getClassPK();
 
-	private synchronized List<BadgeAggregator> _aggregate(Badge badge, List<BadgeAggregator> badgeAggregators, ThemeDisplay themeDisplay) {
+			List<Badge> badges = _badgeLocalService.getBadgesOfUser(userId);
 
-		BadgeAggregator aggregator = null;
-		List<BadgeAggregator> updatedList = new ArrayList<>();
+			List<BadgeAggregator> badgeAggregators = new ArrayList<>();
 
-		for (BadgeAggregator badgeAggregator : badgeAggregators) {
-			if (badgeAggregator.getBadgeTypeId() == badge.getBadgeTypeId()) {
-				badgeAggregator.increaseCount();
-				aggregator = badgeAggregator;
+			for (Iterator<Badge> it = badges.iterator(); it.hasNext();) {
+				badgeAggregators = _aggregate(
+					it.next(), badgeAggregators, themeDisplay);
 			}
-			updatedList.add(badgeAggregator);
-		}
 
-		if (aggregator == null) {
-			BadgeType badgeType = _badgeTypeLocalService.fetchBadgeType(badge.getBadgeTypeId());
-			aggregator = new BadgeAggregator();
-			aggregator.setName(badgeType.getType());
-			aggregator.setBadgeTypeId(badgeType.getBadgeTypeId());
-			aggregator.setCount(1);
+			OrderByComparator badgeTypeComparator =
+				(OrderByComparator)OrderByComparatorFactoryUtil.create("BadgeType", "type", true);
+
+			List<BadgeType> badgeTypes = new ArrayList(
+				_badgeTypeLocalService.getAvailableBadgeTypes());
+
+			Collections.sort(badgeTypes, badgeTypeComparator);
+
+			renderRequest.setAttribute(
+				UserBadgesDisplayPortletKeys.BADGE_AGGRETAGORS,
+				badgeAggregators);
+			renderRequest.setAttribute(
+				UserBadgesDisplayPortletKeys.BADGE_TYPES, badgeTypes);
+			renderRequest.setAttribute(
+				UserBadgesDisplayPortletKeys.BADGE_USER_ID, userId);
+
 			try {
-				FileEntry fileEntry = _dlAppLocalService.getFileEntry(badgeType.getFileEntryId());
-				String downloadUrl = DLUtil.getPreviewURL(fileEntry, fileEntry.getFileVersion(), themeDisplay, "", false, true);
-				aggregator.setImage(downloadUrl);
-			}
-			catch (Exception e) {
-				e.printStackTrace();
-			}
+				User user = _userLocalService.getUser(userId);
 
-			updatedList.add(aggregator);
+				renderRequest.setAttribute(
+					UserBadgesDisplayPortletKeys.BADGE_USER_NAME,
+					user.getFullName());
+			}
+			catch (PortalException pe) {
+				pe.printStackTrace();
+			}
 		}
 
-		return updatedList;
+		super.render(renderRequest, renderResponse);
 	}
 
 	@Reference(unbind = "-")
@@ -178,12 +155,16 @@ public class UserBadgesDisplayPortlet extends MVCPortlet {
 	}
 
 	@Reference(unbind = "-")
-	protected void setBadgeTypeLocalService(BadgeTypeLocalService badgeTypeLocalService) {
+	protected void setBadgeTypeLocalService(
+		BadgeTypeLocalService badgeTypeLocalService) {
+
 		_badgeTypeLocalService = badgeTypeLocalService;
 	}
 
 	@Reference(unbind = "-")
-	protected void setCounterLocalService(CounterLocalService counterLocalService) {
+	protected void setCounterLocalService(
+		CounterLocalService counterLocalService) {
+
 		_counterLocalService = counterLocalService;
 	}
 
@@ -202,10 +183,65 @@ public class UserBadgesDisplayPortlet extends MVCPortlet {
 		_userLocalService = userLocalService;
 	}
 
+	private synchronized List<BadgeAggregator> _aggregate(
+		Badge badge, List<BadgeAggregator> badgeAggregators,
+		ThemeDisplay themeDisplay) {
+
+		BadgeAggregator aggregator = null;
+		List<BadgeAggregator> updatedList = new ArrayList<>();
+
+		for (BadgeAggregator badgeAggregator : badgeAggregators) {
+			if (badgeAggregator.getBadgeTypeId() == badge.getBadgeTypeId()) {
+				badgeAggregator.increaseCount();
+				aggregator = badgeAggregator;
+			}
+
+			updatedList.add(badgeAggregator);
+		}
+
+		if (aggregator == null) {
+			BadgeType badgeType = _badgeTypeLocalService.fetchBadgeType(
+				badge.getBadgeTypeId());
+			aggregator = new BadgeAggregator();
+			aggregator.setName(badgeType.getType());
+			aggregator.setBadgeTypeId(badgeType.getBadgeTypeId());
+			aggregator.setCount(1);
+
+			try {
+				FileEntry fileEntry = _dlAppLocalService.getFileEntry(
+					badgeType.getFileEntryId());
+
+				String downloadUrl = DLUtil.getPreviewURL(
+					fileEntry, fileEntry.getFileVersion(), themeDisplay, "",
+					false, true);
+
+				aggregator.setImage(downloadUrl);
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			updatedList.add(aggregator);
+		}
+
+		return updatedList;
+	}
+
+	private long _getDateId(Date date) throws NoSuchLDateException {
+		Calendar cal = Calendar.getInstance();
+
+		cal.setTime(date);
+
+		return _lDateLocalService.getDateId(
+			cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) + 1,
+			cal.get(Calendar.DAY_OF_MONTH));
+	}
+
 	private BadgeLocalService _badgeLocalService;
 	private BadgeTypeLocalService _badgeTypeLocalService;
 	private CounterLocalService _counterLocalService;
 	private DLAppLocalService _dlAppLocalService;
 	private LDateLocalService _lDateLocalService;
 	private UserLocalService _userLocalService;
+
 }

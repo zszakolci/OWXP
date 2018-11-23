@@ -1,13 +1,20 @@
-<%@page import="com.liferay.grow.gamification.service.LDateLocalServiceUtil"%>
+<%@ page import="com.liferay.grow.gamification.service.LDateLocalServiceUtil" %>
+
 <%@ include file="/init.jsp" %>
 
-<% if (LDateLocalServiceUtil.getLDatesCount() == 0) { %>
-<portlet:actionURL name="generate" var="generateURL" />
+<%
+if (LDateLocalServiceUtil.getLDatesCount() == 0) {
+%>
 
-<aui:form action="<%= generateURL %>" method="post" name="fm" >
-	<aui:input type="submit" name="" value="Generate Date Dimension Table" />
-</aui:form>
+	<portlet:actionURL name="generate" var="generateURL" />
 
-<% } else { %>
-<h2>Date Dimension is already filled out</h2>
-<% } %>
+	<aui:form action="<%= generateURL %>" method="post" name="fm">
+		<aui:input name="" type="submit" value="Generate Date Dimension Table" />
+	</aui:form>
+
+	<%
+	} else {
+	%>
+
+	<h2>Date Dimension is already filled out</h2>
+	<% } %>

@@ -31,9 +31,11 @@ import com.liferay.grow.gamification.service.base.SubscriberLocalServiceBaseImpl
  * @see com.liferay.grow.gamification.service.SubscriberLocalServiceUtil
  */
 public class SubscriberLocalServiceImpl extends SubscriberLocalServiceBaseImpl {
-	/*
+
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never reference this class directly. Always use {@link com.liferay.grow.gamification.service.SubscriberLocalServiceUtil} to access the subscriber local service.
 	 */
+
 }

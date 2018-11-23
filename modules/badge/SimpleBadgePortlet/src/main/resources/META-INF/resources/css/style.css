@@ -1,8 +1,8 @@
 .badge-danger {
-	float: right;
-	top: -20px;
 	border-radius: 10px;
+	float: right;
 	position: relative;
+	top: -20px;
 }
 
 img.badge-image {
@@ -10,25 +10,25 @@ img.badge-image {
 }
 
 .badge-type {
-	top: 20px;
 	position: relative;
+	top: 20px;
 }
 
 .dropdown-toggle::after {
+	border-left: .3em solid transparent;
+	border-right: .3em solid transparent;
+	border-top: .3em solid;
+	content: "";
 	display: inline-block;
-	width: 0;
 	height: 0;
 	margin-left: .3em;
 	vertical-align: middle;
-	content: "";
-	border-top: .3em solid;
-	border-right: .3em solid transparent;
-	border-left: .3em solid transparent;
+	width: 0;
 }
 
 input.flexselect {
-	border-radius: 5px;
 	border: solid 1px #2E5AAC;
+	border-radius: 5px;
 	height: 40px;
 	padding-left: 14px;
 	width: 100%;

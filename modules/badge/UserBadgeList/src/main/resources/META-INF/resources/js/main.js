@@ -4,7 +4,7 @@ function selectUser(userId, userName) {
 	$('#_userbadgelist_userForm').submit();
 }
 
-$(document).ready(function(){
+$(document).ready(function() {
 	userName = $('#_userbadgelist_userName').val();
 	$('#dropdownListUserMenu').text(userName);
 });

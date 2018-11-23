@@ -27,11 +27,13 @@ import aQute.bnd.annotation.ProviderType;
  */
 @ProviderType
 public class LDateImpl extends LDateBaseImpl {
-	/*
+
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never reference this class directly. All methods that expect a l date model instance should use the {@link com.liferay.grow.gamification.model.LDate} interface instead.
 	 */
 	public LDateImpl() {
 	}
+
 }

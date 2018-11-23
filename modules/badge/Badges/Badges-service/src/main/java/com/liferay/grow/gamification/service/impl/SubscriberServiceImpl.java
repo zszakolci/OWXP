@@ -31,9 +31,11 @@ import com.liferay.grow.gamification.service.base.SubscriberServiceBaseImpl;
  * @see com.liferay.grow.gamification.service.SubscriberServiceUtil
  */
 public class SubscriberServiceImpl extends SubscriberServiceBaseImpl {
-	/*
+
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never reference this class directly. Always use {@link com.liferay.grow.gamification.service.SubscriberServiceUtil} to access the subscriber remote service.
 	 */
+
 }
