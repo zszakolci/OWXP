@@ -70,11 +70,6 @@ else {
 		stackedit.openFile({
 			content: {
 				text: el.value // and the Markdown content.
-			},
-			properties: {
-				extensions: {
-					preset: 'gfm'
-				}
 			}
 		});
 
