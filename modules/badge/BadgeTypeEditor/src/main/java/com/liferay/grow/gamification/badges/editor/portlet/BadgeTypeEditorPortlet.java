@@ -41,6 +41,7 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
 	immediate = true,
 	property = {
+		"com.liferay.portlet.display-category=category.hidden",
 		"com.liferay.portlet.footer-portlet-javascript=/js/jquery.form-validator.min.js",
 		"com.liferay.portlet.footer-portlet-javascript=/js/main.js",
 		"com.liferay.portlet.header-portlet-css=/css/style.css",
