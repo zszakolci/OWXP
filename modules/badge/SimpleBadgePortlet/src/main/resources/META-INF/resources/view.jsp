@@ -15,11 +15,15 @@ List<User> users = (List<User>)request.getAttribute("USER_LIST");
 <div class="container">
 	<div class="row">
 		<div class="col-sm-3">
-			<select class="flexselect" id="nameSelect" name="nameSelect" palceholder="this is a placeholder">
-					<% for (User userItem : users) { 	%>
+			<select class="flexselect" id="nameSelect" name="nameSelect">
+					<% for (User userItem : users) { 	
+						if (!userItem.isDefaultUser()) {
+					%>
 						<%--  a class="dropdown-item" href="#" onclick="selectUser(<%= userItem.getUserId() %>, '<%= (userItem.getFullName().trim().equals("")) ? "Select user" : userItem.getFullName()  %>')"><%= (userItem.getFullName().trim().equals("")) ? "Select user" :  userItem.getFullName()  %></a --%>
 						<option value="<%= userItem.getUserId() %>"><%= (userItem.getFullName().trim().equals("")) ? "" : userItem.getFullName()  %></option>
-					<% } %>
+					<% } 
+					}
+					%>
 			</select>
 		</div>
 		<div class="col-sm-2">

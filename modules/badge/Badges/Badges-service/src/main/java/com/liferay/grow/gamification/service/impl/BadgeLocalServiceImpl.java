@@ -223,7 +223,7 @@ public class BadgeLocalServiceImpl extends BadgeLocalServiceBaseImpl {
 			"<td valign=\"top\">Congratulations!</td></tr></tbody></table></center></body></html>";
 
 	private static final String _BADGE_EMAIL_SENDER_ADDRESS =
-		"admin@liferay,com";
+		"admin@liferay.com";
 
 	private static final String _BADGE_EMAIL_SENDER_PERSONAL =
 		"GROW Badge Notification";
