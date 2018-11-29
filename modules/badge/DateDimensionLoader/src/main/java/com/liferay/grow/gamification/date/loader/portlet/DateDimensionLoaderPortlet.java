@@ -55,7 +55,7 @@ public class DateDimensionLoaderPortlet extends MVCPortlet {
 					date.setYear(calendar.get(Calendar.YEAR));
 					date.setDayOfYear(calendar.get(Calendar.DAY_OF_YEAR));
 					switch(calendar.get(Calendar.MONTH)) {
-						case Calendar.JANUARY: date.setMonthName("Januray");
+						case Calendar.JANUARY: date.setMonthName("January");
 
 						break;
 						case Calendar.FEBRUARY: date.setMonthName("February");
