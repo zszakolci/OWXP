@@ -26,6 +26,8 @@ boolean notificationUnread = !actionRequired && !userNotificationEvent.isArchive
 if (notificationUnread) {
 	row.setCssClass("list-group-item-primary");
 }
+
+String diffsURL = jsonObject.getString("diffsURL");
 %>
 
 <c:choose>
@@ -91,6 +93,27 @@ if (notificationUnread) {
 					<%= Time.getRelativeTimeDescription(userNotificationEvent.getTimestamp(), themeDisplay.getLocale(), themeDisplay.getTimeZone(), dateFormatDateTime) %>
 				</span>
 			</h5>
+
+			<c:if test="<%= Validator.isNotNull(diffsURL) %>">
+				<portlet:actionURL name="markNotificationAsRead" var="markNotificationAsReadDiffsURL">
+					<portlet:param name="userNotificationEventId" value="<%= String.valueOf(userNotificationEvent.getUserNotificationEventId()) %>" />
+					<portlet:param name="redirect" value="<%= diffsURL %>" />
+				</portlet:actionURL>
+
+				<h5>
+					<a href="<%= markNotificationAsReadDiffsURL.toString() %>">
+						<c:if test="<%= notificationUnread %>">
+							<b>
+						</c:if>
+
+						View Changes
+
+						<c:if test="<%= notificationUnread %>">
+							</b>
+						</c:if>
+					</a>
+				</h5>
+			</c:if>
 		</liferay-ui:search-container-column-text>
 
 		<liferay-ui:search-container-column-jsp
