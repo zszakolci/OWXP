@@ -241,12 +241,8 @@ private void _resetUserNoticationEventsCount(long userId) {
 	PortalPreferences portalPreferences =
 		PortletPreferencesFactoryUtil.getPortalPreferences(userId, true);
 
-	portalPreferences.setValue(
-		UserNotificationEvent.class.getName(),
-		"useLegacyUserNotificationEventsCount", "false");
+	portalPreferences.setValue(UserNotificationEvent.class.getName(), "useLegacyUserNotificationEventsCount", "false");
 
-	portalPreferences.setValue(
-		UserNotificationEvent.class.getName(),
-		"userNotificationEventsCount", "0");
+	portalPreferences.setValue(UserNotificationEvent.class.getName(), "userNotificationEventsCount", "0");
 }
 %>
