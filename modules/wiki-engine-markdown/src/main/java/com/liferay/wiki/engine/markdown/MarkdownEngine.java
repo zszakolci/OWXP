@@ -28,7 +28,6 @@ import com.vladsch.flexmark.ext.autolink.AutolinkExtension;
 import com.vladsch.flexmark.ext.definition.DefinitionExtension;
 import com.vladsch.flexmark.ext.emoji.EmojiExtension;
 import com.vladsch.flexmark.ext.footnotes.FootnoteExtension;
-import com.vladsch.flexmark.ext.gfm.issues.GfmIssuesExtension;
 import com.vladsch.flexmark.ext.gfm.strikethrough.StrikethroughExtension;
 import com.vladsch.flexmark.ext.gfm.tasklist.TaskListExtension;
 import com.vladsch.flexmark.ext.gitlab.GitLabExtension;
@@ -189,9 +188,9 @@ public class MarkdownEngine extends BaseWikiEngine {
 				AnchorLinkExtension.create(), AutolinkExtension.create(),
 				DefinitionExtension.create(), EmojiExtension.create(),
 				FootnoteExtension.create(), GitLabExtension.create(),
-				GfmIssuesExtension.create(), StrikethroughExtension.create(),
-				SuperscriptExtension.create(), TablesExtension.create(),
-				TaskListExtension.create(), TocExtension.create()));
+				StrikethroughExtension.create(), SuperscriptExtension.create(),
+				TablesExtension.create(), TaskListExtension.create(),
+				TocExtension.create()));
 
 		options.set(
 			EmojiExtension.ROOT_IMAGE_PATH, "/o/grow-theme/images/emojis/");
