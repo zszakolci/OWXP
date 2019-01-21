@@ -103,6 +103,7 @@ page import="com.liferay.portal.kernel.util.DateUtil" %>
 						</div>
 
 						<div class="form-group">
+							<label for="fileEntry">Upload a transparent PNG file with 200x200 pixel size.</label>
 							<input class="form-control" name="fileEntry" required="required" type="file" value="" />
 						</div>
 					</div>

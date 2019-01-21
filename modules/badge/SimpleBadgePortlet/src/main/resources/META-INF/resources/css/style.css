@@ -33,3 +33,15 @@ input.flexselect {
 	padding-left: 14px;
 	width: 100%;
 }
+.row {
+	height: 48px;
+}
+.col-sm-3 {
+	position: absolute;
+	right: 200px;
+}
+
+.col-sm-2 {
+	position: absolute;
+	right: 0px;
+}

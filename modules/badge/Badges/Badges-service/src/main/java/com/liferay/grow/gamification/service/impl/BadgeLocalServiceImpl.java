@@ -35,10 +35,12 @@ import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserNotificationEventLocalServiceUtil;
 import com.liferay.portal.kernel.settings.LocalizedValuesMap;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.io.UnsupportedEncodingException;
-
 import java.util.List;
 import java.util.Locale;
 
@@ -90,6 +92,11 @@ public class BadgeLocalServiceImpl extends BadgeLocalServiceBaseImpl {
 
 		String downloadUrl = DLUtil.getPreviewURL(
 			fileEntry, fileEntry.getFileVersion(), null, "", false, true);
+
+		String protocol = (Validator.isNull(PropsUtil.get(PropsKeys.WEB_SERVER_PROTOCOL)) ? "http" :PropsUtil.get(PropsKeys.WEB_SERVER_PROTOCOL));
+		String host = (Validator.isNull(PropsUtil.get(PropsKeys.WEB_SERVER_HOST)) ? "localhost:8080" : PropsUtil.get(PropsKeys.WEB_SERVER_HOST));
+
+		downloadUrl = protocol + "://" + host + downloadUrl;
 
 		content = StringUtil.replace(
 			content, "${badgeType}", badgeType.getType());
