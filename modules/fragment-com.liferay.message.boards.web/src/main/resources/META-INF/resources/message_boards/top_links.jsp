@@ -23,7 +23,9 @@ MBCategory category = (MBCategory)request.getAttribute(WebKeys.MESSAGE_BOARDS_CA
 
 boolean showBannedUsers=false;
 String messageBoardsHomeLabel="All Questions";
-String viewRecentPostsURLLabel="Recent Questions";
+String viewRecentPostsLabel="Recent Questions";
+String viewMyPostsLabel="My Questions";
+
 long categoryId = MBUtil.getCategoryId(request, category);
 %>
 
@@ -45,7 +47,7 @@ long categoryId = MBUtil.getCategoryId(request, category);
 		viewRecentPostsURL.setParameter("mvcRenderCommandName", "/message_boards/view_recent_posts");
 		%>
 
-		<aui:nav-item href="<%= viewRecentPostsURL.toString() %>" label="<%= viewRecentPostsURLLabel %>" selected='<%= mvcRenderCommandName.equals("/message_boards/view_recent_posts") %>' />
+		<aui:nav-item href="<%= viewRecentPostsURL.toString() %>" label="<%= viewRecentPostsLabel %>" selected='<%= mvcRenderCommandName.equals("/message_boards/view_recent_posts") %>' />
 
 		<c:if test="<%= themeDisplay.isSignedIn() && !portletName.equals(MBPortletKeys.MESSAGE_BOARDS_ADMIN) %>">
 
@@ -55,7 +57,7 @@ long categoryId = MBUtil.getCategoryId(request, category);
 			viewMyPostsURL.setParameter("mvcRenderCommandName", "/message_boards/view_my_posts");
 			%>
 
-			<aui:nav-item href="<%= viewMyPostsURL.toString() %>" label="my-posts" selected='<%= mvcRenderCommandName.equals("/message_boards/view_my_posts") %>' />
+			<aui:nav-item href="<%= viewMyPostsURL.toString() %>" label="<%= viewMyPostsLabel %>" selected='<%= mvcRenderCommandName.equals("/message_boards/view_my_posts") %>' />
 
 			<c:if test="<%= mbGroupServiceSettings.isEmailMessageAddedEnabled() || mbGroupServiceSettings.isEmailMessageUpdatedEnabled() %>">
 
