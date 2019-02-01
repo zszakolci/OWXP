@@ -22,7 +22,8 @@ String mvcRenderCommandName = ParamUtil.getString(request, "mvcRenderCommandName
 MBCategory category = (MBCategory)request.getAttribute(WebKeys.MESSAGE_BOARDS_CATEGORY);
 
 boolean showBannedUsers=false;
-String messageBoardsHomeLabel="All Questions";	
+String messageBoardsHomeLabel="All Questions";
+String viewRecentPostsURLLabel="Recent Questions";
 long categoryId = MBUtil.getCategoryId(request, category);
 %>
 
@@ -44,7 +45,7 @@ long categoryId = MBUtil.getCategoryId(request, category);
 		viewRecentPostsURL.setParameter("mvcRenderCommandName", "/message_boards/view_recent_posts");
 		%>
 
-		<aui:nav-item href="<%= viewRecentPostsURL.toString() %>" label="recent-posts" selected='<%= mvcRenderCommandName.equals("/message_boards/view_recent_posts") %>' />
+		<aui:nav-item href="<%= viewRecentPostsURL.toString() %>" label="<%= viewRecentPostsURLLabel %>" selected='<%= mvcRenderCommandName.equals("/message_boards/view_recent_posts") %>' />
 
 		<c:if test="<%= themeDisplay.isSignedIn() && !portletName.equals(MBPortletKeys.MESSAGE_BOARDS_ADMIN) %>">
 
