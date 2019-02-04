@@ -335,8 +335,8 @@ if (portletTitleBasedNavigation) {
 
 				</aui:fieldset>
 			</c:if>
-
-			<c:if test="<%= (curParentMessage == null) || childrenMessagesTaggable %>">
+			
+			<c:if test="<%= false %>">
 				<aui:fieldset collapsed="<%= true %>" collapsible="<%= true %>" label="categorization">
 					<aui:input name="tags" type="assetTags" />
 				</aui:fieldset>
@@ -354,8 +354,10 @@ if (portletTitleBasedNavigation) {
 
 					<%
 					MBCategory category = MBCategoryLocalServiceUtil.getCategory(categoryId);
-
-					boolean disabled = false;
+					// Disable
+					boolean disabled = true;
+			
+					//boolean disabled = false;
 					boolean question = threadAsQuestionByDefault;
 
 					if (message != null) {
@@ -373,19 +375,22 @@ if (portletTitleBasedNavigation) {
 						disabled = true;
 						question = true;
 					}
+					
 					%>
-
-					<aui:input disabled="<%= disabled %>" helpMessage="message-boards-message-question-help" label="mark-as-a-question" name="question" type="checkbox" value="<%= question %>" />
+					<%--
+/** Hide Mark as a question
+--%>
+				<%--	<aui:input disabled="<%= disabled %>" helpMessage="message-boards-message-question-help" label="mark-as-a-question" name="question" type="checkbox" value="<%= question %>" />--%>
 				</c:if>
 
 				<c:if test="<%= (message == null) && themeDisplay.isSignedIn() && allowAnonymousPosting %>">
 					<aui:input helpMessage="message-boards-message-anonymous-help" name="anonymous" type="checkbox" />
 				</c:if>
-
+				<%--
 				<c:if test="<%= (message == null) && themeDisplay.isSignedIn() && !SubscriptionLocalServiceUtil.isSubscribed(themeDisplay.getCompanyId(), user.getUserId(), MBThread.class.getName(), threadId) && !SubscriptionLocalServiceUtil.isSubscribed(themeDisplay.getCompanyId(), user.getUserId(), MBCategory.class.getName(), categoryId) %>">
 					<aui:input helpMessage="message-boards-message-subscribe-me-help" label="subscribe-me" name="subscribe" type='<%= (mbGroupServiceSettings.isEmailMessageAddedEnabled() || mbGroupServiceSettings.isEmailMessageUpdatedEnabled()) ? "checkbox" : "hidden" %>' value="<%= subscribeByDefault %>" />
 				</c:if>
-
+				--%>
 				<c:if test="<%= (priorities.length > 0) && MBCategoryPermission.contains(permissionChecker, scopeGroupId, categoryId, ActionKeys.UPDATE_THREAD_PRIORITY) %>">
 
 					<%
