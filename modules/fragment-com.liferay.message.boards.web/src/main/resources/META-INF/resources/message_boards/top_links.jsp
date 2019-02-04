@@ -25,6 +25,7 @@ boolean showBannedUsers=false;
 String messageBoardsHomeLabel="All Questions";
 String viewRecentPostsLabel="Recent Questions";
 String viewMyPostsLabel="My Questions";
+String viewMySubscriptionLabel= "My Subscriptions";
 
 long categoryId = MBUtil.getCategoryId(request, category);
 %>
@@ -67,7 +68,7 @@ long categoryId = MBUtil.getCategoryId(request, category);
 				viewMySubscriptionsURL.setParameter("mvcRenderCommandName", "/message_boards/view_my_subscriptions");
 				%>
 
-				<aui:nav-item href="<%= viewMySubscriptionsURL.toString() %>" label="my-subscriptions" selected='<%= mvcRenderCommandName.equals("/message_boards/view_my_subscriptions") %>' />
+				<aui:nav-item href="<%= viewMySubscriptionsURL.toString() %>" label="<%= viewMySubscriptionLabel %>" selected='<%= mvcRenderCommandName.equals("/message_boards/view_my_subscriptions") %>' />
 			</c:if>
 		</c:if>
 

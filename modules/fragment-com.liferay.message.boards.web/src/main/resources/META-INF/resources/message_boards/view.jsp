@@ -172,9 +172,12 @@ request.setAttribute("view.jsp-viewCategory", Boolean.TRUE.toString());
 					</c:if>
 
 					<%
-					boolean showAddCategoryButton = MBCategoryPermission.contains(permissionChecker, scopeGroupId, categoryId, ActionKeys.ADD_CATEGORY);
+					// Hide Add category and permission buttons
+					boolean showAddCategoryButton = false;
+					// boolean showAddCategoryButton = MBCategoryPermission.contains(permissionChecker, scopeGroupId, categoryId, ActionKeys.ADD_CATEGORY);
 					boolean showAddMessageButton = MBCategoryPermission.contains(permissionChecker, scopeGroupId, categoryId, ActionKeys.ADD_MESSAGE);
-					boolean showPermissionsButton = MBPermission.contains(permissionChecker, scopeGroupId, ActionKeys.PERMISSIONS);
+					boolean showPermissionsButton = false;
+					//boolean showPermissionsButton = MBPermission.contains(permissionChecker, scopeGroupId, ActionKeys.PERMISSIONS);
 
 					if (showAddMessageButton && !themeDisplay.isSignedIn()) {
 						if (!allowAnonymousPosting) {
@@ -202,7 +205,7 @@ request.setAttribute("view.jsp-viewCategory", Boolean.TRUE.toString());
 									<portlet:param name="mbCategoryId" value="<%= String.valueOf(categoryId) %>" />
 								</portlet:renderURL>
 
-								<aui:button href="<%= editMessageURL %>" value="post-new-thread" />
+								<aui:button href="<%= editMessageURL %>" value="Ask a question" />
 							</c:if>
 
 							<c:if test="<%= showPermissionsButton %>">
