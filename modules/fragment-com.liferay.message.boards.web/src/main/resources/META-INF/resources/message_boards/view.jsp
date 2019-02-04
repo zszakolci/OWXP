@@ -22,8 +22,7 @@ String redirect = ParamUtil.getString(request, "redirect");
 String mvcRenderCommandName = ParamUtil.getString(request, "mvcRenderCommandName", "/message_boards/view");
 
 MBCategory category = (MBCategory)request.getAttribute(WebKeys.MESSAGE_BOARDS_CATEGORY);
-// Disable RSS
-enableRSS = false;
+
 long categoryId = MBUtil.getCategoryId(request, category);
 
 Set<Long> categorySubscriptionClassPKs = null;
