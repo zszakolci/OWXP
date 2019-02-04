@@ -391,6 +391,8 @@ if (portletTitleBasedNavigation) {
 					<aui:input helpMessage="message-boards-message-subscribe-me-help" label="subscribe-me" name="subscribe" type='<%= (mbGroupServiceSettings.isEmailMessageAddedEnabled() || mbGroupServiceSettings.isEmailMessageUpdatedEnabled()) ? "checkbox" : "hidden" %>' value="<%= subscribeByDefault %>" />
 				</c:if>
 				--%>
+				<%--
+				Hide Priority
 				<c:if test="<%= (priorities.length > 0) && MBCategoryPermission.contains(permissionChecker, scopeGroupId, categoryId, ActionKeys.UPDATE_THREAD_PRIORITY) %>">
 
 					<%
@@ -423,13 +425,18 @@ if (portletTitleBasedNavigation) {
 
 					</aui:select>
 				</c:if>
-
-				<c:if test="<%= PropsValues.MESSAGE_BOARDS_PINGBACK_ENABLED %>">
+--%>
+					<%--
+/** Hide Allow ping backs
+--%>
+				<c:if test="<%= false %>">
 					<aui:input helpMessage="to-allow-pingbacks,-please-also-ensure-the-entry's-guest-view-permission-is-enabled" label="allow-pingbacks" name="allowPingbacks" value="<%= allowPingbacks %>" />
 				</c:if>
 			</aui:fieldset>
-
-			<c:if test="<%= message == null %>">
+					<%--
+/** Hide Permissions
+--%>
+			<c:if test="<%= false %>">
 				<aui:fieldset collapsed="<%= true %>" collapsible="<%= true %>" label="permissions">
 					<liferay-ui:input-permissions
 						modelName="<%= MBMessage.class.getName() %>"
