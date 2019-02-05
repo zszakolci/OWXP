@@ -311,7 +311,7 @@ if (portletTitleBasedNavigation) {
 			<portlet:param name="priority" value="<%= String.valueOf(rootMessage.getPriority()) %>" />
 		</portlet:renderURL>
 
-		<aui:button cssClass="btn-lg" href="<%= replyURL.toString() %>" primary="<%= true %>" value="reply-to-main-thread" />
+		<aui:button cssClass="btn-lg" href="<%= replyURL.toString() %>" primary="<%= true %>" value="Post an answer" />
 	</c:if>
 
 	<c:if test="<%= moreMessagesPagination %>">
