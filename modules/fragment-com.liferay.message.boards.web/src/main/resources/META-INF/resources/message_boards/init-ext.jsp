@@ -20,4 +20,6 @@
 	threadAsQuestionByDefault=true;
 	// If you post a new question, you'll be subscribed.
 	subscribeByDefault=true;
+	// Disable flags
+	boolean enableFlags = false;
 		 %>
