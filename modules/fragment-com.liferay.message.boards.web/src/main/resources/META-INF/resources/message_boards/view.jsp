@@ -142,7 +142,7 @@ request.setAttribute("view.jsp-viewCategory", Boolean.TRUE.toString());
 	</c:when>
 	<c:when test="<%= useAssetEntryQuery && !mbListDisplayContext.isShowMyPosts() %>">
 		<liferay-ui:categorization-filter
-			assetType="threads"
+			assetType="Questions"
 			portletURL="<%= portletURL %>"
 		/>
 
