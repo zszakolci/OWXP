@@ -373,9 +373,11 @@ MBThread thread = (MBThread)request.getAttribute("edit_message.jsp-thread");
 
 		<%
 		String assetTagNames = (String)request.getAttribute("edit_message.jsp-assetTagNames");
+		boolean isOwner = thread.getUserId() == user.getUserId();
+
 		%>
 		<div class="mark-as-answer">
-			<c:if test="<%= !message.isRoot() %>">
+			<c:if test="<%= !message.isRoot() && isOwner %>">
 			<c:choose>
 			<c:when test="<%= !message.isAnswer() %>">
 				<portlet:actionURL name="/message_boards/edit_message" var="addAnswerURL">
@@ -396,39 +398,6 @@ MBThread thread = (MBThread)request.getAttribute("edit_message.jsp-thread");
 			</c:otherwise>
 		</c:choose>
 			</c:if>
-			 <%--
-/**
- */
-							
-			<c:if test="<%= showAnswerFlag %>">
-			<c:choose>
-			<c:when test="<%= !message.isAnswer() %>">
-				<portlet:actionURL name="/message_boards/edit_message" var="addAnswerURL">
-					<portlet:param name="<%= Constants.CMD %>" value="<%= Constants.ADD_ANSWER %>" />
-					<portlet:param name="redirect" value="<%= currentURL %>" />
-					<portlet:param name="messageId" value="<%= String.valueOf(message.getMessageId()) %>" />
-				</portlet:actionURL>
-
-				<liferay-ui:icon
-					message="mark-as-an-answer"
-					url="<%= addAnswerURL %>"
-				/>
-			</c:when>
-			<c:otherwise>
-				<portlet:actionURL name="/message_boards/edit_message" var="deleteAnswerURL">
-					<portlet:param name="<%= Constants.CMD %>" value="<%= Constants.DELETE_ANSWER %>" />
-					<portlet:param name="redirect" value="<%= currentURL %>" />
-					<portlet:param name="messageId" value="<%= String.valueOf(message.getMessageId()) %>" />
-				</portlet:actionURL>
-
-				<liferay-ui:icon
-					message="unmark-as-an-answer"
-					url="<%= deleteAnswerURL %>"
-				/>
-			</c:otherwise>
-		</c:choose>
-	</c:if>
-	--%>
 		</div>
 		<div class="tags">
 			<liferay-ui:asset-tags-summary
