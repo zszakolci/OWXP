@@ -354,10 +354,8 @@ if (portletTitleBasedNavigation) {
 
 					<%
 					MBCategory category = MBCategoryLocalServiceUtil.getCategory(categoryId);
-					// Disable
-					boolean disabled = true;
 			
-					//boolean disabled = false;
+					boolean disabled = false;
 					boolean question = threadAsQuestionByDefault;
 
 					if (message != null) {
@@ -380,7 +378,7 @@ if (portletTitleBasedNavigation) {
 					<%--
 /** Hide Mark as a question
 --%>
-				<%--	<aui:input disabled="<%= disabled %>" helpMessage="message-boards-message-question-help" label="mark-as-a-question" name="question" type="checkbox" value="<%= question %>" />--%>
+					<aui:input disabled="<%= disabled %>" helpMessage="message-boards-message-question-help" label="mark-as-a-question" name="question" type="hidden" value="<%= question %>" />
 				</c:if>
 
 				<c:if test="<%= (message == null) && themeDisplay.isSignedIn() && allowAnonymousPosting %>">
