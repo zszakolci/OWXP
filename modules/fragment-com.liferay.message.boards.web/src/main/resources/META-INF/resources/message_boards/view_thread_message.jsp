@@ -375,8 +375,26 @@ MBThread thread = (MBThread)request.getAttribute("edit_message.jsp-thread");
 		String assetTagNames = (String)request.getAttribute("edit_message.jsp-assetTagNames");
 		%>
 		<div class="mark-as-answer">
-			<c:if test="<%= thread.isQuestion() || MBThreadLocalServiceUtil.hasAnswerMessage(thread.getThreadId()) %>">
-				<aui:input helpMessage="Does this post answer your question?" name="Mark as an answer" type="checkbox" />
+			<c:if test="<%= !message.isRoot() %>">
+			<c:choose>
+			<c:when test="<%= !message.isAnswer() %>">
+				<portlet:actionURL name="/message_boards/edit_message" var="addAnswerURL">
+					<portlet:param name="<%= Constants.CMD %>" value="<%= Constants.ADD_ANSWER %>" />
+					<portlet:param name="redirect" value="<%= currentURL %>" />
+					<portlet:param name="messageId" value="<%= String.valueOf(message.getMessageId()) %>" />
+				</portlet:actionURL>
+
+				<aui:button href="<%= addAnswerURL.toString() %>" primary="<%= true %>" value="mark-as-an-answer" />
+			</c:when>
+			<c:otherwise>
+				<portlet:actionURL name="/message_boards/edit_message" var="deleteAnswerURL">
+					<portlet:param name="<%= Constants.CMD %>" value="<%= Constants.DELETE_ANSWER %>" />
+					<portlet:param name="redirect" value="<%= currentURL %>" />
+					<portlet:param name="messageId" value="<%= String.valueOf(message.getMessageId()) %>" />
+				</portlet:actionURL>
+				<aui:button href="<%= deleteAnswerURL.toString() %>" primary="<%= true %>" value="unmark-as-an-answer" />
+			</c:otherwise>
+		</c:choose>
 			</c:if>
 			 <%--
 /**
