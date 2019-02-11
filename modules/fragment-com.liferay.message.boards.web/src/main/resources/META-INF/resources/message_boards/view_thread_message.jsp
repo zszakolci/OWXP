@@ -373,8 +373,12 @@ MBThread thread = (MBThread)request.getAttribute("edit_message.jsp-thread");
 
 		<%
 		String assetTagNames = (String)request.getAttribute("edit_message.jsp-assetTagNames");
-		boolean isOwner = thread.getUserId() == user.getUserId();
-		boolean hasAnswered = MBThreadLocalServiceUtil.hasAnswerMessage(thread.getThreadId());
+		%>
+		
+		<c:if test="<%= editable %>">
+		<%
+			boolean isOwner = thread.getUserId() == user.getUserId();
+			boolean hasAnswered = MBThreadLocalServiceUtil.hasAnswerMessage(thread.getThreadId());
 		%>
 		<div class="mark-as-answer">
 			<c:if test="<%= !message.isRoot() && isOwner %>">
@@ -385,7 +389,7 @@ MBThread thread = (MBThread)request.getAttribute("edit_message.jsp-thread");
 					<portlet:param name="redirect" value="<%= currentURL %>" />
 					<portlet:param name="messageId" value="<%= String.valueOf(message.getMessageId()) %>" />
 				</portlet:actionURL>
-				<aui:button href="<%= deleteAnswerURL.toString() %>" primary="<%= true %>" value="unmark-as-an-answer" />
+				<aui:button cssClass="btn-lg" href="<%= deleteAnswerURL.toString() %>" primary="<%= true %>" value="unmark-as-an-answer" />
 				
 			</c:when>
 			<c:otherwise>
@@ -396,7 +400,7 @@ MBThread thread = (MBThread)request.getAttribute("edit_message.jsp-thread");
 					<portlet:param name="messageId" value="<%= String.valueOf(message.getMessageId()) %>" />
 				</portlet:actionURL>
 
-				<aui:button href="<%= addAnswerURL.toString() %>" primary="<%= true %>" value="mark-as-an-answer" />
+				<aui:button cssClass="btn-lg" href="<%= addAnswerURL.toString() %>" primary="<%= true %>" value="mark-as-an-answer" />
 				</c:if>
 			</c:otherwise>
 		</c:choose>
@@ -409,7 +413,7 @@ MBThread thread = (MBThread)request.getAttribute("edit_message.jsp-thread");
 				classPK="<%= message.getMessageId() %>"
 			/>
 		</div>
-
+		</c:if>
 		<liferay-expando:custom-attributes-available className="<%= MBMessage.class.getName() %>">
 			<div class="custom-attributes">
 				<liferay-expando:custom-attribute-list
