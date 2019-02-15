@@ -99,7 +99,6 @@ else {
 }
 
 String headerTitle = "Ask a question";
-//String headerTitle = LanguageUtil.get(request, "add-message");
 
 if (curParentMessage != null) {
 	headerTitle = LanguageUtil.format(request, "reply-to-x", curParentMessage.getSubject(), false);
@@ -335,12 +334,6 @@ if (portletTitleBasedNavigation) {
 
 				</aui:fieldset>
 			</c:if>
-			
-			<c:if test="<%= false %>">
-				<aui:fieldset collapsed="<%= true %>" collapsible="<%= true %>" label="categorization">
-					<aui:input name="tags" type="assetTags" />
-				</aui:fieldset>
-			</c:if>
 
 			<aui:fieldset collapsed="<%= true %>" collapsible="<%= true %>" label="related-assets">
 				<liferay-ui:input-asset-links
@@ -384,62 +377,6 @@ if (portletTitleBasedNavigation) {
 				<c:if test="<%= (message == null) && themeDisplay.isSignedIn() && allowAnonymousPosting %>">
 					<aui:input helpMessage="message-boards-message-anonymous-help" name="anonymous" type="checkbox" />
 				</c:if>
-				
-				<c:if test="<%= false && (message == null) && themeDisplay.isSignedIn() && !SubscriptionLocalServiceUtil.isSubscribed(themeDisplay.getCompanyId(), user.getUserId(), MBThread.class.getName(), threadId) && !SubscriptionLocalServiceUtil.isSubscribed(themeDisplay.getCompanyId(), user.getUserId(), MBCategory.class.getName(), categoryId) %>">
-					<aui:input helpMessage="message-boards-message-subscribe-me-help" label="subscribe-me" name="subscribe" type='<%= (mbGroupServiceSettings.isEmailMessageAddedEnabled() || mbGroupServiceSettings.isEmailMessageUpdatedEnabled()) ? "checkbox" : "hidden" %>' value="<%= subscribeByDefault %>" />
-				</c:if>
-				
-
-				<c:if test="<%= false && (priorities.length > 0) && MBCategoryPermission.contains(permissionChecker, scopeGroupId, categoryId, ActionKeys.UPDATE_THREAD_PRIORITY) %>">
-
-					<%
-					double threadPriority = BeanParamUtil.getDouble(message, request, "priority");
-					%>
-
-					<aui:select name="priority">
-						<aui:option value="" />
-
-						<%
-						for (int i = 0; i < priorities.length; i++) {
-							String[] priority = StringUtil.split(priorities[i], StringPool.PIPE);
-
-							try {
-								String priorityName = priority[0];
-								double priorityValue = GetterUtil.getDouble(priority[2]);
-
-								if (priorityValue > 0) {
-						%>
-
-									<aui:option label="<%= HtmlUtil.escape(priorityName) %>" selected="<%= (threadPriority == priorityValue) %>" value="<%= priorityValue %>" />
-
-						<%
-								}
-							}
-							catch (Exception e) {
-							}
-						}
-						%>
-
-					</aui:select>
-				</c:if>
-
-					<%--
-/** Hide Allow ping backs
---%>
-				<c:if test="<%= false %>">
-					<aui:input helpMessage="to-allow-pingbacks,-please-also-ensure-the-entry's-guest-view-permission-is-enabled" label="allow-pingbacks" name="allowPingbacks" value="<%= allowPingbacks %>" />
-				</c:if>
-			</aui:fieldset>
-					<%--
-/** Hide Permissions
---%>
-			<c:if test="<%= false %>">
-				<aui:fieldset collapsed="<%= true %>" collapsible="<%= true %>" label="permissions">
-					<liferay-ui:input-permissions
-						modelName="<%= MBMessage.class.getName() %>"
-					/>
-				</aui:fieldset>
-			</c:if>
 
 			<c:if test="<%= (message == null) && PropsValues.CAPTCHA_CHECK_PORTLET_MESSAGE_BOARDS_EDIT_MESSAGE %>">
 				<portlet:resourceURL id="/message_boards/captcha" var="captchaURL" />

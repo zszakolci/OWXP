@@ -43,50 +43,6 @@ MBThread thread = message.getThread();
 		/>
 	</c:if>
 
-	<c:if test="<%= false %>">
-		<portlet:renderURL var="moveThreadURL">
-			<portlet:param name="mvcRenderCommandName" value="/message_boards/move_thread" />
-			<portlet:param name="redirect" value="<%= currentURL %>" />
-			<portlet:param name="mbCategoryId" value="<%= String.valueOf(category.getCategoryId()) %>" />
-			<portlet:param name="threadId" value="<%= String.valueOf(message.getThreadId()) %>" />
-		</portlet:renderURL>
-
-		<liferay-ui:icon
-			message="move"
-			url="<%= moveThreadURL %>"
-		/>
-	</c:if>
-
-	<c:if test="<%= false %>">
-		<c:choose>
-			<c:when test="<%= thread.isLocked() %>">
-				<portlet:actionURL name="/message_boards/edit_message" var="unlockThreadURL">
-					<portlet:param name="<%= Constants.CMD %>" value="<%= Constants.UNLOCK %>" />
-					<portlet:param name="redirect" value="<%= currentURL %>" />
-					<portlet:param name="threadId" value="<%= String.valueOf(message.getThreadId()) %>" />
-				</portlet:actionURL>
-
-				<liferay-ui:icon
-					message="unlock-thread"
-					url="<%= unlockThreadURL %>"
-				/>
-			</c:when>
-			<c:otherwise>
-				<portlet:actionURL name="/message_boards/edit_message" var="lockThreadURL">
-					<portlet:param name="<%= Constants.CMD %>" value="<%= Constants.LOCK %>" />
-					<portlet:param name="redirect" value="<%= currentURL %>" />
-					<portlet:param name="messageId" value="<%= String.valueOf(message.getMessageId()) %>" />
-					<portlet:param name="threadId" value="<%= String.valueOf(message.getThreadId()) %>" />
-				</portlet:actionURL>
-
-				<liferay-ui:icon
-					message="lock-thread"
-					url="<%= lockThreadURL %>"
-				/>
-			</c:otherwise>
-		</c:choose>
-	</c:if>
-
 	<c:if test="<%= portletName.equals(MBPortletKeys.MESSAGE_BOARDS) && enableRSS && MBMessagePermission.contains(permissionChecker, message, ActionKeys.VIEW) %>">
 		<liferay-ui:rss
 			delta="<%= rssDelta %>"
@@ -123,35 +79,5 @@ MBThread thread = message.getThread();
 				/>
 			</c:otherwise>
 		</c:choose>
-	</c:if>
-
-	<c:if test="<%= false %>">
-		<liferay-security:permissionsURL
-			modelResource="<%= MBMessage.class.getName() %>"
-			modelResourceDescription="<%= message.getSubject() %>"
-			resourcePrimKey="<%= String.valueOf(message.getMessageId()) %>"
-			var="permissionsURL"
-			windowState="<%= LiferayWindowState.POP_UP.toString() %>"
-		/>
-
-		<liferay-ui:icon
-			message="permissions"
-			method="get"
-			url="<%= permissionsURL %>"
-			useDialog="<%= true %>"
-		/>
-	</c:if>
-
-	<c:if test="<%= false %>">
-		<portlet:actionURL name="/message_boards/delete_thread" var="deleteURL">
-			<portlet:param name="<%= Constants.CMD %>" value="<%= TrashUtil.isTrashEnabled(themeDisplay.getScopeGroupId()) ? Constants.MOVE_TO_TRASH : Constants.DELETE %>" />
-			<portlet:param name="redirect" value="<%= currentURL %>" />
-			<portlet:param name="threadId" value="<%= String.valueOf(message.getThreadId()) %>" />
-		</portlet:actionURL>
-
-		<liferay-ui:icon-delete
-			trash="<%= TrashUtil.isTrashEnabled(themeDisplay.getScopeGroupId()) %>"
-			url="<%= deleteURL %>"
-		/>
 	</c:if>
 </liferay-ui:icon-menu>
