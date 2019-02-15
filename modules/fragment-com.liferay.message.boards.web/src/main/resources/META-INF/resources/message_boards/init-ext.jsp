@@ -13,13 +13,21 @@
  * details.
  */
 --%>
-<% 
-    //Disable rss
-	enableRSS=false;
+
+<%
+
+		//Disable rss
+	enableRSS = false;
+
 	// All threads are questions by default
-	threadAsQuestionByDefault=true;
+
+	threadAsQuestionByDefault = true;
+
 	// If you post a new question, you'll be subscribed.
-	subscribeByDefault=true;
+
+	subscribeByDefault = true;
+
 	// Disable flags
+
 	enableFlags = false;
-		 %>
+%>

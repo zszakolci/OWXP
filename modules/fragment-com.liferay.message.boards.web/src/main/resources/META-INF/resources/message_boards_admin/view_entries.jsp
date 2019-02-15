@@ -41,7 +41,7 @@ boolean portletTitleBasedNavigation = GetterUtil.getBoolean(portletConfig.getIni
 
 		<%
 		long parentCategoryId = category.getParentCategoryId();
-		String parentCategoryName =  LanguageUtil.get(request, "message-boards-home");
+		String parentCategoryName = LanguageUtil.get(request, "message-boards-home");
 
 		if (!category.isRoot()) {
 			MBCategory parentCategory = MBCategoryLocalServiceUtil.getCategory(parentCategoryId);
@@ -286,7 +286,7 @@ boolean portletTitleBasedNavigation = GetterUtil.getBoolean(portletConfig.getIni
 				</c:choose>
 			</liferay-ui:search-container-row>
 
-			<liferay-ui:search-iterator displayStyle='<%= GetterUtil.getString(request.getAttribute("view.jsp-displayStyle")) %>' markupView="lexicon"  />
+			<liferay-ui:search-iterator displayStyle='<%= GetterUtil.getString(request.getAttribute("view.jsp-displayStyle")) %>' markupView="lexicon" />
 		</liferay-ui:search-container>
 	</aui:form>
 </div>

@@ -21,11 +21,11 @@ String mvcRenderCommandName = ParamUtil.getString(request, "mvcRenderCommandName
 
 MBCategory category = (MBCategory)request.getAttribute(WebKeys.MESSAGE_BOARDS_CATEGORY);
 
-boolean showBannedUsers=false;
-String messageBoardsHomeLabel="All Questions";
-String viewRecentPostsLabel="Recent Questions";
-String viewMyPostsLabel="My Questions";
-String viewMySubscriptionLabel= "My Subscriptions";
+boolean showBannedUsers = false;
+String messageBoardsHomeLabel ="All Questions";
+String viewRecentPostsLabel ="Recent Questions";
+String viewMyPostsLabel ="My Questions";
+String viewMySubscriptionLabel = "My Subscriptions";
 
 long categoryId = MBUtil.getCategoryId(request, category);
 %>
