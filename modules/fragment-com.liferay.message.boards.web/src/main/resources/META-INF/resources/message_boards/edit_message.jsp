@@ -368,9 +368,7 @@ if (portletTitleBasedNavigation) {
 					}
 					%>
 
-					<%--
-/** Hide Mark as a question
---%>
+					<%-- Hide Mark as a question --%>
 
 					<aui:input disabled="<%= disabled %>" helpMessage="message-boards-message-question-help" label="mark-as-a-question" name="question" type="hidden" value="<%= question %>" />
 				</c:if>

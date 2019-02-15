@@ -16,7 +16,8 @@
 
 <%
 
-		//Disable rss
+	//Disable rss
+
 	enableRSS = false;
 
 	// All threads are questions by default
