@@ -24,7 +24,7 @@ MBCategory category = (MBCategory)request.getAttribute(WebKeys.MESSAGE_BOARDS_CA
 boolean showBannedUsers=false;
 String messageBoardsHomeLabel="All Questions";
 String viewRecentPostsLabel="Recent Questions";
-String viewMyPostsLabel="My Questions";
+String viewMyPostsLabel="My Posts";
 String viewMySubscriptionLabel= "My Subscriptions";
 
 long categoryId = MBUtil.getCategoryId(request, category);
