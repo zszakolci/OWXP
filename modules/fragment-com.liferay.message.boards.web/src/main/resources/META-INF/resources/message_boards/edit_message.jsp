@@ -376,6 +376,7 @@ if (portletTitleBasedNavigation) {
 				<c:if test="<%= (message == null) && themeDisplay.isSignedIn() && allowAnonymousPosting %>">
 					<aui:input helpMessage="message-boards-message-anonymous-help" name="anonymous" type="checkbox" />
 				</c:if>
+			</aui:fieldset>
 
 			<c:if test="<%= (message == null) && PropsValues.CAPTCHA_CHECK_PORTLET_MESSAGE_BOARDS_EDIT_MESSAGE %>">
 				<portlet:resourceURL id="/message_boards/captcha" var="captchaURL" />
