@@ -262,9 +262,8 @@ boolean portletTitleBasedNavigation = GetterUtil.getBoolean(portletConfig.getIni
 								%>
 
 								<span class="h6">
-									<%= threadAnswersCount %>
 
-									<liferay-ui:message key='<%= threadAnswersCount == 1 ? "answer" : "answers" %>' />
+									<liferay-ui:message key='<%= threadAnswersCount == 1 ? "Answered" : "Unanswered" %>' />
 								</span>
 							</c:if>
 
