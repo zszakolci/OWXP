@@ -1,2 +1,3 @@
-Bundle-SymbolicName: wikipageserviceoverride
+Bundle-Name: Liferay Grow Wiki Page Service Wrapper
+Bundle-SymbolicName: com.liferay.grow.wiki.page.service.wrapper
 Bundle-Version: 1.0.0

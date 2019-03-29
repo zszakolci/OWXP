@@ -1,4 +1,4 @@
-Bundle-Name: Liferay Social Activity Customizer Fragment
-Bundle-SymbolicName: com.liferay.social.activity.customizer.fragment
+Bundle-Name: Liferay Grow Social Activity Customizer Fragment
+Bundle-SymbolicName: com.liferay.grow.social.activity.customizer.fragment
 Bundle-Version: 1.0.0
 Fragment-Host: com.liferay.social.activities.web;bundle-version="3.0.0"

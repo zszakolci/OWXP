@@ -1,2 +1,3 @@
-Bundle-SymbolicName: owxp.lang
+Bundle-Name: Liferay Grow Lang
+Bundle-SymbolicName: com.liferay.grow.lang
 Bundle-Version: 1.0.0

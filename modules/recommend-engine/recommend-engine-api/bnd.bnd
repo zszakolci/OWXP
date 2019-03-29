@@ -1,5 +1,5 @@
-	Bundle-Name: Liferay Content Recommend Engine API
-Bundle-SymbolicName: com.liferay.recommend.api
+Bundle-Name: Liferay Grow Content Recommend Engine API
+Bundle-SymbolicName: com.liferay.grow.recommend.api
 Bundle-Version: 1.0.0
 Export-Package:\
 	com.liferay.recommend.exception,\

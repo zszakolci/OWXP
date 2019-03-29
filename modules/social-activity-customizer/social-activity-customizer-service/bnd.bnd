@@ -1,5 +1,5 @@
-Bundle-Name: Liferay Social Activity Customizer Service
-Bundle-SymbolicName: com.liferay.social.activity.customizer.service
+Bundle-Name: Liferay Grow Social Activity Customizer Service
+Bundle-SymbolicName: com.liferay.grow.social.activity.customizer.service
 Bundle-Version: 1.0.0
 Liferay-Require-SchemaVersion: 1.0.0
 Liferay-Service: true

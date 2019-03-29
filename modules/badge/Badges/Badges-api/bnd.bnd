@@ -1,4 +1,4 @@
-Bundle-Name: Badges-api
+Bundle-Name: Liferay Grow Badges API
 Bundle-SymbolicName: com.liferay.grow.gamification.api
 Bundle-Version: 1.0.0
 Export-Package:\

@@ -1,4 +1,4 @@
-Bundle-Name: fragment-com.liferay.wiki.web
-Bundle-SymbolicName: fragment.com.liferay.wiki.web
+Bundle-Name: Liferay Grow Fragment Liferay Wiki Web
+Bundle-SymbolicName: com.liferay.grow.fragment.com.liferay.wiki.web
 Bundle-Version: 1.0.0
 Fragment-Host: com.liferay.wiki.web;bundle-version="4.0.7"

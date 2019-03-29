@@ -1,4 +1,4 @@
-Bundle-Name: fragment-com.liferay.product.navigation.site.administration
-Bundle-SymbolicName: fragment.com.liferay.product.navigation.site.administration
+Bundle-Name: Liferay Grow Fragment Liferay Product Navigation Site Administration
+Bundle-SymbolicName: com.liferay.grow.fragment.com.liferay.product.navigation.site.administration
 Bundle-Version: 1.0.0
 Fragment-Host: com.liferay.product.navigation.site.administration;bundle-version="3.0.0"

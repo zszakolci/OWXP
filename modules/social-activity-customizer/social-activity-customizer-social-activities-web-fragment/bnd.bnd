@@ -1,5 +1,5 @@
-Bundle-Name: Liferay Social Activity Customizer Social Activities Web Fragment
-Bundle-SymbolicName: com.liferay.social.activity.customizer.social.activities.web.fragment
+Bundle-Name: Liferay Grow Social Activity Customizer Social Activities Web Fragment
+Bundle-SymbolicName: com.liferay.grow.social.activity.customizer.social.activities.web.fragment
 Bundle-Version: 1.0.0
 Export-Package:\
 	com.liferay.social.activities.web.internal.portlet.action,\

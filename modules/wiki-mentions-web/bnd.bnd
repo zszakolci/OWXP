@@ -1,2 +1,3 @@
-Bundle-SymbolicName: wiki.mentions.web
+Bundle-Name: Liferay Grow Wiki Mentions Web
+Bundle-SymbolicName: com.liferay.grow.wiki.mentions.web
 Bundle-Version: 1.0.0

@@ -1,4 +1,4 @@
-Bundle-Name: UserBadgesDisplay
+Bundle-Name: Liferay Grow User Badges Display
 Bundle-SymbolicName: com.liferay.grow.gamification.badges.display
 Bundle-Version: 1.0.0
 Export-Package: com.liferay.grow.gamification.badges.display.constants

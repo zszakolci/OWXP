@@ -1,4 +1,5 @@
-Bundle-SymbolicName: owxp.subscribe
+Bundle-Name:  Liferay Grow Subscriber Web
+Bundle-SymbolicName: com.liferay.grow.subscriber.web
 
 Bundle-Version: 1.0.0.${tstamp}
 

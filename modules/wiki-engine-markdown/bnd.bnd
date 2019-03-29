@@ -1,4 +1,5 @@
-Bundle-SymbolicName: wiki.engine.markdown
+Bundle-Name: Liferay Grow Wiki Engine Markdown
+Bundle-SymbolicName: com.liferay.grow.wiki.engine.markdown
 Bundle-Version: 1.0.0
 Include-Resource:\
 	@lib/autolink-0.9.0.jar,\
