@@ -1,0 +1,4 @@
+Bundle-Name: fragment-com.liferay.message-boards.web
+Bundle-SymbolicName: fragment.com.liferay.message.boards.web
+Bundle-Version: 1.0.0
+Fragment-Host: com.liferay.message.boards.web;bundle-version="2.0.43"
