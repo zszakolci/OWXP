@@ -20,9 +20,9 @@
 String mvcRenderCommandName = ParamUtil.getString(request, "mvcRenderCommandName", "/message_boards/view");
 
 boolean signedIn = themeDisplay.isSignedIn();
-		 String recentQuestionLabel= "Recent Questions";
-%>
-NA MI A FASZ VAN
+String recentQuestionLabel= "Recent Questions";
+
+%> 
 <clay:navigation-bar
 	navigationItems='<%=
 		new JSPNavigationItemList(pageContext) {
