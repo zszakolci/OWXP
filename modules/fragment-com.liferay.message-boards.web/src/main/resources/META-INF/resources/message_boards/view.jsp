@@ -107,7 +107,7 @@ request.setAttribute("view.jsp-viewCategory", Boolean.TRUE.toString());
 			<liferay-ui:search-container
 				curParam="cur1"
 				deltaConfigurable="<%= false %>"
-				emptyResultsMessage="you-are-not-subscribed-to-any-categories"
+				emptyResultsMessage="You are not subscribed to any Questions"
 				headerNames="category,categories,threads,posts"
 				iteratorURL="<%= portletURL %>"
 				total="<%= MBCategoryServiceUtil.getSubscribedCategoriesCount(scopeGroupId, user.getUserId()) %>"
@@ -376,7 +376,7 @@ request.setAttribute("view.jsp-viewCategory", Boolean.TRUE.toString());
 					</div>
 
 					<%
-					SearchContainer categoryEntriesSearchContainer = new SearchContainer(renderRequest, null, null, "cur1", 0, mbListDisplayContext.getCategoryEntriesDelta(), portletURL, null, "there-are-no-threads-or-categories");
+					SearchContainer categoryEntriesSearchContainer = new SearchContainer(renderRequest, null, null, "cur1", 0, mbListDisplayContext.getCategoryEntriesDelta(), portletURL, null, "There are no questions posted yet. Be the first to ask!");
 
 					mbListDisplayContext.setCategoryEntriesDelta(categoryEntriesSearchContainer);
 
