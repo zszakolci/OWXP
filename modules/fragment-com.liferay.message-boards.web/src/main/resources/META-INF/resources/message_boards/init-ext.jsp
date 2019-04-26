@@ -16,4 +16,10 @@
 
 <%
 boolean isCategoryActive = false;
+allowAnonymousPosting = false;
+enableFlags = false;
+	
+threadAsQuestionByDefault = true;
+
+enableRSS = false;
 %>

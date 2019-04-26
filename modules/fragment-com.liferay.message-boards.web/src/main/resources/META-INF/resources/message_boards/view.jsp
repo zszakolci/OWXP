@@ -45,6 +45,7 @@ portletURL.setParameter("mvcRenderCommandName", mvcRenderCommandName);
 portletURL.setParameter("mbCategoryId", String.valueOf(categoryId));
 
 String keywords = ParamUtil.getString(request, "keywords");
+String addQuestionLabel = "ASK A QUESTION";
 
 if (Validator.isNotNull(keywords)) {
 	portletURL.setParameter("keywords", keywords);
@@ -242,7 +243,7 @@ request.setAttribute("view.jsp-viewCategory", Boolean.TRUE.toString());
 											buttonStyle="primary"
 											elementClasses="btn-sm"
 											href="<%= editMessageURL %>"
-											label='<%= LanguageUtil.get(request, "new-thread") %>'
+											label='<%= addQuestionLabel %>'
 										/>
 									</div>
 								</c:if>
