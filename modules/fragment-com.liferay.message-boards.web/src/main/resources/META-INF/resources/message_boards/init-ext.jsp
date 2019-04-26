@@ -16,7 +16,7 @@
 
 <%
 boolean isCategoryActive = false;
-allowAnonymousPosting = false;
+allowAnonymousPosting = true;
 enableFlags = false;
 	
 threadAsQuestionByDefault = true;
