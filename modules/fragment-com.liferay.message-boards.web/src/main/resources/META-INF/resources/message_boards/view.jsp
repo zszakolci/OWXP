@@ -394,7 +394,7 @@ request.setAttribute("view.jsp-viewCategory", Boolean.TRUE.toString());
 					</c:if>
 
 					<%
-					SearchContainer threadEntriesSearchContainer = new SearchContainer(renderRequest, null, null, "cur2", 0, mbListDisplayContext.getThreadEntriesDelta(), portletURL, null, "there-are-no-threads-or-categories");
+					SearchContainer threadEntriesSearchContainer = new SearchContainer(renderRequest, null, null, "cur2", 0, mbListDisplayContext.getThreadEntriesDelta(), portletURL, null, "There are no questions posted yet. Be the first to ask!");
 
 					mbListDisplayContext.setThreadEntriesDelta(categoryEntriesSearchContainer);
 
@@ -413,7 +413,7 @@ request.setAttribute("view.jsp-viewCategory", Boolean.TRUE.toString());
 
 					<c:if test="<%= (categoryEntriesSearchContainer.getTotal() <= 0) && (threadEntriesSearchContainer.getTotal() <= 0) %>">
 						<liferay-ui:empty-result-message
-							message="there-are-no-threads-or-categories"
+							message="There are no questions posted yet. Be the first to ask!"
 						/>
 					</c:if>
 
@@ -432,7 +432,7 @@ request.setAttribute("view.jsp-viewCategory", Boolean.TRUE.toString());
 						<c:when test="<%= mbListDisplayContext.isShowRecentPosts() %>">
 							<div class="autofit-float autofit-row">
 								<div class="autofit-col autofit-col-expand">
-									<h3><liferay-ui:message key="recent-posts" /></h3>
+									<h3><liferay-ui:message key="Recent Questions" /></h3>
 								</div>
 
 								<div class="autofit-col autofit-col-end">
@@ -509,7 +509,7 @@ request.setAttribute("view.jsp-viewCategory", Boolean.TRUE.toString());
 					%>
 
 					<%
-					SearchContainer threadEntriesSearchContainer = new SearchContainer(renderRequest, null, null, "cur1", 0, mbListDisplayContext.getThreadEntriesDelta(), portletURL, null, "there-are-no-threads");
+					SearchContainer threadEntriesSearchContainer = new SearchContainer(renderRequest, null, null, "cur1", 0, mbListDisplayContext.getThreadEntriesDelta(), portletURL, null, "There are no questions");
 
 					mbListDisplayContext.setThreadEntriesDelta(threadEntriesSearchContainer);
 
@@ -531,7 +531,7 @@ request.setAttribute("view.jsp-viewCategory", Boolean.TRUE.toString());
 						pageSubtitle = "my-posts";
 					}
 					else if (mbListDisplayContext.isShowRecentPosts()) {
-						pageSubtitle = "recent-posts";
+						pageSubtitle = "Recent Questions";
 					}
 
 					PortalUtil.setPageSubtitle(LanguageUtil.get(request, StringUtil.replace(pageSubtitle, CharPool.UNDERLINE, CharPool.DASH)), request);
