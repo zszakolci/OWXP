@@ -427,7 +427,7 @@ if (portletTitleBasedNavigation) {
 				saveButtonLabel = "save-as-draft";
 			}
 
-			String publishButtonLabel = "publish";
+			String publishButtonLabel = "Post now";
 
 			if (WorkflowDefinitionLinkLocalServiceUtil.hasWorkflowDefinitionLink(themeDisplay.getCompanyId(), scopeGroupId, MBMessage.class.getName())) {
 				publishButtonLabel = "submit-for-publication";

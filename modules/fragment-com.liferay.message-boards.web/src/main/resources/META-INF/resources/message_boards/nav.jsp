@@ -22,7 +22,7 @@ String mvcRenderCommandName = ParamUtil.getString(request, "mvcRenderCommandName
 boolean signedIn = themeDisplay.isSignedIn();
 String recentQuestionLabel= "Recent Questions";
 String allQuestionsLabel = "All Questions";
-%> 
+%>
 <clay:navigation-bar
 	navigationItems='<%=
 		new JSPNavigationItemList(pageContext) {
