@@ -189,7 +189,7 @@ if (message.isAnonymous()) {
 					if (!message.isRoot()) {
 						MBMessage rootMessage = MBMessageLocalServiceUtil.getMessage(thread.getRootMessageId());
 
-						showAnswerFlag = MBMessagePermission.contains(permissionChecker, rootMessage, ActionKeys.UPDATE) && (thread.isQuestion() || MBThreadLocalServiceUtil.hasAnswerMessage(thread.getThreadId()));
+						showAnswerFlag = false; // MBMessagePermission.contains(permissionChecker, rootMessage, ActionKeys.UPDATE) && (thread.isQuestion() || MBThreadLocalServiceUtil.hasAnswerMessage(thread.getThreadId()));
 					}
 					%>
 
@@ -396,7 +396,40 @@ if (message.isAnonymous()) {
 		<%
 		String assetTagNames = (String)request.getAttribute("edit_message.jsp-assetTagNames");
 		%>
+		<c:if test="<%= editable %>">
 
+			<%
+			boolean isOwner = thread.getUserId() == user.getUserId();
+			boolean hasAnswered = MBThreadLocalServiceUtil.hasAnswerMessage(thread.getThreadId());
+			%>
+
+			<div class="mark-as-answer">
+				<c:if test="<%= !message.isRoot() && isOwner %>">
+					<c:choose>
+						<c:when test="<%= message.isAnswer() %>">
+							<portlet:actionURL name="/message_boards/edit_message" var="deleteAnswerURL">
+								<portlet:param name="<%= Constants.CMD %>" value="<%= Constants.DELETE_ANSWER %>" />
+								<portlet:param name="redirect" value="<%= currentURL %>" />
+								<portlet:param name="messageId" value="<%= String.valueOf(message.getMessageId()) %>" />
+							</portlet:actionURL>
+
+							<aui:button cssClass="btn-lg" href="<%= deleteAnswerURL.toString() %>" primary="<%= true %>" value="unmark-as-an-answer" />
+						</c:when>
+						<c:otherwise>
+							<c:if test="<%= !hasAnswered %>">
+								<portlet:actionURL name="/message_boards/edit_message" var="addAnswerURL">
+									<portlet:param name="<%= Constants.CMD %>" value="<%= Constants.ADD_ANSWER %>" />
+									<portlet:param name="redirect" value="<%= currentURL %>" />
+									<portlet:param name="messageId" value="<%= String.valueOf(message.getMessageId()) %>" />
+								</portlet:actionURL>
+
+								<aui:button cssClass="btn-lg" href="<%= addAnswerURL.toString() %>" primary="<%= true %>" value="mark-as-an-answer" />
+							</c:if>
+						</c:otherwise>
+					</c:choose>
+				</c:if>
+			</div>
+		</c:if>
 		<div class="card-row card-row-padded tags">
 			<liferay-asset:asset-tags-summary
 				assetTagNames="<%= assetTagNames %>"
